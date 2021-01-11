@@ -8,16 +8,23 @@
 			<state id="Shop" />
 			<probabilities>1 0 0</probabilities>
 		</cpt>
-		<cpt id="Coffee" dynamic="plate">
+		<decision id="Want_Coffee" dynamic="anchor">
 			<state id="Yes" />
 			<state id="No" />
-			<probabilities>0 1</probabilities>
-		</cpt>
+		</decision>
 		<cpt id="Order" dynamic="plate">
 			<state id="Yes" />
 			<state id="No" />
-			<probabilities>0.5 0.5</probabilities>
+			<parents>Want_Coffee</parents>
+			<probabilities>1 0 0 1</probabilities>
 		</cpt>
+		<noisymax id="Coffee" dynamic="plate">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Order</parents>
+			<strengths>0 1</strengths>
+			<parameters>0 1 0 1 0 1</parameters>
+		</noisymax>
 		<cpt id="Zone" dynamic="plate">
 			<state id="Lab" />
 			<state id="Office" />
@@ -43,51 +50,27 @@
 			<state id="PC" />
 			<state id="CC" />
 			<state id="NONE" />
+			<parents>Zone HasCoffee Request</parents>
 		</decision>
-		<cpt id="Effect" dynamic="plate">
-			<state id="MAR" />
-			<state id="MO" />
-			<state id="PC" />
-			<state id="CC" />
-			<state id="NONE" />
-			<parents>Action</parents>
-			<probabilities>1 0 0 0 0 0 1 0 0 0 0 0 0.99 0 0.01 0 0 0 0.99 0.01 0 0 0 0 1</probabilities>
-		</cpt>
-		<noisymax id="Result" dynamic="plate">
-			<state id="MAR" />
-			<state id="MO" />
-			<state id="PC" />
-			<state id="NONE" />
-			<state id="CC" />
-			<parents>Request HasCoffee Zone Effect</parents>
-			<strengths>0 1 0 1 2 0 1 0 1 2 4 3</strengths>
-			<parameters>0.2 0.2 0.2000000000000001 0.2 0.2 0 0 0 0 1 0.3 0.2999999999999999 0 0.09999999999999998 0.3 0 0 0 0 1 0.05000000000000004 0.05000000000000004 0.05000000000000004 0.05000000000000004 0.8 0.2000000000000001 0.09999999999999998 0.4999999999999999 0.1 0.1 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 1 0</parameters>
-		</noisymax>
-		<utility id="Delivery" dynamic="plate">
-			<parents>Result</parents>
-			<utilities>4 4 10 0 10</utilities>
-		</utility>
 	</nodes>
 	<dynamic numslices="5">
 		<cpt id="Position" order="1">
-			<parents>Result Position</parents>
-			<probabilities>0 0 1 0 1 0 1 0 0 1 0 0 0 1 0 1 0 0 1 0 0 0 1 0 0 0 1 1 0 0 0 1 0 0 0 1 1 0 0 0 1 0 0 0 1</probabilities>
-		</cpt>
-		<cpt id="Coffee" order="1">
-			<parents>Result Coffee</parents>
-			<probabilities>1 0 0 1 1 0 0 1 1 0 1 0 0 1 0 1 1 0 0 1</probabilities>
+			<parents>Position Action</parents>
+			<probabilities>0 0 1 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 0 0 1 0 0 1 0 0 1</probabilities>
 		</cpt>
 		<cpt id="Order" order="1">
-			<parents>Result Order</parents>
-			<probabilities>1 0 0 1 1 0 0 1 1 0 0 1 0 1 0 1 1 0 0 1</probabilities>
+			<parents>Order Action</parents>
+			<probabilities>1 0 1 0 1 0 0.01 0.99 1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
 		</cpt>
-		<decision id="Action" order="1">
-			<parents>Action</parents>
-		</decision>
+		<noisymax id="Coffee" order="1">
+			<parents>Coffee Action</parents>
+			<strengths>0 1 0 1 0 1 2 3 4</strengths>
+			<parameters>0 1 0 1 0.995 0.005 0 1 0 1 0 1 0.995 0.005 0.005000000000000004 0.995 0 1 0 1</parameters>
+		</noisymax>
 	</dynamic>
 	<extensions>
 		<genie version="1.0" app="GeNIe 3.0.5905.0 ACADEMIC" name="Network2">
-			<plate leftwidth="120" rightwidth="121">20 30 1206 677</plate>
+			<plate leftwidth="120" rightwidth="121">20 31 1206 678</plate>
 			<node id="Position">
 				<name>Position</name>
 				<interior color="e5f6f7" />
@@ -100,63 +83,49 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>163 246 265 323</position>
+				<position>219 263 321 340</position>
 			</node>
 			<node id="Order">
 				<name>Order</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>208 511 304 594</position>
+				<position>242 430 338 513</position>
 			</node>
 			<node id="Zone">
 				<name>Zone</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>469 115 540 166</position>
+				<position>549 81 620 132</position>
 			</node>
 			<node id="HasCoffee">
 				<name>HasCoffee</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>353 391 443 451</position>
+				<position>429 235 519 295</position>
 			</node>
 			<node id="Request">
 				<name>Request</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>503 595 587 649</position>
+				<position>496 460 580 514</position>
+			</node>
+			<node id="Want_Coffee">
+				<name>Want Coffee</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>35 407 116 454</position>
 			</node>
 			<node id="Action">
 				<name>Action</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>764 103 836 148</position>
-			</node>
-			<node id="Effect">
-				<name>Effect</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>780 250 863 304</position>
-			</node>
-			<node id="Result">
-				<name>Result</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>767 401 852 453</position>
-			</node>
-			<node id="Delivery">
-				<name>Delivery</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>865 521 984 579</position>
+				<position>723 310 801 355</position>
 			</node>
 		</genie>
 	</extensions>

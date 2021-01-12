@@ -2,6 +2,11 @@
 <!-- This network was created in GeNIe Academic, which can be used for academic teaching and research purposes only -->
 <smile version="1.0" id="Network2" numsamples="10000" discsamples="10000">
 	<nodes>
+		<cpt id="Order">
+			<state id="Yes" />
+			<state id="No" />
+			<probabilities>0.5 0.5</probabilities>
+		</cpt>
 		<cpt id="Position">
 			<state id="Lab" />
 			<state id="Office" />
@@ -13,11 +18,6 @@
 			<state id="No" />
 			<probabilities>0 1</probabilities>
 		</cpt>
-		<cpt id="Order">
-			<state id="Yes" />
-			<state id="No" />
-			<probabilities>0.5 0.5</probabilities>
-		</cpt>
 		<cpt id="Zone">
 			<state id="Lab" />
 			<state id="Office" />
@@ -28,14 +28,9 @@
 		<cpt id="HasCoffee">
 			<state id="Yes" />
 			<state id="No" />
-			<parents>Coffee</parents>
-			<probabilities>1 0 0 1</probabilities>
-		</cpt>
-		<cpt id="Request">
-			<state id="Yes" />
-			<state id="No" />
-			<parents>Order</parents>
-			<probabilities>1 0 0 1</probabilities>
+			<state id="NotRequired" />
+			<parents>Order Coffee</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1</probabilities>
 		</cpt>
 		<decision id="Action">
 			<state id="MAR" />
@@ -43,48 +38,30 @@
 			<state id="PC" />
 			<state id="CC" />
 			<state id="NONE" />
+			<parents>Zone HasCoffee</parents>
 		</decision>
-		<cpt id="Effect">
-			<state id="MAR" />
-			<state id="MO" />
-			<state id="PC" />
-			<state id="CC" />
-			<state id="NONE" />
-			<parents>Action</parents>
-			<probabilities>1 0 0 0 0 0 1 0 0 0 0 0 0.99 0 0.01 0 0 0 0.99 0.01 0 0 0 0 1</probabilities>
-		</cpt>
-		<noisymax id="Result">
-			<state id="MAR" />
-			<state id="MO" />
-			<state id="PC" />
-			<state id="NONE" />
-			<state id="CC" />
-			<parents>Request HasCoffee Zone Effect</parents>
-			<strengths>0 1 0 1 2 0 1 0 1 2 4 3</strengths>
-			<parameters>0.2 0.2 0.2000000000000001 0.2 0.2 0 0 0 0 1 0.3 0.2999999999999999 0 0.09999999999999998 0.3 0 0 0 0 1 0.05000000000000004 0.05000000000000004 0.05000000000000004 0.05000000000000004 0.8 0.2000000000000001 0.09999999999999998 0.4999999999999999 0.1 0.1 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 1 0</parameters>
-		</noisymax>
 		<utility id="Delivery">
-			<parents>Result</parents>
-			<utilities>5 5 5 0 5</utilities>
+			<parents>HasCoffee Action</parents>
+			<utilities>4 4 -5 10 0 4 4 10 -5 0 -1 -1 -1 -1 0</utilities>
 		</utility>
+		<cpt id="Order_1">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Order Action</parents>
+			<probabilities>1 0 1 0 1 0 0.01 0.99 1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
 		<cpt id="Position_1">
 			<state id="Lab" />
 			<state id="Office" />
 			<state id="Shop" />
-			<parents>Result Position</parents>
-			<probabilities>0 0 1 0 1 0 1 0 0 1 0 0 0 1 0 1 0 0 1 0 0 0 1 0 0 0 1 1 0 0 0 1 0 0 0 1 1 0 0 0 1 0 0 0 1</probabilities>
+			<parents>Position Action</parents>
+			<probabilities>0 0 1 1 0 0 1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 0 0 1 0 0 1 0 0 1</probabilities>
 		</cpt>
 		<cpt id="Coffee_1">
 			<state id="Yes" />
 			<state id="No" />
-			<parents>Result Coffee</parents>
-			<probabilities>1 0 0 1 1 0 0 1 1 0 1 0 0 1 0 1 1 0 0 1</probabilities>
-		</cpt>
-		<cpt id="Order_1">
-			<state id="Yes" />
-			<state id="No" />
-			<parents>Result Order</parents>
-			<probabilities>1 0 0 1 1 0 0 1 1 0 0 1 0 1 0 1 1 0 0 1</probabilities>
+			<parents>Coffee Action</parents>
+			<probabilities>1 0 1 0 1 0 0.01 0.99 1 0 0 1 0 1 0.99 0.01 0 1 0 1</probabilities>
 		</cpt>
 		<cpt id="Zone_1">
 			<state id="Lab" />
@@ -96,14 +73,9 @@
 		<cpt id="HasCoffee_1">
 			<state id="Yes" />
 			<state id="No" />
-			<parents>Coffee_1</parents>
-			<probabilities>1 0 0 1</probabilities>
-		</cpt>
-		<cpt id="Request_1">
-			<state id="Yes" />
-			<state id="No" />
-			<parents>Order_1</parents>
-			<probabilities>1 0 0 1</probabilities>
+			<state id="NotRequired" />
+			<parents>Order_1 Coffee_1</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1</probabilities>
 		</cpt>
 		<decision id="Action_1">
 			<state id="MAR" />
@@ -111,49 +83,30 @@
 			<state id="PC" />
 			<state id="CC" />
 			<state id="NONE" />
-			<parents>Action</parents>
+			<parents>Zone_1 HasCoffee_1 Action</parents>
 		</decision>
-		<cpt id="Effect_1">
-			<state id="MAR" />
-			<state id="MO" />
-			<state id="PC" />
-			<state id="CC" />
-			<state id="NONE" />
-			<parents>Action_1</parents>
-			<probabilities>1 0 0 0 0 0 1 0 0 0 0 0 0.99 0 0.01 0 0 0 0.99 0.01 0 0 0 0 1</probabilities>
-		</cpt>
-		<noisymax id="Result_1">
-			<state id="MAR" />
-			<state id="MO" />
-			<state id="PC" />
-			<state id="NONE" />
-			<state id="CC" />
-			<parents>Request_1 HasCoffee_1 Zone_1 Effect_1</parents>
-			<strengths>0 1 0 1 2 0 1 0 1 2 4 3</strengths>
-			<parameters>0.2 0.2 0.2000000000000001 0.2 0.2 0 0 0 0 1 0.3 0.2999999999999999 0 0.09999999999999998 0.3 0 0 0 0 1 0.05000000000000004 0.05000000000000004 0.05000000000000004 0.05000000000000004 0.8 0.2000000000000001 0.09999999999999998 0.4999999999999999 0.1 0.1 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 1 0</parameters>
-		</noisymax>
 		<utility id="Delivery_1">
-			<parents>Result_1</parents>
-			<utilities>5 5 5 0 5</utilities>
+			<parents>HasCoffee_1 Action_1</parents>
+			<utilities>4 4 -5 10 0 4 4 10 -5 0 -1 -1 -1 -1 0</utilities>
 		</utility>
+		<cpt id="Order_2">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Order_1 Action_1</parents>
+			<probabilities>1 0 1 0 1 0 0.01 0.99 1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
 		<cpt id="Position_2">
 			<state id="Lab" />
 			<state id="Office" />
 			<state id="Shop" />
-			<parents>Result_1 Position_1</parents>
-			<probabilities>0 0 1 0 1 0 1 0 0 1 0 0 0 1 0 1 0 0 1 0 0 0 1 0 0 0 1 1 0 0 0 1 0 0 0 1 1 0 0 0 1 0 0 0 1</probabilities>
+			<parents>Position_1 Action_1</parents>
+			<probabilities>0 0 1 1 0 0 1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 0 0 1 0 0 1 0 0 1</probabilities>
 		</cpt>
 		<cpt id="Coffee_2">
 			<state id="Yes" />
 			<state id="No" />
-			<parents>Result_1 Coffee_1</parents>
-			<probabilities>1 0 0 1 1 0 0 1 1 0 1 0 0 1 0 1 1 0 0 1</probabilities>
-		</cpt>
-		<cpt id="Order_2">
-			<state id="Yes" />
-			<state id="No" />
-			<parents>Result_1 Order_1</parents>
-			<probabilities>1 0 0 1 1 0 0 1 1 0 0 1 0 1 0 1 1 0 0 1</probabilities>
+			<parents>Coffee_1 Action_1</parents>
+			<probabilities>1 0 1 0 1 0 0.01 0.99 1 0 0 1 0 1 0.99 0.01 0 1 0 1</probabilities>
 		</cpt>
 		<cpt id="Zone_2">
 			<state id="Lab" />
@@ -165,14 +118,9 @@
 		<cpt id="HasCoffee_2">
 			<state id="Yes" />
 			<state id="No" />
-			<parents>Coffee_2</parents>
-			<probabilities>1 0 0 1</probabilities>
-		</cpt>
-		<cpt id="Request_2">
-			<state id="Yes" />
-			<state id="No" />
-			<parents>Order_2</parents>
-			<probabilities>1 0 0 1</probabilities>
+			<state id="NotRequired" />
+			<parents>Order_2 Coffee_2</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1</probabilities>
 		</cpt>
 		<decision id="Action_2">
 			<state id="MAR" />
@@ -180,49 +128,30 @@
 			<state id="PC" />
 			<state id="CC" />
 			<state id="NONE" />
-			<parents>Action_1 Action</parents>
+			<parents>Zone_2 HasCoffee_2 Action_1</parents>
 		</decision>
-		<cpt id="Effect_2">
-			<state id="MAR" />
-			<state id="MO" />
-			<state id="PC" />
-			<state id="CC" />
-			<state id="NONE" />
-			<parents>Action_2</parents>
-			<probabilities>1 0 0 0 0 0 1 0 0 0 0 0 0.99 0 0.01 0 0 0 0.99 0.01 0 0 0 0 1</probabilities>
-		</cpt>
-		<noisymax id="Result_2">
-			<state id="MAR" />
-			<state id="MO" />
-			<state id="PC" />
-			<state id="NONE" />
-			<state id="CC" />
-			<parents>Request_2 HasCoffee_2 Zone_2 Effect_2</parents>
-			<strengths>0 1 0 1 2 0 1 0 1 2 4 3</strengths>
-			<parameters>0.2 0.2 0.2000000000000001 0.2 0.2 0 0 0 0 1 0.3 0.2999999999999999 0 0.09999999999999998 0.3 0 0 0 0 1 0.05000000000000004 0.05000000000000004 0.05000000000000004 0.05000000000000004 0.8 0.2000000000000001 0.09999999999999998 0.4999999999999999 0.1 0.1 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 1 0</parameters>
-		</noisymax>
 		<utility id="Delivery_2">
-			<parents>Result_2</parents>
-			<utilities>5 5 5 0 5</utilities>
+			<parents>HasCoffee_2 Action_2</parents>
+			<utilities>4 4 -5 10 0 4 4 10 -5 0 -1 -1 -1 -1 0</utilities>
 		</utility>
+		<cpt id="Order_3">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Order_2 Action_2</parents>
+			<probabilities>1 0 1 0 1 0 0.01 0.99 1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
 		<cpt id="Position_3">
 			<state id="Lab" />
 			<state id="Office" />
 			<state id="Shop" />
-			<parents>Result_2 Position_2</parents>
-			<probabilities>0 0 1 0 1 0 1 0 0 1 0 0 0 1 0 1 0 0 1 0 0 0 1 0 0 0 1 1 0 0 0 1 0 0 0 1 1 0 0 0 1 0 0 0 1</probabilities>
+			<parents>Position_2 Action_2</parents>
+			<probabilities>0 0 1 1 0 0 1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 0 0 1 0 0 1 0 0 1</probabilities>
 		</cpt>
 		<cpt id="Coffee_3">
 			<state id="Yes" />
 			<state id="No" />
-			<parents>Result_2 Coffee_2</parents>
-			<probabilities>1 0 0 1 1 0 0 1 1 0 1 0 0 1 0 1 1 0 0 1</probabilities>
-		</cpt>
-		<cpt id="Order_3">
-			<state id="Yes" />
-			<state id="No" />
-			<parents>Result_2 Order_2</parents>
-			<probabilities>1 0 0 1 1 0 0 1 1 0 0 1 0 1 0 1 1 0 0 1</probabilities>
+			<parents>Coffee_2 Action_2</parents>
+			<probabilities>1 0 1 0 1 0 0.01 0.99 1 0 0 1 0 1 0.99 0.01 0 1 0 1</probabilities>
 		</cpt>
 		<cpt id="Zone_3">
 			<state id="Lab" />
@@ -234,14 +163,9 @@
 		<cpt id="HasCoffee_3">
 			<state id="Yes" />
 			<state id="No" />
-			<parents>Coffee_3</parents>
-			<probabilities>1 0 0 1</probabilities>
-		</cpt>
-		<cpt id="Request_3">
-			<state id="Yes" />
-			<state id="No" />
-			<parents>Order_3</parents>
-			<probabilities>1 0 0 1</probabilities>
+			<state id="NotRequired" />
+			<parents>Order_3 Coffee_3</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1</probabilities>
 		</cpt>
 		<decision id="Action_3">
 			<state id="MAR" />
@@ -249,49 +173,30 @@
 			<state id="PC" />
 			<state id="CC" />
 			<state id="NONE" />
-			<parents>Action_2</parents>
+			<parents>Zone_3 HasCoffee_3 Action_2</parents>
 		</decision>
-		<cpt id="Effect_3">
-			<state id="MAR" />
-			<state id="MO" />
-			<state id="PC" />
-			<state id="CC" />
-			<state id="NONE" />
-			<parents>Action_3</parents>
-			<probabilities>1 0 0 0 0 0 1 0 0 0 0 0 0.99 0 0.01 0 0 0 0.99 0.01 0 0 0 0 1</probabilities>
-		</cpt>
-		<noisymax id="Result_3">
-			<state id="MAR" />
-			<state id="MO" />
-			<state id="PC" />
-			<state id="NONE" />
-			<state id="CC" />
-			<parents>Request_3 HasCoffee_3 Zone_3 Effect_3</parents>
-			<strengths>0 1 0 1 2 0 1 0 1 2 4 3</strengths>
-			<parameters>0.2 0.2 0.2000000000000001 0.2 0.2 0 0 0 0 1 0.3 0.2999999999999999 0 0.09999999999999998 0.3 0 0 0 0 1 0.05000000000000004 0.05000000000000004 0.05000000000000004 0.05000000000000004 0.8 0.2000000000000001 0.09999999999999998 0.4999999999999999 0.1 0.1 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 1 0</parameters>
-		</noisymax>
 		<utility id="Delivery_3">
-			<parents>Result_3</parents>
-			<utilities>5 5 5 0 5</utilities>
+			<parents>HasCoffee_3 Action_3</parents>
+			<utilities>4 4 -5 10 0 4 4 10 -5 0 -1 -1 -1 -1 0</utilities>
 		</utility>
+		<cpt id="Order_4">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Order_3 Action_3</parents>
+			<probabilities>1 0 1 0 1 0 0.01 0.99 1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
 		<cpt id="Position_4">
 			<state id="Lab" />
 			<state id="Office" />
 			<state id="Shop" />
-			<parents>Result_3 Position_3</parents>
-			<probabilities>0 0 1 0 1 0 1 0 0 1 0 0 0 1 0 1 0 0 1 0 0 0 1 0 0 0 1 1 0 0 0 1 0 0 0 1 1 0 0 0 1 0 0 0 1</probabilities>
+			<parents>Position_3 Action_3</parents>
+			<probabilities>0 0 1 1 0 0 1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 0 0 1 0 0 1 0 0 1</probabilities>
 		</cpt>
 		<cpt id="Coffee_4">
 			<state id="Yes" />
 			<state id="No" />
-			<parents>Result_3 Coffee_3</parents>
-			<probabilities>1 0 0 1 1 0 0 1 1 0 1 0 0 1 0 1 1 0 0 1</probabilities>
-		</cpt>
-		<cpt id="Order_4">
-			<state id="Yes" />
-			<state id="No" />
-			<parents>Result_3 Order_3</parents>
-			<probabilities>1 0 0 1 1 0 0 1 1 0 0 1 0 1 0 1 1 0 0 1</probabilities>
+			<parents>Coffee_3 Action_3</parents>
+			<probabilities>1 0 1 0 1 0 0.01 0.99 1 0 0 1 0 1 0.99 0.01 0 1 0 1</probabilities>
 		</cpt>
 		<cpt id="Zone_4">
 			<state id="Lab" />
@@ -303,14 +208,9 @@
 		<cpt id="HasCoffee_4">
 			<state id="Yes" />
 			<state id="No" />
-			<parents>Coffee_4</parents>
-			<probabilities>1 0 0 1</probabilities>
-		</cpt>
-		<cpt id="Request_4">
-			<state id="Yes" />
-			<state id="No" />
-			<parents>Order_4</parents>
-			<probabilities>1 0 0 1</probabilities>
+			<state id="NotRequired" />
+			<parents>Order_4 Coffee_4</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1</probabilities>
 		</cpt>
 		<decision id="Action_4">
 			<state id="MAR" />
@@ -318,408 +218,284 @@
 			<state id="PC" />
 			<state id="CC" />
 			<state id="NONE" />
-			<parents>Action_3</parents>
+			<parents>Zone_4 HasCoffee_4 Action_3</parents>
 		</decision>
-		<cpt id="Effect_4">
-			<state id="MAR" />
-			<state id="MO" />
-			<state id="PC" />
-			<state id="CC" />
-			<state id="NONE" />
-			<parents>Action_4</parents>
-			<probabilities>1 0 0 0 0 0 1 0 0 0 0 0 0.99 0 0.01 0 0 0 0.99 0.01 0 0 0 0 1</probabilities>
-		</cpt>
-		<noisymax id="Result_4">
-			<state id="MAR" />
-			<state id="MO" />
-			<state id="PC" />
-			<state id="NONE" />
-			<state id="CC" />
-			<parents>Request_4 HasCoffee_4 Zone_4 Effect_4</parents>
-			<strengths>0 1 0 1 2 0 1 0 1 2 4 3</strengths>
-			<parameters>0.2 0.2 0.2000000000000001 0.2 0.2 0 0 0 0 1 0.3 0.2999999999999999 0 0.09999999999999998 0.3 0 0 0 0 1 0.05000000000000004 0.05000000000000004 0.05000000000000004 0.05000000000000004 0.8 0.2000000000000001 0.09999999999999998 0.4999999999999999 0.1 0.1 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 1 0</parameters>
-		</noisymax>
 		<utility id="Delivery_4">
-			<parents>Result_4</parents>
-			<utilities>5 5 5 0 5</utilities>
+			<parents>HasCoffee_4 Action_4</parents>
+			<utilities>4 4 -5 10 0 4 4 10 -5 0 -1 -1 -1 -1 0</utilities>
 		</utility>
 	</nodes>
 	<extensions>
 		<genie version="1.0" app="GeNIe 3.0.5905.0 ACADEMIC" name="Network2 unrolled">
+			<node id="Order">
+				<name>Order</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>237 279 333 362</position>
+			</node>
 			<node id="Position">
 				<name>Position</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>223 82 329 152</position>
+				<position>244 70 342 140</position>
 			</node>
 			<node id="Coffee">
 				<name>Coffee</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>163 246 265 323</position>
-			</node>
-			<node id="Order">
-				<name>Order</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>208 511 304 594</position>
+				<position>232 500 334 577</position>
 			</node>
 			<node id="Zone">
 				<name>Zone</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>469 115 540 166</position>
+				<position>551 81 622 132</position>
 			</node>
 			<node id="HasCoffee">
 				<name>HasCoffee</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>353 391 443 451</position>
-			</node>
-			<node id="Request">
-				<name>Request</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>503 595 587 649</position>
+				<position>546 512 636 572</position>
 			</node>
 			<node id="Action">
 				<name>Action</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>764 103 836 148</position>
-			</node>
-			<node id="Effect">
-				<name>Effect</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>780 250 863 304</position>
-			</node>
-			<node id="Result">
-				<name>Result</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>767 401 852 453</position>
+				<position>552 293 630 338</position>
 			</node>
 			<node id="Delivery">
 				<name>Delivery</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>865 521 984 579</position>
+				<position>907 274 1041 364</position>
 			</node>
 			<textbox>
 				<caption>Step0</caption>
 				<font color="696969" name="Arial" size="7" />
-				<position>482 674 506 686</position>
+				<position>482 602 506 614</position>
 			</textbox>
 			<textbox>
 				<caption>Step1</caption>
 				<font color="696969" name="Arial" size="7" />
-				<position>1427 674 1451 686</position>
+				<position>1427 602 1451 614</position>
 			</textbox>
 			<textbox>
 				<caption>Step2</caption>
 				<font color="696969" name="Arial" size="7" />
-				<position>2372 674 2396 686</position>
+				<position>2372 602 2396 614</position>
 			</textbox>
 			<textbox>
 				<caption>Step3</caption>
 				<font color="696969" name="Arial" size="7" />
-				<position>3317 674 3341 686</position>
+				<position>3317 602 3341 614</position>
 			</textbox>
 			<textbox>
 				<caption>Step4</caption>
 				<font color="696969" name="Arial" size="7" />
-				<position>4262 674 4286 686</position>
+				<position>4262 602 4286 614</position>
 			</textbox>
+			<node id="Order_1">
+				<name>Order (t=1)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1182 299 1278 382</position>
+			</node>
 			<node id="Position_1">
 				<name>Position (t=1)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>1172 150 1278 220</position>
+				<position>1189 90 1287 160</position>
 			</node>
 			<node id="Coffee_1">
 				<name>Coffee (t=1)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>1108 266 1210 343</position>
-			</node>
-			<node id="Order_1">
-				<name>Order (t=1)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>1153 531 1249 614</position>
+				<position>1177 520 1279 597</position>
 			</node>
 			<node id="Zone_1">
 				<name>Zone (t=1)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>1409 201 1480 252</position>
+				<position>1496 101 1567 152</position>
 			</node>
 			<node id="HasCoffee_1">
 				<name>HasCoffee (t=1)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>1298 411 1388 471</position>
-			</node>
-			<node id="Request_1">
-				<name>Request (t=1)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>1448 615 1532 669</position>
+				<position>1491 532 1581 592</position>
 			</node>
 			<node id="Action_1">
 				<name>Action (t=1)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>1709 123 1781 168</position>
-			</node>
-			<node id="Effect_1">
-				<name>Effect (t=1)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>1725 270 1808 324</position>
-			</node>
-			<node id="Result_1">
-				<name>Result (t=1)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>1712 421 1797 473</position>
+				<position>1497 313 1575 358</position>
 			</node>
 			<node id="Delivery_1">
 				<name>Delivery (t=1)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>1810 541 1929 599</position>
-			</node>
-			<node id="Position_2">
-				<name>Position (t=2)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>2113 82 2219 152</position>
-			</node>
-			<node id="Coffee_2">
-				<name>Coffee (t=2)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>2053 246 2155 323</position>
+				<position>1852 294 1986 384</position>
 			</node>
 			<node id="Order_2">
 				<name>Order (t=2)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>2098 511 2194 594</position>
+				<position>2127 279 2223 362</position>
+			</node>
+			<node id="Position_2">
+				<name>Position (t=2)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>2134 70 2232 140</position>
+			</node>
+			<node id="Coffee_2">
+				<name>Coffee (t=2)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>2122 500 2224 577</position>
 			</node>
 			<node id="Zone_2">
 				<name>Zone (t=2)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>2359 115 2430 166</position>
+				<position>2441 81 2512 132</position>
 			</node>
 			<node id="HasCoffee_2">
 				<name>HasCoffee (t=2)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>2243 391 2333 451</position>
-			</node>
-			<node id="Request_2">
-				<name>Request (t=2)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>2393 595 2477 649</position>
+				<position>2436 512 2526 572</position>
 			</node>
 			<node id="Action_2">
 				<name>Action (t=2)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>2654 103 2726 148</position>
-			</node>
-			<node id="Effect_2">
-				<name>Effect (t=2)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>2670 250 2753 304</position>
-			</node>
-			<node id="Result_2">
-				<name>Result (t=2)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>2657 401 2742 453</position>
+				<position>2442 293 2520 338</position>
 			</node>
 			<node id="Delivery_2">
 				<name>Delivery (t=2)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>2755 521 2874 579</position>
-			</node>
-			<node id="Position_3">
-				<name>Position (t=3)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>3058 102 3164 172</position>
-			</node>
-			<node id="Coffee_3">
-				<name>Coffee (t=3)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>2998 266 3100 343</position>
+				<position>2797 274 2931 364</position>
 			</node>
 			<node id="Order_3">
 				<name>Order (t=3)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>3043 531 3139 614</position>
+				<position>3072 299 3168 382</position>
+			</node>
+			<node id="Position_3">
+				<name>Position (t=3)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>3079 90 3177 160</position>
+			</node>
+			<node id="Coffee_3">
+				<name>Coffee (t=3)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>3067 520 3169 597</position>
 			</node>
 			<node id="Zone_3">
 				<name>Zone (t=3)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>3304 135 3375 186</position>
+				<position>3386 101 3457 152</position>
 			</node>
 			<node id="HasCoffee_3">
 				<name>HasCoffee (t=3)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>3188 411 3278 471</position>
-			</node>
-			<node id="Request_3">
-				<name>Request (t=3)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>3338 615 3422 669</position>
+				<position>3381 532 3471 592</position>
 			</node>
 			<node id="Action_3">
 				<name>Action (t=3)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>3599 123 3671 168</position>
-			</node>
-			<node id="Effect_3">
-				<name>Effect (t=3)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>3615 270 3698 324</position>
-			</node>
-			<node id="Result_3">
-				<name>Result (t=3)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>3602 421 3687 473</position>
+				<position>3387 313 3465 358</position>
 			</node>
 			<node id="Delivery_3">
 				<name>Delivery (t=3)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>3700 541 3819 599</position>
-			</node>
-			<node id="Position_4">
-				<name>Position (t=4)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>4003 82 4109 152</position>
-			</node>
-			<node id="Coffee_4">
-				<name>Coffee (t=4)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>3943 246 4045 323</position>
+				<position>3742 294 3876 384</position>
 			</node>
 			<node id="Order_4">
 				<name>Order (t=4)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>3988 511 4084 594</position>
+				<position>4017 279 4113 362</position>
+			</node>
+			<node id="Position_4">
+				<name>Position (t=4)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>4024 70 4122 140</position>
+			</node>
+			<node id="Coffee_4">
+				<name>Coffee (t=4)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>4012 500 4114 577</position>
 			</node>
 			<node id="Zone_4">
 				<name>Zone (t=4)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>4249 115 4320 166</position>
+				<position>4331 81 4402 132</position>
 			</node>
 			<node id="HasCoffee_4">
 				<name>HasCoffee (t=4)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>4133 391 4223 451</position>
-			</node>
-			<node id="Request_4">
-				<name>Request (t=4)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>4283 595 4367 649</position>
+				<position>4326 512 4416 572</position>
 			</node>
 			<node id="Action_4">
 				<name>Action (t=4)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>4544 103 4616 148</position>
-			</node>
-			<node id="Effect_4">
-				<name>Effect (t=4)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>4560 250 4643 304</position>
-			</node>
-			<node id="Result_4">
-				<name>Result (t=4)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>4547 401 4632 453</position>
+				<position>4332 293 4410 338</position>
 			</node>
 			<node id="Delivery_4">
 				<name>Delivery (t=4)</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>4645 521 4764 579</position>
+				<position>4687 274 4821 364</position>
 			</node>
 		</genie>
 	</extensions>

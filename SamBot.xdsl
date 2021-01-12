@@ -7,20 +7,17 @@
 			<state id="No" />
 			<probabilities>0.5 0.5</probabilities>
 		</cpt>
-		<noisymax id="Position" dynamic="plate">
+		<cpt id="Position" dynamic="plate">
 			<state id="Lab" />
 			<state id="Office" />
 			<state id="Shop" />
-			<parents>Order</parents>
-			<strengths>0 1</strengths>
-			<parameters>1 0 0 0 0 1 1 0 0</parameters>
-		</noisymax>
-		<noisymax id="Coffee" dynamic="plate">
+			<probabilities>1 0 0</probabilities>
+		</cpt>
+		<cpt id="Coffee" dynamic="plate">
 			<state id="Yes" />
 			<state id="No" />
-			<state id="NotRequired" />
-			<parameters>0 1 0</parameters>
-		</noisymax>
+			<probabilities>0 1</probabilities>
+		</cpt>
 		<cpt id="Zone" dynamic="plate">
 			<state id="Lab" />
 			<state id="Office" />
@@ -32,8 +29,8 @@
 			<state id="Yes" />
 			<state id="No" />
 			<state id="NotRequired" />
-			<parents>Coffee Order</parents>
-			<probabilities>1 0 0 1 0 0 0 1 0 0 1 0 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333</probabilities>
+			<parents>Order Coffee</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1</probabilities>
 		</cpt>
 		<decision id="Action" dynamic="plate">
 			<state id="MAR" />
@@ -43,30 +40,24 @@
 			<state id="NONE" />
 			<parents>Zone HasCoffee</parents>
 		</decision>
-		<maux id="Delivery" dynamic="plate">
-			<parents>Action</parents>
-			<expression>0</expression>
-			<expression>0</expression>
-			<expression>0</expression>
-			<expression>0</expression>
-			<expression>0</expression>
-		</maux>
+		<utility id="Delivery" dynamic="plate">
+			<parents>HasCoffee Action</parents>
+			<utilities>4 4 -5 10 0 4 4 10 -5 0 -1 -1 -1 -1 0</utilities>
+		</utility>
 	</nodes>
 	<dynamic numslices="5">
 		<cpt id="Order" order="1">
 			<parents>Order Action</parents>
-			<probabilities>1 0 1 0 1 0 1 0 1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+			<probabilities>1 0 1 0 1 0 0.01 0.99 1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
 		</cpt>
-		<noisymax id="Position" order="1">
+		<cpt id="Position" order="1">
 			<parents>Position Action</parents>
-			<strengths>0 1 0 1 2 0 1 2 3 4</strengths>
-			<parameters>1 0 0 0 0 1 0.3 0 0.7 0 0.3 0.7 0 0 1 0 0.5 0.5 0.333 0.333 0.334 0.333 0.333 0.334 0.333 0.333 0.334 0 0 1 0 0.4996744791666666 0.5003255208333334</parameters>
-		</noisymax>
-		<noisymax id="Coffee" order="1">
+			<probabilities>0 0 1 1 0 0 1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 0 0 1 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Coffee" order="1">
 			<parents>Coffee Action</parents>
-			<strengths>0 1 2 0 1 2 3 4</strengths>
-			<parameters>1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 0 0 1 0 1 0</parameters>
-		</noisymax>
+			<probabilities>1 0 1 0 1 0 0.01 0.99 1 0 0 1 0 1 0.99 0.01 0 1 0 1</probabilities>
+		</cpt>
 	</dynamic>
 	<extensions>
 		<genie version="1.0" app="GeNIe 3.0.5905.0 ACADEMIC" name="Network2">

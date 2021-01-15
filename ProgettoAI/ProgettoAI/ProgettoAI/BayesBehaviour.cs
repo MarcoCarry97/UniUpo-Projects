@@ -6,8 +6,12 @@ using System.Linq;
 
 namespace ProgettoAI
 {
+	public delegate double Mau(Network bn,string decision,string choice);
     abstract class BayesBehaviour
     {
+		public const string COST = "Cost";
+		public const string RAND = "Rand";
+
         private License license;
 		public Network DecisionNetwork { get; set; }
         public BayesBehaviour()
@@ -16,20 +20,32 @@ namespace ProgettoAI
 			DecisionNetwork = new Network();
         }
 
+		public void Step() => DecisionNetwork.UpdateBeliefs();
+
 		protected void TakeDecision(string nodeId, string decision)
 		{
 			DecisionNetwork.SetEvidence(nodeId, decision);
-			DecisionNetwork.UpdateBeliefs();
+			Step();
 		}
 
-		public List<double> Values(string nodeId)
+		public List<double> Values(string nodeId) => DecisionNetwork.GetNodeValue(nodeId).ToList<double>();
+
+		public Dictionary<string,double> Outcomes(string nodeId,Mau mau)
 		{
-			return DecisionNetwork.GetNodeValue(nodeId).ToList<double>();
+			List<string> outcomes=DecisionNetwork.GetOutcomeIds(nodeId).ToList<string>();
+			Dictionary<string,double> dictionary = new Dictionary<string, double>();
+			foreach (string outcome in outcomes)
+				dictionary.Add(outcome, mau(DecisionNetwork,nodeId, outcome));
+			return dictionary;
 		}
 
-		public List<string> Outcomes(string nodeId)
+		public KeyValuePair<string,double> BestDecision(string nodeId,Mau mau)
 		{
-			return DecisionNetwork.GetOutcomeIds(nodeId).ToList<string>();
+			if (!DecisionNetwork.GetNodeType(nodeId).Equals(Network.NodeType.List))
+				throw new SmileException(string.Format("Node {0} is not a decision", nodeId));
+			Dictionary<string,double> decisions =Outcomes(nodeId,mau);
+			KeyValuePair<string,double> max = decisions.Aggregate((x, y) => x.Value > y.Value ? x : y);
+			return max;
 		}
 
 		private License GenieLicense()

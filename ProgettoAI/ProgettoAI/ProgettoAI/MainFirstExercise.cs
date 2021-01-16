@@ -12,7 +12,7 @@ namespace ProgettoAI
 
         public static bool auto;
 
-        static void Main(string[] args)
+        public static void Execute(string[] args)
         {
             production = new Production();
             Console.WriteLine("The fist two decision can be auto-taken, do you want it? (y/n)");

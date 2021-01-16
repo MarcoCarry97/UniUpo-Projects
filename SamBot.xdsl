@@ -40,9 +40,9 @@
 			<state id="NONE" />
 			<parents>Zone HasCoffee</parents>
 		</decision>
-		<utility id="Delivery" dynamic="plate">
-			<parents>HasCoffee Action</parents>
-			<utilities>4 4 -5 10 0 4 4 10 -5 0 -1 -1 -1 -1 0</utilities>
+		<utility id="Total" dynamic="plate">
+			<parents>HasCoffee Action Zone</parents>
+			<utilities>0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1</utilities>
 		</utility>
 	</nodes>
 	<dynamic numslices="5">
@@ -61,55 +61,55 @@
 	</dynamic>
 	<extensions>
 		<genie version="1.0" app="GeNIe 3.0.5905.0 ACADEMIC" name="Network2">
-			<plate leftwidth="120" rightwidth="121">20 31 1206 678</plate>
+			<plate leftwidth="120" rightwidth="121">18 32 1204 679</plate>
 			<node id="Coffee">
 				<name>Coffee</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>232 500 334 577</position>
+				<position>230 501 332 578</position>
 			</node>
 			<node id="Order">
 				<name>Order</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>237 279 333 362</position>
+				<position>235 280 331 363</position>
 			</node>
 			<node id="Zone">
 				<name>Zone</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>551 81 622 132</position>
+				<position>549 82 620 133</position>
 			</node>
 			<node id="HasCoffee">
 				<name>HasCoffee</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>546 512 636 572</position>
+				<position>543 512 633 572</position>
 			</node>
 			<node id="Action">
 				<name>Action</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>552 293 630 338</position>
-			</node>
-			<node id="Delivery">
-				<name>Delivery</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>907 274 1041 364</position>
+				<position>550 294 628 339</position>
 			</node>
 			<node id="Position">
 				<name>Position</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>244 70 342 140</position>
+				<position>242 71 340 141</position>
+			</node>
+			<node id="Total">
+				<name>Total</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>813 287 907 343</position>
 			</node>
 		</genie>
 	</extensions>

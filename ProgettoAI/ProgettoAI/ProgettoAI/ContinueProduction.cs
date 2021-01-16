@@ -19,6 +19,7 @@ namespace ProgettoAI
             bn.SetEvidence(decisionNode, choice);
             bn.UpdateBeliefs();
             List<double> values = bn.GetNodeValue("Total").ToList<double>();
+            bn.ClearEvidence(decisionNode);
             return values.Max();
         });
 
@@ -28,9 +29,9 @@ namespace ProgettoAI
             Step();
         }
 
-        public void DoMarketResearch(bool decision) => TakeDecision(RESEARCH, decision ? YES : NO);
-        public void DevelopPrototype(bool decision) => TakeDecision(PROTOTYPE, decision ? YES : NO);
-        public void Continue(bool decision) => TakeDecision(PRODUCTION, decision ? YES : NO);
+        public void DoMarketResearch(string decision) => TakeDecision(RESEARCH, decision);
+        public void DevelopPrototype(string decision) => TakeDecision(PROTOTYPE, decision);
+        public void Continue(string decision) => TakeDecision(PRODUCTION, decision);
         public List<double> Utilities() => Values(TOTAL);
         public KeyValuePair<string,double> BestMarketDecision() => BestDecision(RESEARCH,mau);
         public KeyValuePair<string, double> BestPrototypeDecision() => BestDecision(PROTOTYPE,mau);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This network was created in GeNIe Academic, which can be used for academic teaching and research purposes only -->
-<smile version="1.0" id="Network2" numsamples="10000" discsamples="10000">
+<smile version="1.0" id="Network1" numsamples="10000" discsamples="10000">
 	<nodes>
 		<cpt id="Position" dynamic="plate">
 			<state id="Lab" />
@@ -8,30 +8,19 @@
 			<state id="Shop" />
 			<probabilities>1 0 0</probabilities>
 		</cpt>
-		<cpt id="Order" dynamic="plate">
-			<state id="Open" />
-			<state id="Closed" />
-			<probabilities>0.5 0.5</probabilities>
-		</cpt>
 		<cpt id="Coffee" dynamic="plate">
 			<state id="Yes" />
 			<state id="No" />
-			<probabilities>0 1</probabilities>
+			<state id="NotRequired" />
+			<probabilities>0 0.5 0.5</probabilities>
 		</cpt>
-		<cpt id="InnerState" dynamic="plate">
-			<state id="HasCoffee" />
-			<state id="HasNotCoffee" />
-			<state id="CoffeeDelivered" />
-			<parents>Order Coffee</parents>
-			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1</probabilities>
-		</cpt>
-		<cpt id="OuterState" dynamic="plate">
-			<state id="Stay" />
+		<cpt id="State" dynamic="plate">
 			<state id="Move" />
-			<state id="Take" />
 			<state id="Deliver" />
-			<parents>InnerState Position</parents>
-			<probabilities>0 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 0 1 0 0 0 0.25 0.75 0 1 0 0 0 1 0 0 0 1 0 0 0</probabilities>
+			<state id="Take" />
+			<state id="Stay" />
+			<parents>Coffee Position</parents>
+			<probabilities>1 0 0 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0 0 0 1</probabilities>
 		</cpt>
 		<decision id="Action" dynamic="plate">
 			<state id="MAR" />
@@ -39,78 +28,60 @@
 			<state id="PC" />
 			<state id="CC" />
 			<state id="NONE" />
-			<parents>OuterState</parents>
+			<parents>State</parents>
 		</decision>
 		<utility id="Total" dynamic="plate">
-			<parents>OuterState Action</parents>
-			<utilities>1 1 1 1 10 10 10 0 0 0 0 0 10 0 0 0 0 0 10 0</utilities>
+			<parents>Action</parents>
+			<utilities>7 7 10 10 0</utilities>
 		</utility>
 	</nodes>
 	<dynamic numslices="5">
 		<cpt id="Position" order="1">
-			<parents>Action Position</parents>
-			<probabilities>0 0 1 0 1 0 0 1 0 1 0 0 0 0 1 1 0 0 1 0 0 0 1 0 0 0 1 1 0 0 0 1 0 0 0 1 1 0 0 0 1 0 0 0 1</probabilities>
-		</cpt>
-		<cpt id="Order" order="1">
-			<parents>Action Order</parents>
-			<probabilities>1 0 0 1 1 0 0 1 1 0 0 1 0.01 0.99 0 1 1 0 0 1</probabilities>
+			<parents>Position Action</parents>
+			<probabilities>1 0 0 1 0 0 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 1 0 0 1 0 0 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 1 0 0 1 0 0 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333</probabilities>
 		</cpt>
 		<cpt id="Coffee" order="1">
-			<parents>Action Coffee</parents>
-			<probabilities>1 0 0 1 1 0 0 1 0.99 0.01 0 1 0.01 0.99 0 1 1 0 0 1</probabilities>
+			<parents>Coffee Action</parents>
+			<probabilities>0 0.5 0.5 0 0.5 0.5 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0 0.5 0.5 0 0.5 0.5 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0 0.5 0.5 0 0.5 0.5 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333</probabilities>
 		</cpt>
 	</dynamic>
 	<extensions>
-		<genie version="1.0" app="GeNIe 3.0.5905.0 ACADEMIC" name="Network2">
-			<plate leftwidth="120" rightwidth="121">18 32 1204 679</plate>
+		<genie version="1.0" app="GeNIe 3.0.5905.0 ACADEMIC" name="Network1">
+			<plate leftwidth="120" rightwidth="120">20 30 765 569</plate>
 			<node id="Position">
 				<name>Position</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>285 128 365 188</position>
-			</node>
-			<node id="Order">
-				<name>Order</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>283 271 372 330</position>
+				<position>209 124 285 176</position>
 			</node>
 			<node id="Coffee">
 				<name>Coffee</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>284 433 369 486</position>
+				<position>207 337 279 389</position>
 			</node>
-			<node id="InnerState">
-				<name>InnerState</name>
+			<node id="State">
+				<name>State</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>490 436 564 486</position>
-			</node>
-			<node id="OuterState">
-				<name>OuterState</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>483 142 564 193</position>
+				<position>389 336 465 388</position>
 			</node>
 			<node id="Action">
 				<name>Action</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>625 288 699 339</position>
+				<position>395 130 459 169</position>
 			</node>
 			<node id="Total">
 				<name>Total</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>732 136 849 226</position>
+				<position>520 242 584 289</position>
 			</node>
 		</genie>
 	</extensions>

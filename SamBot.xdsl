@@ -11,16 +11,19 @@
 		<cpt id="Coffee" dynamic="plate">
 			<state id="Yes" />
 			<state id="No" />
-			<state id="NotRequired" />
-			<probabilities>0 0.5 0.5</probabilities>
+			<probabilities>0 1</probabilities>
 		</cpt>
-		<cpt id="State" dynamic="plate">
-			<state id="Move" />
-			<state id="Deliver" />
-			<state id="Take" />
-			<state id="Stay" />
-			<parents>Coffee Position</parents>
-			<probabilities>1 0 0 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 0 0 0 0 1 0 0 0 0 1 0 0 0 1 0 0 0 1</probabilities>
+		<cpt id="Sam" dynamic="plate">
+			<state id="WantCoffee" />
+			<state id="DontWantCoffee" />
+			<state id="Satisfied" />
+			<probabilities>0.5 0.5 0</probabilities>
+		</cpt>
+		<cpt id="Order" dynamic="plate">
+			<state id="Open" />
+			<state id="Close" />
+			<parents>Sam</parents>
+			<probabilities>0.9 0.1 0.1 0.9 0 1</probabilities>
 		</cpt>
 		<decision id="Action" dynamic="plate">
 			<state id="MAR" />
@@ -28,60 +31,75 @@
 			<state id="PC" />
 			<state id="CC" />
 			<state id="NONE" />
-			<parents>State</parents>
+			<parents>Position Coffee Order</parents>
 		</decision>
 		<utility id="Total" dynamic="plate">
 			<parents>Action</parents>
-			<utilities>7 7 10 10 0</utilities>
+			<utilities>1000 1000 1000 1000 0</utilities>
 		</utility>
 	</nodes>
 	<dynamic numslices="5">
 		<cpt id="Position" order="1">
 			<parents>Position Action</parents>
-			<probabilities>1 0 0 1 0 0 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 1 0 0 1 0 0 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 1 0 0 1 0 0 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333</probabilities>
+			<probabilities>0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0</probabilities>
 		</cpt>
 		<cpt id="Coffee" order="1">
 			<parents>Coffee Action</parents>
-			<probabilities>0 0.5 0.5 0 0.5 0.5 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0 0.5 0.5 0 0.5 0.5 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0 0.5 0.5 0 0.5 0.5 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333 0.3333333333333333</probabilities>
+			<probabilities>1 0 1 0 1 0 1 0 1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Sam" order="1">
+			<parents>Sam</parents>
+			<probabilities>1 0 0 0.5 0.5 0 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Order" order="1">
+			<parents>Action</parents>
+			<probabilities>0.9 0.1 0.9 0.1 0.9 0.1 0.9 0.1 0.9 0.1 0.1 0.9 0.1 0.9 0.1 0.9 0.1 0.9 0.1 0.9 0 1 0 1 0 1 0 1 0 1</probabilities>
 		</cpt>
 	</dynamic>
 	<extensions>
 		<genie version="1.0" app="GeNIe 3.0.5905.0 ACADEMIC" name="Network1">
-			<plate leftwidth="120" rightwidth="120">20 30 765 569</plate>
+			<plate leftwidth="120" rightwidth="120">20 29 891 770</plate>
 			<node id="Position">
 				<name>Position</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>209 124 285 176</position>
+				<position>171 67 246 149</position>
 			</node>
 			<node id="Coffee">
 				<name>Coffee</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>207 337 279 389</position>
+				<position>176 294 255 383</position>
 			</node>
-			<node id="State">
-				<name>State</name>
+			<node id="Sam">
+				<name>Sam</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>389 336 465 388</position>
+				<position>162 558 245 631</position>
+			</node>
+			<node id="Order">
+				<name>Order</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>358 518 444 594</position>
 			</node>
 			<node id="Action">
 				<name>Action</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>395 130 459 169</position>
+				<position>476 231 564 284</position>
 			</node>
 			<node id="Total">
 				<name>Total</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>520 242 584 289</position>
+				<position>576 402 684 470</position>
 			</node>
 		</genie>
 	</extensions>

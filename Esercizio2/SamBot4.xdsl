@@ -19,12 +19,6 @@
 			<state id="Satisfied" />
 			<probabilities>0.5 0.5 0</probabilities>
 		</cpt>
-		<cpt id="Order" dynamic="plate">
-			<state id="Open" />
-			<state id="Close" />
-			<parents>Sam</parents>
-			<probabilities>1 0 0 1 0 1</probabilities>
-		</cpt>
 		<decision id="Action" dynamic="plate">
 			<state id="MAR" />
 			<state id="MO" />
@@ -32,32 +26,68 @@
 			<state id="CC" />
 			<state id="NONE" />
 		</decision>
+		<cpt id="StateEffect" dynamic="plate">
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>Sam Action</parents>
+			<probabilities>0 0 1 0 0 1 0.99 0 0.01 0 0.99 0.01 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1</probabilities>
+		</cpt>
 		<utility id="Total" dynamic="plate">
 			<parents>Sam</parents>
 			<utilities>0 0 1</utilities>
 		</utility>
-		<cpt id="Effect" dynamic="plate">
+		<cpt id="Shop" dynamic="plate">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Position</parents>
+			<probabilities>0 1 0 1 1 0</probabilities>
+		</cpt>
+		<cpt id="Take" dynamic="plate">
+			<state id="PC" />
+			<state id="NONE" />
+			<parents>StateEffect Shop Coffee</parents>
+			<probabilities>0 1 1 0 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Office" dynamic="plate">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Position</parents>
+			<probabilities>0 1 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="MoveEffect" dynamic="plate">
 			<state id="MAR" />
 			<state id="MO" />
+			<state id="NONE" />
+			<parents>Action</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Deliver" dynamic="plate">
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>Office StateEffect Coffee</parents>
+			<probabilities>0 1 0 1 1 0 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="TakeDeliver" dynamic="plate">
 			<state id="PC" />
 			<state id="CC" />
 			<state id="NONE" />
-			<parents>Position Coffee Order Action</parents>
-			<probabilities>1 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 1 0 0 0 0 0 0 0 1 0 0 0 0.99 0.01 0 0 0 0 1 0 0 0 0 1 0 1 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 1 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 1 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 0 0.99 0 0.01 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</probabilities>
+			<parents>Take Deliver</parents>
+			<probabilities>1 0 0 1 0 0 0 1 0 0 0 1</probabilities>
 		</cpt>
 	</nodes>
 	<dynamic numslices="5">
 		<cpt id="Position" order="1">
-			<parents>Position Effect</parents>
-			<probabilities>0 0 1 1 0 0 1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 0 0 1 0 0 1 0 0 1</probabilities>
+			<parents>Position MoveEffect</parents>
+			<probabilities>0 0 1 1 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 0 0 1</probabilities>
 		</cpt>
 		<cpt id="Coffee" order="1">
-			<parents>Coffee Effect</parents>
-			<probabilities>1 0 1 0 1 0 0 1 1 0 0 1 0 1 1 0 0 1 0 1</probabilities>
+			<parents>Coffee TakeDeliver</parents>
+			<probabilities>1 0 0 1 1 0 1 0 0 1 0 1</probabilities>
 		</cpt>
 		<cpt id="Sam" order="1">
-			<parents>Sam Effect</parents>
-			<probabilities>1 0 0 1 0 0 1 0 0 0 0 1 1 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1</probabilities>
+			<parents>Sam Deliver</parents>
+			<probabilities>0 0 1 1 0 0 0 1 0 0 1 0 0 0 1 0 0 1</probabilities>
 		</cpt>
 	</dynamic>
 	<extensions>
@@ -75,42 +105,77 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>228 380 329 458</position>
+				<position>217 304 318 382</position>
 			</node>
 			<node id="Action">
 				<name>Action</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>851 166 938 228</position>
+				<position>573 388 660 450</position>
 			</node>
 			<node id="Total">
 				<name>Total</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>768 689 875 780</position>
+				<position>319 699 426 790</position>
 			</node>
 			<node id="Sam">
 				<name>Sam</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>192 660 280 724</position>
+				<position>173 588 261 652</position>
 			</node>
-			<node id="Order">
-				<name>Order</name>
+			<node id="Shop">
+				<name>Shop</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>732 536 822 602</position>
+				<position>506 177 583 242</position>
 			</node>
-			<node id="Effect">
-				<name>Effect</name>
+			<node id="Office">
+				<name>Office</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>515 295 593 363</position>
+				<position>418 262 498 326</position>
+			</node>
+			<node id="MoveEffect">
+				<name>MoveEffect</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>581 76 660 153</position>
+			</node>
+			<node id="StateEffect">
+				<name>StateEffect</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>325 504 419 579</position>
+			</node>
+			<node id="Take">
+				<name>Take</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>904 360 976 417</position>
+			</node>
+			<node id="Deliver">
+				<name>Deliver</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>561 606 643 664</position>
+			</node>
+			<node id="TakeDeliver">
+				<name>TakeDeliver</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>907 566 1002 628</position>
 			</node>
 		</genie>
 	</extensions>

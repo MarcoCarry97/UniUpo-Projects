@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This network was created in GeNIe Academic, which can be used for academic teaching and research purposes only -->
+<smile version="1.0" id="Network1" numsamples="10000" discsamples="10000">
+	<nodes>
+		<cpt id="Position" dynamic="plate">
+			<state id="Lab" />
+			<state id="Office" />
+			<state id="Shop" />
+			<probabilities>1 0 0</probabilities>
+		</cpt>
+		<cpt id="Coffee" dynamic="plate">
+			<state id="Yes" />
+			<state id="No" />
+			<probabilities>0 1</probabilities>
+		</cpt>
+		<cpt id="Sam" dynamic="plate">
+			<state id="Want" />
+			<state id="NotWant" />
+			<state id="Satisfied" />
+			<probabilities>0.5 0.5 0</probabilities>
+		</cpt>
+		<cpt id="Order" dynamic="plate">
+			<state id="Open" />
+			<state id="Close" />
+			<parents>Sam</parents>
+			<probabilities>1 0 0 1 0 1</probabilities>
+		</cpt>
+		<decision id="Action" dynamic="plate">
+			<state id="MAR" />
+			<state id="MO" />
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+		</decision>
+		<utility id="Total" dynamic="plate">
+			<parents>Sam</parents>
+			<utilities>0 0 1</utilities>
+		</utility>
+		<cpt id="Effect" dynamic="plate">
+			<state id="MAR" />
+			<state id="MO" />
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>Position Coffee Order Action</parents>
+			<probabilities>1 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 1 0 0 0 0 0 0 0 1 0 0 0 0.99 0.01 0 0 0 0 1 0 0 0 0 1 0 1 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 1 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 1 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 0 0.99 0 0.01 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0 0 1 0 0 0 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</probabilities>
+		</cpt>
+	</nodes>
+	<dynamic numslices="5">
+		<cpt id="Position" order="1">
+			<parents>Position Effect</parents>
+			<probabilities>0 0 1 1 0 0 1 0 0 1 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 0 1 0 0 1 0 1 0 0 0 0 1 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Coffee" order="1">
+			<parents>Coffee Effect</parents>
+			<probabilities>1 0 1 0 1 0 0 1 1 0 0 1 0 1 1 0 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Sam" order="1">
+			<parents>Sam Effect</parents>
+			<probabilities>1 0 0 1 0 0 1 0 0 0 0 1 1 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1</probabilities>
+		</cpt>
+	</dynamic>
+	<extensions>
+		<genie version="1.0" app="GeNIe 3.0.5905.0 ACADEMIC" name="Network1">
+			<plate leftwidth="120" rightwidth="120">20 30 1381 856</plate>
+			<node id="Position">
+				<name>Position</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>256 73 354 148</position>
+			</node>
+			<node id="Coffee">
+				<name>Coffee</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>228 380 329 458</position>
+			</node>
+			<node id="Action">
+				<name>Action</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>851 166 938 228</position>
+			</node>
+			<node id="Total">
+				<name>Total</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>768 689 875 780</position>
+			</node>
+			<node id="Sam">
+				<name>Sam</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>192 660 280 724</position>
+			</node>
+			<node id="Order">
+				<name>Order</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>732 536 822 602</position>
+			</node>
+			<node id="Effect">
+				<name>Effect</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>515 295 593 363</position>
+			</node>
+		</genie>
+	</extensions>
+</smile>

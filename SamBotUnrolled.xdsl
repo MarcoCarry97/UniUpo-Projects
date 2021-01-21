@@ -90,41 +90,12 @@
 			<parents>TrueTake TrueDeliver</parents>
 			<probabilities>1 0 0 1 0 0 0 1 0 0 0 1</probabilities>
 		</cpt>
-		<utility id="Total">
-			<parents>Order</parents>
-			<utilities>0 0 1</utilities>
-		</utility>
-		<cpt id="Position_1">
-			<state id="Lab" />
-			<state id="Office" />
-			<state id="Shop" />
-			<parents>Position MoveEffect</parents>
-			<probabilities>0 0 1 1 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 0 0 1</probabilities>
-		</cpt>
-		<cpt id="Coffee_1">
-			<state id="Yes" />
-			<state id="No" />
-			<parents>Coffee TakeDeliver</parents>
-			<probabilities>1 0 0 1 1 0 1 0 0 1 0 1</probabilities>
-		</cpt>
 		<cpt id="Order_1">
 			<state id="Yes" />
 			<state id="No" />
 			<state id="Satisfied" />
 			<parents>Order TrueDeliver</parents>
 			<probabilities>0 0 1 1 0 0 0 1 0 0 1 0 0 0 1 0 0 1</probabilities>
-		</cpt>
-		<cpt id="Shop_1">
-			<state id="Yes" />
-			<state id="No" />
-			<parents>Position_1</parents>
-			<probabilities>0 1 0 1 1 0</probabilities>
-		</cpt>
-		<cpt id="Office_1">
-			<state id="Yes" />
-			<state id="No" />
-			<parents>Position_1</parents>
-			<probabilities>0 1 1 0 0 1</probabilities>
 		</cpt>
 		<decision id="Action_1">
 			<state id="MAR" />
@@ -134,13 +105,6 @@
 			<state id="NONE" />
 			<parents>Action</parents>
 		</decision>
-		<cpt id="MoveEffect_1">
-			<state id="MAR" />
-			<state id="MO" />
-			<state id="NONE" />
-			<parents>Action_1</parents>
-			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1</probabilities>
-		</cpt>
 		<cpt id="StateEffect_1">
 			<state id="PC" />
 			<state id="CC" />
@@ -148,17 +112,30 @@
 			<parents>Action_1</parents>
 			<probabilities>0 0 1 0 0 1 0.99 0 0.01 0 0.99 0.01 0 0 1</probabilities>
 		</cpt>
-		<cpt id="Take_1">
-			<state id="PC" />
-			<state id="NONE" />
-			<parents>StateEffect_1 Shop_1</parents>
-			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		<cpt id="Position_1">
+			<state id="Lab" />
+			<state id="Office" />
+			<state id="Shop" />
+			<parents>Position MoveEffect</parents>
+			<probabilities>0 0 1 1 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Office_1">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Position_1</parents>
+			<probabilities>0 1 1 0 0 1</probabilities>
 		</cpt>
 		<cpt id="Deliver_1">
 			<state id="CC" />
 			<state id="NONE" />
 			<parents>StateEffect_1 Office_1</parents>
 			<probabilities>0 1 0 1 1 0 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Coffee_1">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Coffee TakeDeliver</parents>
+			<probabilities>1 0 0 1 1 0 1 0 0 1 0 1</probabilities>
 		</cpt>
 		<cpt id="CoffeeRequest_1">
 			<state id="HasCoffee" />
@@ -167,41 +144,11 @@
 			<parents>Order_1 Coffee_1</parents>
 			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1 0 0 1</probabilities>
 		</cpt>
-		<cpt id="TrueTake_1">
-			<state id="PC" />
-			<state id="NONE" />
-			<parents>Take_1 CoffeeRequest_1</parents>
-			<probabilities>0 1 1 0 0 1 0 1 0 1 0 1</probabilities>
-		</cpt>
 		<cpt id="TrueDeliver_1">
 			<state id="CC" />
 			<state id="NONE" />
 			<parents>Deliver_1 CoffeeRequest_1</parents>
 			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
-		</cpt>
-		<cpt id="TakeDeliver_1">
-			<state id="PC" />
-			<state id="CC" />
-			<state id="NONE" />
-			<parents>TrueTake_1 TrueDeliver_1</parents>
-			<probabilities>1 0 0 1 0 0 0 1 0 0 0 1</probabilities>
-		</cpt>
-		<utility id="Total_1">
-			<parents>Order_1</parents>
-			<utilities>0 0 1</utilities>
-		</utility>
-		<cpt id="Position_2">
-			<state id="Lab" />
-			<state id="Office" />
-			<state id="Shop" />
-			<parents>Position_1 MoveEffect_1</parents>
-			<probabilities>0 0 1 1 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 0 0 1</probabilities>
-		</cpt>
-		<cpt id="Coffee_2">
-			<state id="Yes" />
-			<state id="No" />
-			<parents>Coffee_1 TakeDeliver_1</parents>
-			<probabilities>1 0 0 1 1 0 1 0 0 1 0 1</probabilities>
 		</cpt>
 		<cpt id="Order_2">
 			<state id="Yes" />
@@ -209,18 +156,6 @@
 			<state id="Satisfied" />
 			<parents>Order_1 TrueDeliver_1</parents>
 			<probabilities>0 0 1 1 0 0 0 1 0 0 1 0 0 0 1 0 0 1</probabilities>
-		</cpt>
-		<cpt id="Shop_2">
-			<state id="Yes" />
-			<state id="No" />
-			<parents>Position_2</parents>
-			<probabilities>0 1 0 1 1 0</probabilities>
-		</cpt>
-		<cpt id="Office_2">
-			<state id="Yes" />
-			<state id="No" />
-			<parents>Position_2</parents>
-			<probabilities>0 1 1 0 0 1</probabilities>
 		</cpt>
 		<decision id="Action_2">
 			<state id="MAR" />
@@ -230,13 +165,6 @@
 			<state id="NONE" />
 			<parents>Action_1</parents>
 		</decision>
-		<cpt id="MoveEffect_2">
-			<state id="MAR" />
-			<state id="MO" />
-			<state id="NONE" />
-			<parents>Action_2</parents>
-			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1</probabilities>
-		</cpt>
 		<cpt id="StateEffect_2">
 			<state id="PC" />
 			<state id="CC" />
@@ -244,17 +172,62 @@
 			<parents>Action_2</parents>
 			<probabilities>0 0 1 0 0 1 0.99 0 0.01 0 0.99 0.01 0 0 1</probabilities>
 		</cpt>
-		<cpt id="Take_2">
-			<state id="PC" />
+		<cpt id="MoveEffect_1">
+			<state id="MAR" />
+			<state id="MO" />
 			<state id="NONE" />
-			<parents>StateEffect_2 Shop_2</parents>
-			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+			<parents>Action_1</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Position_2">
+			<state id="Lab" />
+			<state id="Office" />
+			<state id="Shop" />
+			<parents>Position_1 MoveEffect_1</parents>
+			<probabilities>0 0 1 1 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Office_2">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Position_2</parents>
+			<probabilities>0 1 1 0 0 1</probabilities>
 		</cpt>
 		<cpt id="Deliver_2">
 			<state id="CC" />
 			<state id="NONE" />
 			<parents>StateEffect_2 Office_2</parents>
 			<probabilities>0 1 0 1 1 0 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Shop_1">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Position_1</parents>
+			<probabilities>0 1 0 1 1 0</probabilities>
+		</cpt>
+		<cpt id="Take_1">
+			<state id="PC" />
+			<state id="NONE" />
+			<parents>StateEffect_1 Shop_1</parents>
+			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="TrueTake_1">
+			<state id="PC" />
+			<state id="NONE" />
+			<parents>Take_1 CoffeeRequest_1</parents>
+			<probabilities>0 1 1 0 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="TakeDeliver_1">
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>TrueTake_1 TrueDeliver_1</parents>
+			<probabilities>1 0 0 1 0 0 0 1 0 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Coffee_2">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Coffee_1 TakeDeliver_1</parents>
+			<probabilities>1 0 0 1 1 0 1 0 0 1 0 1</probabilities>
 		</cpt>
 		<cpt id="CoffeeRequest_2">
 			<state id="HasCoffee" />
@@ -263,41 +236,11 @@
 			<parents>Order_2 Coffee_2</parents>
 			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1 0 0 1</probabilities>
 		</cpt>
-		<cpt id="TrueTake_2">
-			<state id="PC" />
-			<state id="NONE" />
-			<parents>Take_2 CoffeeRequest_2</parents>
-			<probabilities>0 1 1 0 0 1 0 1 0 1 0 1</probabilities>
-		</cpt>
 		<cpt id="TrueDeliver_2">
 			<state id="CC" />
 			<state id="NONE" />
 			<parents>Deliver_2 CoffeeRequest_2</parents>
 			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
-		</cpt>
-		<cpt id="TakeDeliver_2">
-			<state id="PC" />
-			<state id="CC" />
-			<state id="NONE" />
-			<parents>TrueTake_2 TrueDeliver_2</parents>
-			<probabilities>1 0 0 1 0 0 0 1 0 0 0 1</probabilities>
-		</cpt>
-		<utility id="Total_2">
-			<parents>Order_2</parents>
-			<utilities>0 0 1</utilities>
-		</utility>
-		<cpt id="Position_3">
-			<state id="Lab" />
-			<state id="Office" />
-			<state id="Shop" />
-			<parents>Position_2 MoveEffect_2</parents>
-			<probabilities>0 0 1 1 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 0 0 1</probabilities>
-		</cpt>
-		<cpt id="Coffee_3">
-			<state id="Yes" />
-			<state id="No" />
-			<parents>Coffee_2 TakeDeliver_2</parents>
-			<probabilities>1 0 0 1 1 0 1 0 0 1 0 1</probabilities>
 		</cpt>
 		<cpt id="Order_3">
 			<state id="Yes" />
@@ -305,18 +248,6 @@
 			<state id="Satisfied" />
 			<parents>Order_2 TrueDeliver_2</parents>
 			<probabilities>0 0 1 1 0 0 0 1 0 0 1 0 0 0 1 0 0 1</probabilities>
-		</cpt>
-		<cpt id="Shop_3">
-			<state id="Yes" />
-			<state id="No" />
-			<parents>Position_3</parents>
-			<probabilities>0 1 0 1 1 0</probabilities>
-		</cpt>
-		<cpt id="Office_3">
-			<state id="Yes" />
-			<state id="No" />
-			<parents>Position_3</parents>
-			<probabilities>0 1 1 0 0 1</probabilities>
 		</cpt>
 		<decision id="Action_3">
 			<state id="MAR" />
@@ -326,13 +257,6 @@
 			<state id="NONE" />
 			<parents>Action_2</parents>
 		</decision>
-		<cpt id="MoveEffect_3">
-			<state id="MAR" />
-			<state id="MO" />
-			<state id="NONE" />
-			<parents>Action_3</parents>
-			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1</probabilities>
-		</cpt>
 		<cpt id="StateEffect_3">
 			<state id="PC" />
 			<state id="CC" />
@@ -340,17 +264,62 @@
 			<parents>Action_3</parents>
 			<probabilities>0 0 1 0 0 1 0.99 0 0.01 0 0.99 0.01 0 0 1</probabilities>
 		</cpt>
-		<cpt id="Take_3">
-			<state id="PC" />
+		<cpt id="MoveEffect_2">
+			<state id="MAR" />
+			<state id="MO" />
 			<state id="NONE" />
-			<parents>StateEffect_3 Shop_3</parents>
-			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+			<parents>Action_2</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Position_3">
+			<state id="Lab" />
+			<state id="Office" />
+			<state id="Shop" />
+			<parents>Position_2 MoveEffect_2</parents>
+			<probabilities>0 0 1 1 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Office_3">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Position_3</parents>
+			<probabilities>0 1 1 0 0 1</probabilities>
 		</cpt>
 		<cpt id="Deliver_3">
 			<state id="CC" />
 			<state id="NONE" />
 			<parents>StateEffect_3 Office_3</parents>
 			<probabilities>0 1 0 1 1 0 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Shop_2">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Position_2</parents>
+			<probabilities>0 1 0 1 1 0</probabilities>
+		</cpt>
+		<cpt id="Take_2">
+			<state id="PC" />
+			<state id="NONE" />
+			<parents>StateEffect_2 Shop_2</parents>
+			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="TrueTake_2">
+			<state id="PC" />
+			<state id="NONE" />
+			<parents>Take_2 CoffeeRequest_2</parents>
+			<probabilities>0 1 1 0 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="TakeDeliver_2">
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>TrueTake_2 TrueDeliver_2</parents>
+			<probabilities>1 0 0 1 0 0 0 1 0 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Coffee_3">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Coffee_2 TakeDeliver_2</parents>
+			<probabilities>1 0 0 1 1 0 1 0 0 1 0 1</probabilities>
 		</cpt>
 		<cpt id="CoffeeRequest_3">
 			<state id="HasCoffee" />
@@ -359,17 +328,47 @@
 			<parents>Order_3 Coffee_3</parents>
 			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1 0 0 1</probabilities>
 		</cpt>
-		<cpt id="TrueTake_3">
-			<state id="PC" />
-			<state id="NONE" />
-			<parents>Take_3 CoffeeRequest_3</parents>
-			<probabilities>0 1 1 0 0 1 0 1 0 1 0 1</probabilities>
-		</cpt>
 		<cpt id="TrueDeliver_3">
 			<state id="CC" />
 			<state id="NONE" />
 			<parents>Deliver_3 CoffeeRequest_3</parents>
 			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Order_4">
+			<state id="Yes" />
+			<state id="No" />
+			<state id="Satisfied" />
+			<parents>Order_3 TrueDeliver_3</parents>
+			<probabilities>0 0 1 1 0 0 0 1 0 0 1 0 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<utility id="Total">
+			<parents>Order_4</parents>
+			<utilities>0 0 1</utilities>
+		</utility>
+		<cpt id="Shop_3">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Position_3</parents>
+			<probabilities>0 1 0 1 1 0</probabilities>
+		</cpt>
+		<cpt id="MoveEffect_3">
+			<state id="MAR" />
+			<state id="MO" />
+			<state id="NONE" />
+			<parents>Action_3</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Take_3">
+			<state id="PC" />
+			<state id="NONE" />
+			<parents>StateEffect_3 Shop_3</parents>
+			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="TrueTake_3">
+			<state id="PC" />
+			<state id="NONE" />
+			<parents>Take_3 CoffeeRequest_3</parents>
+			<probabilities>0 1 1 0 0 1 0 1 0 1 0 1</probabilities>
 		</cpt>
 		<cpt id="TakeDeliver_3">
 			<state id="PC" />
@@ -378,10 +377,6 @@
 			<parents>TrueTake_3 TrueDeliver_3</parents>
 			<probabilities>1 0 0 1 0 0 0 1 0 0 0 1</probabilities>
 		</cpt>
-		<utility id="Total_3">
-			<parents>Order_3</parents>
-			<utilities>0 0 1</utilities>
-		</utility>
 		<cpt id="Position_4">
 			<state id="Lab" />
 			<state id="Office" />
@@ -394,13 +389,6 @@
 			<state id="No" />
 			<parents>Coffee_3 TakeDeliver_3</parents>
 			<probabilities>1 0 0 1 1 0 1 0 0 1 0 1</probabilities>
-		</cpt>
-		<cpt id="Order_4">
-			<state id="Yes" />
-			<state id="No" />
-			<state id="Satisfied" />
-			<parents>Order_3 TrueDeliver_3</parents>
-			<probabilities>0 0 1 1 0 0 0 1 0 0 1 0 0 0 1 0 0 1</probabilities>
 		</cpt>
 		<cpt id="Shop_4">
 			<state id="Yes" />
@@ -474,10 +462,6 @@
 			<parents>TrueTake_4 TrueDeliver_4</parents>
 			<probabilities>1 0 0 1 0 0 0 1 0 0 0 1</probabilities>
 		</cpt>
-		<utility id="Total_4">
-			<parents>Order_4</parents>
-			<utilities>0 0 1</utilities>
-		</utility>
 	</nodes>
 	<extensions>
 		<genie version="1.0" app="GeNIe 3.0.5905.0 ACADEMIC" name="Network1 unrolled">
@@ -584,7 +568,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>172 235 255 299</position>
+				<position>4684 545 4767 609</position>
 			</node>
 			<textbox>
 				<caption>Step0</caption>
@@ -709,13 +693,6 @@
 				<font color="000000" name="Arial" size="8" />
 				<position>1297 385 1390 444</position>
 			</node>
-			<node id="Total_1">
-				<name>Total (t=1)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>1077 255 1160 319</position>
-			</node>
 			<node id="Position_2">
 				<name>Position (t=2)</name>
 				<interior color="e5f6f7" />
@@ -813,13 +790,6 @@
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
 				<position>2202 365 2295 424</position>
-			</node>
-			<node id="Total_2">
-				<name>Total (t=2)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>1982 235 2065 299</position>
 			</node>
 			<node id="Position_3">
 				<name>Position (t=3)</name>
@@ -919,13 +889,6 @@
 				<font color="000000" name="Arial" size="8" />
 				<position>3107 385 3200 444</position>
 			</node>
-			<node id="Total_3">
-				<name>Total (t=3)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>2887 255 2970 319</position>
-			</node>
 			<node id="Position_4">
 				<name>Position (t=4)</name>
 				<interior color="e5f6f7" />
@@ -1023,13 +986,6 @@
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
 				<position>4012 365 4105 424</position>
-			</node>
-			<node id="Total_4">
-				<name>Total (t=4)</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>3792 235 3875 299</position>
 			</node>
 		</genie>
 	</extensions>

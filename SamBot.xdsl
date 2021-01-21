@@ -90,7 +90,7 @@
 			<parents>TrueTake TrueDeliver</parents>
 			<probabilities>1 0 0 1 0 0 0 1 0 0 0 1</probabilities>
 		</cpt>
-		<utility id="Total" dynamic="plate">
+		<utility id="Total" dynamic="terminal">
 			<parents>Order</parents>
 			<utilities>0 0 1</utilities>
 		</utility>
@@ -215,7 +215,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>172 235 255 299</position>
+				<position>1064 545 1147 609</position>
 			</node>
 		</genie>
 	</extensions>

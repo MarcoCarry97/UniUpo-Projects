@@ -14,27 +14,35 @@ namespace ProgettoAI
         public static void Execute(string[] args)
         {
             samBot = new SamBot();
+            Console.WriteLine("This exercise can auto-take the decisions, do you want it? (y/n)");
+            bool auto = ReadAuto();
+            for (int t = 0; t < time - 1; t++)
+                DecisionProcess(t, auto);
+            DecisionProcess(time - 1, false);
+            Console.WriteLine("Utility: {0}", samBot.Values(samBot.TOTAL)[0]);
+            Console.WriteLine("Probability of Coffee ad time {0}: {1}", time-1, samBot.ProbabilityOfCoffee(time-1));
+        }
 
-            for(int t=0;t<time-1;t++)
+        private static void DecisionProcess(int t, bool auto)
+        {
+            Dictionary<string, double> decisions = samBot.Decisions(t);
+            Console.WriteLine("Possible Decisions at time {0}:", t);
+            foreach (KeyValuePair<string, double> decision in decisions)
+                Console.WriteLine("{0} {1}", decision.Key, decision.Value);
+            KeyValuePair<string, double> best = samBot.BestDecision(t);
+            if(auto)
             {
-                Dictionary<string, double> decisions = samBot.Decisions(t);
-                Console.WriteLine("Possible Decisions at time {0}:", t);
-                foreach (KeyValuePair<string, double> decision in decisions)
-                    Console.WriteLine("{0} {1}", decision.Key, decision.Value);
-                KeyValuePair<string, double> best = samBot.BestDecision(t);
-                Console.WriteLine("The best decision is {0}, so I take it!");
+                Console.WriteLine("The best decision is {0}, so I take it!", best.Key);
                 samBot.TakeDecision(t, best.Key);
             }
-            Dictionary<string,double>lastDecs = samBot.Decisions(time);
-            Console.WriteLine("What do you want to do?");
-            foreach (KeyValuePair<string, double> decision in lastDecs)
-                Console.WriteLine("{0} {1}", decision.Key, decision.Value);
-            KeyValuePair<string,double> lastBest = samBot.BestDecision(time);
-            Console.WriteLine("The best decision is {0}!", lastBest.Key);
-            string choice = ReadChoice(lastDecs.Keys.ToList<string>());
-            samBot.TakeDecision(time,choice);
-            //Console.WriteLine("Utility: {0}",samBot.Outcomes("Total",mau);
-            Console.WriteLine("Probability of Coffee ad time {0}: {1}", time, samBot.ProbabilityOfCoffee(time));
+            else
+            {
+                Console.WriteLine("The best decision is {0}!", best.Key);
+                Console.WriteLine("Which action do you want to execute?");
+                string choice = ReadChoice(decisions.Keys.ToList<string>());
+                samBot.TakeDecision(t, choice);
+            }
+            Console.WriteLine();
         }
 
         private static string ReadChoice(List<string> possibleChoices)

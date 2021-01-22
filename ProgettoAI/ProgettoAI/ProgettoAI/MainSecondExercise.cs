@@ -14,6 +14,8 @@ namespace ProgettoAI
         public static void Execute(string[] args)
         {
             samBot = new SamBot();
+            Console.WriteLine("Does Sam want coffee? (y/n)");
+            samBot.SamWantsCoffee(ReadAuto());
             Console.WriteLine("This exercise can auto-take the decisions, do you want it? (y/n)");
             bool auto = ReadAuto();
             for (int t = 0; t < time - 1; t++)

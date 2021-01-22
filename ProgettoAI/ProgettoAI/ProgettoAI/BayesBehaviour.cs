@@ -48,6 +48,8 @@ namespace ProgettoAI
 			return max;
 		}
 
+		public void SetEvidence(string nodeId, string evidence) => DecisionNetwork.SetEvidence(nodeId, evidence);
+
 		private License GenieLicense()
 		{
 			return new Smile.License

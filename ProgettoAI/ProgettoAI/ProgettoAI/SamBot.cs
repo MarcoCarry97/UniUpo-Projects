@@ -39,6 +39,7 @@ namespace ProgettoAI
 
         public double ProbabilityOfCoffee(int deltaTime) => DecisionNetwork.GetNodeValue(Name("Coffee", deltaTime)).ToList<double>()[0];
 
+        public void SamWantsCoffee(bool choice) => DecisionNetwork.SetEvidence("Order", choice ? "Yes" : "No");
     }
 
     

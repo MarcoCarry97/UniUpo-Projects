@@ -16,12 +16,10 @@
 			<state id="No" />
 			<parents>DevelopPrototype</parents>
 		</decision>
-		<cpt id="ContinueProduction">
-			<state id="Yes" />
-			<state id="No" />
+		<utility id="ProductionCost">
 			<parents>ContinueProduction_2</parents>
-			<probabilities>1 0 0 1</probabilities>
-		</cpt>
+			<utilities>-2500 0</utilities>
+		</utility>
 		<cpt id="MarketRequest">
 			<state id="High" />
 			<state id="Low" />
@@ -40,13 +38,9 @@
 			<state id="High" />
 			<state id="Low" />
 			<state id="None" />
-			<parents>ContinueProduction MarketRequest ProductQuality</parents>
-			<probabilities>0.35 0.65 0 0.9 0.1 0 0.35 0.65 0 0.15 0.85 0 0.4 0.6 0 0.15 0.85 0 0.25 0.75 0 0.45 0.55 0 0.25 0.75 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1</probabilities>
+			<parents>ContinueProduction_2 MarketRequest ProductQuality</parents>
+			<probabilities>0.65 0.35 0 0.9 0.1 0 0.65 0.35 0 0.15 0.85 0 0.4 0.6 0 0.15 0.85 0 0.25 0.75 0 0.45 0.55 0 0.25 0.75 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1</probabilities>
 		</cpt>
-		<utility id="ProductionCost">
-			<parents>ContinueProduction_2</parents>
-			<utilities>-2500 0</utilities>
-		</utility>
 		<utility id="PrototypeCost">
 			<parents>DevelopPrototype</parents>
 			<utilities>-5000 0</utilities>
@@ -66,13 +60,6 @@
 	</nodes>
 	<extensions>
 		<genie version="1.0" app="GeNIe 3.0.5905.0 ACADEMIC" name="Network1">
-			<node id="ContinueProduction">
-				<name>ContinueProduction</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>210 199 344 285</position>
-			</node>
 			<node id="FutureProficts">
 				<name>FutureProficts</name>
 				<interior color="e5f6f7" />
@@ -99,7 +86,7 @@
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
-				<position>145 343 290 403</position>
+				<position>164 257 309 317</position>
 			</node>
 			<node id="DevelopPrototype">
 				<name>DevelopPrototype</name>
@@ -114,13 +101,6 @@
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
 				<position>724 339 851 395</position>
-			</node>
-			<node id="ProductionCost">
-				<name>ProductionCost</name>
-				<interior color="e5f6f7" />
-				<outline color="000080" />
-				<font color="000000" name="Arial" size="8" />
-				<position>136 590 269 649</position>
 			</node>
 			<node id="PrototypeCost">
 				<name>PrototypeCost</name>
@@ -149,6 +129,13 @@
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />
 				<position>970 591 1089 658</position>
+			</node>
+			<node id="ProductionCost">
+				<name>ProductionCost</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>167 557 277 627</position>
 			</node>
 		</genie>
 	</extensions>

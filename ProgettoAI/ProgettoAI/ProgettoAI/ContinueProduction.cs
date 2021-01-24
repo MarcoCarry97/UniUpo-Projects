@@ -14,7 +14,7 @@ namespace ProgettoAI
         public const string NO = "NO";
         public const string TOTAL = "Total";
 
-        private Mau mau = new Mau((bn,decisionNode, choice) =>
+        private Mau mau = new Mau((bn,decisionNode, choice) => //Funzione che permette calcola l'utilità attesa massima per una data decisione
         {
             bn.SetEvidence(decisionNode, choice);
             bn.UpdateBeliefs();
@@ -32,7 +32,7 @@ namespace ProgettoAI
         public void DoMarketResearch(string decision) => TakeDecision(RESEARCH, decision);
         public void DevelopPrototype(string decision) => TakeDecision(PROTOTYPE, decision);
         public void Continue(string decision) => TakeDecision(PRODUCTION, decision);
-        public List<double> Utilities() => Values(TOTAL);
+        public List<double> Utilities() => Values(TOTAL); //Restituisce le utilità
         public KeyValuePair<string,double> BestMarketDecision() => BestDecision(RESEARCH,mau);
         public KeyValuePair<string, double> BestPrototypeDecision() => BestDecision(PROTOTYPE,mau);
         public KeyValuePair<string, double> BestContinueDecision() => BestDecision(PRODUCTION,mau);

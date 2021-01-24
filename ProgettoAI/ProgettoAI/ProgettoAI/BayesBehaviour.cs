@@ -6,11 +6,9 @@ using System.Linq;
 
 namespace ProgettoAI
 {
-	public delegate double Mau(Network bn,string decision,string choice);
+	public delegate double Mau(Network bn,string decision,string choice); 
     abstract class BayesBehaviour
     {
-		public const string COST = "Cost";
-		public const string RAND = "Rand";
 
         private License license;
 		public Network DecisionNetwork { get; set; }
@@ -20,17 +18,17 @@ namespace ProgettoAI
 			DecisionNetwork = new Network();
         }
 
-		public void Step() => DecisionNetwork.UpdateBeliefs();
+		public void Step() => DecisionNetwork.UpdateBeliefs(); //Ricalcola le probabilità della rete tenendo conto delle evidenze
 
-		protected void TakeDecision(string nodeId, string decision)
+		protected void TakeDecision(string nodeId, string decision) //Setta una decisione al nodo
 		{
 			DecisionNetwork.SetEvidence(nodeId, decision);
 			Step();
 		}
 
-		public List<double> Values(string nodeId) => DecisionNetwork.GetNodeValue(nodeId).ToList<double>();
+		public List<double> Values(string nodeId) => DecisionNetwork.GetNodeValue(nodeId).ToList<double>(); //Restituisce i possibili valori di un nodo (Probabilità o Utilità)
 
-		public Dictionary<string,double> Outcomes(string nodeId,Mau mau)
+		public Dictionary<string,double> Outcomes(string nodeId,Mau mau) //Restituisce un dizionario contenenti le decisioni con relative utilità
 		{
 			List<string> outcomes=DecisionNetwork.GetOutcomeIds(nodeId).ToList<string>();
 			Dictionary<string,double> dictionary = new Dictionary<string, double>();
@@ -39,7 +37,7 @@ namespace ProgettoAI
 			return dictionary;
 		}
 
-		public KeyValuePair<string,double> BestDecision(string nodeId,Mau mau)
+		public KeyValuePair<string,double> BestDecision(string nodeId,Mau mau) //Restituisce la decisione con utilità maggiore
 		{
 			if (!DecisionNetwork.GetNodeType(nodeId).Equals(Network.NodeType.List))
 				throw new SmileException(string.Format("Node {0} is not a decision", nodeId));
@@ -48,9 +46,9 @@ namespace ProgettoAI
 			return max;
 		}
 
-		public void SetEvidence(string nodeId, string evidence) => DecisionNetwork.SetEvidence(nodeId, evidence);
+		public void SetEvidence(string nodeId, string evidence) => DecisionNetwork.SetEvidence(nodeId, evidence); //Imposta l'evidenza di un nodo
 
-		private License GenieLicense()
+		private License GenieLicense() //Licenza di Genie
 		{
 			return new Smile.License
 			(

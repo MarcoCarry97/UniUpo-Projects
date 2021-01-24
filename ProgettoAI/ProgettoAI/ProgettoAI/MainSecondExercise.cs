@@ -25,7 +25,7 @@ namespace ProgettoAI
             Console.WriteLine("Probability of Coffee ad time {0}: {1}", time-1, samBot.ProbabilityOfCoffee(time-1));
         }
 
-        private static void DecisionProcess(int t, bool auto)
+        private static void DecisionProcess(int t, bool auto) //indica il processo decisionale
         {
             Dictionary<string, double> decisions = samBot.Decisions(t);
             Console.WriteLine("Possible Decisions at time {0}:", t);
@@ -47,7 +47,7 @@ namespace ProgettoAI
             Console.WriteLine();
         }
 
-        private static string ReadChoice(List<string> possibleChoices)
+        private static string ReadChoice(List<string> possibleChoices) //Restituisce la stringa in input da tasteria se questa è una di quelle presenti in possibleChioces
         {
             bool correct = false;
             string input = "";
@@ -61,7 +61,7 @@ namespace ProgettoAI
             return input;
         }
 
-        private static bool ReadAuto()
+        private static bool ReadAuto() //Restituisce un booleano in base all'input da tastiera: y->true, n->false
         {
             bool correct = false;
             string input = "";
@@ -75,7 +75,7 @@ namespace ProgettoAI
             return input.Equals("y") ? true : false;
         }
 
-        private static string Name(string node, int deltaTime)
+        private static string Name(string node, int deltaTime) //Restituisce un nome in base al tempo deltaTime dato.
         {
             if (deltaTime == 0) return node;
             else return string.Format("{0}_{1}", node, deltaTime);

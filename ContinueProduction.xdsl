@@ -11,13 +11,13 @@
 			<state id="No" />
 			<parents>MarketResearch</parents>
 		</decision>
-		<decision id="ContinueProduction_2">
+		<decision id="ContinueProduction">
 			<state id="Yes" />
 			<state id="No" />
 			<parents>DevelopPrototype</parents>
 		</decision>
 		<utility id="ProductionCost">
-			<parents>ContinueProduction_2</parents>
+			<parents>ContinueProduction</parents>
 			<utilities>-2500 0</utilities>
 		</utility>
 		<cpt id="MarketRequest">
@@ -38,7 +38,7 @@
 			<state id="High" />
 			<state id="Low" />
 			<state id="None" />
-			<parents>ContinueProduction_2 MarketRequest ProductQuality</parents>
+			<parents>ContinueProduction MarketRequest ProductQuality</parents>
 			<probabilities>0.65 0.35 0 0.9 0.1 0 0.65 0.35 0 0.15 0.85 0 0.4 0.6 0 0.15 0.85 0 0.25 0.75 0 0.45 0.55 0 0.25 0.75 0 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1 0 0 1</probabilities>
 		</cpt>
 		<utility id="PrototypeCost">
@@ -81,7 +81,7 @@
 				<font color="000000" name="Arial" size="8" />
 				<position>627 192 755 276</position>
 			</node>
-			<node id="ContinueProduction_2">
+			<node id="ContinueProduction">
 				<name>ContinueProduction</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />

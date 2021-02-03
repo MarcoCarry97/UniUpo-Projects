@@ -74,6 +74,8 @@ namespace ProgettoAI
                 string choice = ReadChoice(decisions.Keys.ToList<string>());
                 production.DoMarketResearch(choice);
             }
+            KeyValuePair<string, double> rand = production.RandomEvidenceResearch();
+            Console.WriteLine("Random choice with prob. {1} : {0}", rand.Key, rand.Value);
             Console.WriteLine();
         }
 
@@ -94,6 +96,8 @@ namespace ProgettoAI
                 string choice = ReadChoice(decisions.Keys.ToList<string>());
                 production.DevelopPrototype(choice);
             }
+            KeyValuePair<string,double> rand=production.RandomEvidencePrototype();
+            Console.WriteLine("Random choice with prob. {1} : {0}", rand.Key, rand.Value);
             Console.WriteLine();
         }
 
@@ -106,6 +110,14 @@ namespace ProgettoAI
             Console.WriteLine(string.Format("The best decision is {0}!", bestDecision.Key));
             string choice = ReadChoice(decisions.Keys.ToList<string>());
             production.Continue(choice);
+            Console.WriteLine("Do you want to set the evidence of FutureProficts? (y/n)");
+            choice = ReadChoice(new string[] { "y", "n" }.ToList<string>());
+            if (choice.Equals("y"))
+            {
+                KeyValuePair<string, double> rand = production.RandomEvidenceProficts();
+                Console.WriteLine("Random choice a prob. {1} : {0}", rand.Key, rand.Value);
+            }
+            else Console.WriteLine("No Evidence selected for FutureProficts");
             Console.WriteLine();
         }
     }

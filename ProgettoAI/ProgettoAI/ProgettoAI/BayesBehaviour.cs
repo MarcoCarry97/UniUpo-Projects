@@ -46,6 +46,39 @@ namespace ProgettoAI
 			return max;
 		}
 
+		public KeyValuePair<string, double> RandomEvidence(string nodeId)
+		{
+			Dictionary<string, double> chances = ChancesWithProbabilities(nodeId);
+			double num = new Random().NextDouble();
+			Console.WriteLine(num);
+			KeyValuePair<string, double> choice = chances.ToList()[0];
+			double sum = 0;
+			bool end = false;
+			for(int i=0;i<chances.Count() && !end;i++)
+            {
+				KeyValuePair<string, double> pair = chances.ToList<KeyValuePair<string,double>>()[i];
+				sum += pair.Value;
+				if (num <= sum)
+                {
+					choice = pair;
+					end = true;
+				}
+            }
+			DecisionNetwork.SetEvidence(nodeId, choice.Key);
+			Step();
+			return choice;
+		}
+
+		private Dictionary<string,double> ChancesWithProbabilities(string nodeId)
+        {
+			List<string> chances = DecisionNetwork.GetOutcomeIds(nodeId).ToList<string>();
+			List<double> probs = DecisionNetwork.GetNodeValue(nodeId).ToList<double>();
+			Dictionary<string, double> set = new Dictionary<string, double>();
+			for (int i = 0; i < chances.Count; i++)
+				set.Add(chances[i], probs[i]);
+			return set;
+        }
+
 		public void SetEvidence(string nodeId, string evidence) => DecisionNetwork.SetEvidence(nodeId, evidence); //Imposta l'evidenza di un nodo
 
 		private License GenieLicense() //Licenza di Genie

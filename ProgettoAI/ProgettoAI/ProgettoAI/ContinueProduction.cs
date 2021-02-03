@@ -13,6 +13,9 @@ namespace ProgettoAI
         public const string YES = "Yes";
         public const string NO = "NO";
         public const string TOTAL = "Total";
+        public const string RESEARCHCHANCE = "Research";
+        public const string QUALITYCHANCE = "ProductQuality";
+        public const string PROFICTCHANCE = "FutureProficts";
 
         private Mau mau = new Mau((bn,decisionNode, choice) => //Funzione che permette calcola l'utilità attesa massima per una data decisione
         {
@@ -39,5 +42,8 @@ namespace ProgettoAI
         public Dictionary<string,double> MarketDecisions() => Outcomes(RESEARCH,mau);
         public Dictionary<string, double> PrototypeDecisions() => Outcomes(PROTOTYPE,mau);
         public Dictionary<string, double> ProductionDecisions() => Outcomes(PRODUCTION,mau);
+        public KeyValuePair<string,double> RandomEvidenceResearch() => RandomEvidence(RESEARCHCHANCE);
+        public KeyValuePair<string, double> RandomEvidencePrototype() => RandomEvidence(QUALITYCHANCE);
+        public KeyValuePair<string, double> RandomEvidenceProficts() => RandomEvidence(PROFICTCHANCE);
     }
 }

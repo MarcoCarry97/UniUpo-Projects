@@ -45,5 +45,11 @@ namespace ProgettoAI
         public KeyValuePair<string,double> RandomEvidenceResearch() => RandomEvidence(RESEARCHCHANCE);
         public KeyValuePair<string, double> RandomEvidencePrototype() => RandomEvidence(QUALITYCHANCE);
         public KeyValuePair<string, double> RandomEvidenceProficts() => RandomEvidence(PROFICTCHANCE);
+        public Dictionary<string, double> ResearchEvidence() => Evidence(RESEARCHCHANCE);
+        public Dictionary<string, double> PrototypeEvidence() => Evidence(QUALITYCHANCE);
+        public Dictionary<string, double> ProfictsEvidence() => Evidence(PROFICTCHANCE);
+        public void SetResearchEvidence(string evidence) => SetEvidence(RESEARCHCHANCE, evidence);
+        public void SetPrototypeEvidence(string evidence) => SetEvidence(QUALITYCHANCE, evidence);
+        public void SetProfictEvidence(string evidence) => SetEvidence(PROFICTCHANCE, evidence);
     }
 }

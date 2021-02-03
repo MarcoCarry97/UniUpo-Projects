@@ -15,7 +15,11 @@ namespace ProgettoAI
         {
             samBot = new SamBot();
             Console.WriteLine("Does Sam want coffee? (y/n)");
-            samBot.SamWantsCoffee(ReadAuto());
+            bool choice = ReadAuto();
+            samBot.SamWantsCoffee(choice);
+            if (choice) samBot.SetEvidence(Name("Coffee", 0), "No");
+            Console.WriteLine("Where is the robot? (Lab/Office/Shop)");
+            samBot.Position(ReadChoice(new string[] { "Lab", "Office", "Shop" }.ToList<string>()));
             Console.WriteLine("This exercise can auto-take the decisions, do you want it? (y/n)");
             bool auto = ReadAuto();
             for (int t = 0; t < time - 1; t++)
@@ -36,6 +40,12 @@ namespace ProgettoAI
             {
                 Console.WriteLine("The best decision is {0}, so I take it!", best.Key);
                 samBot.TakeDecision(t, best.Key);
+                if(t<time-1)
+                {
+                    samBot.RandomPosition(t + 1);
+                    if (best.Equals("PC")) samBot.RandomTakeCoffee(t + 1);
+                    else if (best.Equals("CC")) samBot.RandomDeliverCoffee(t + 1);
+                }
             }
             else
             {
@@ -43,6 +53,16 @@ namespace ProgettoAI
                 Console.WriteLine("Which action do you want to execute?");
                 string choice = ReadChoice(decisions.Keys.ToList<string>());
                 samBot.TakeDecision(t, choice);
+                if(t<time-1)
+                {
+                    samBot.RandomPosition(t + 1);
+                    Console.WriteLine("Has robot the coffee?");
+                    Dictionary<string, double> chances = samBot.RandomCoffeeChances(t + 1);
+                    foreach (KeyValuePair<string, double> chance in chances)
+                        Console.WriteLine("{0} - {1}", chance.Key, chance.Value);
+                    if (choice.Equals("PC")) samBot.TakeCoffee(ReadChoice(chances.Keys.ToList<string>()), t + 1);
+                    else if (choice.Equals("CC")) samBot.TakeCoffee(ReadChoice(chances.Keys.ToList<string>()), t + 1);
+                }
             }
             Console.WriteLine();
         }

@@ -15,7 +15,7 @@ namespace ProgettoAI
         public static void Execute(string[] args)
         {
             production = new Production();
-            Console.WriteLine("The fist two decision can be auto-taken, do you want it? (y/n)");
+            Console.WriteLine("The first two decision can be auto-taken, do you want it? (y/n)");
             auto = ReadAuto();
             CheckMarketDecision();
             CheckPrototypeDecision();
@@ -68,14 +68,21 @@ namespace ProgettoAI
             {
                 production.DoMarketResearch(bestDecision.Key);
                 Console.WriteLine("Auto-Decision: I took {0}", bestDecision.Key);
+                KeyValuePair<string, double> rand = production.RandomEvidenceResearch();
+                Console.WriteLine("Random choice with prob. {1} : {0}", rand.Key, rand.Value);
             }
             else
             {
                 string choice = ReadChoice(decisions.Keys.ToList<string>());
                 production.DoMarketResearch(choice);
+                Console.WriteLine("Which evidence for Research?");
+                Dictionary<string, double> evidences = production.ResearchEvidence();
+                foreach (KeyValuePair<string, double> pair in evidences)
+                    Console.WriteLine("{0} {1}", pair.Key, pair.Value);
+                choice = ReadChoice(evidences.Keys.ToList<string>());
+                production.SetResearchEvidence(choice);
             }
-            KeyValuePair<string, double> rand = production.RandomEvidenceResearch();
-            Console.WriteLine("Random choice with prob. {1} : {0}", rand.Key, rand.Value);
+            
             Console.WriteLine();
         }
 
@@ -90,14 +97,21 @@ namespace ProgettoAI
             {
                 production.DevelopPrototype(bestDecision.Key);
                 Console.WriteLine("Auto-Decision: I took {0}", bestDecision.Key);
+                KeyValuePair<string, double> rand = production.RandomEvidencePrototype();
+                Console.WriteLine("Random choice with prob. {1} : {0}", rand.Key, rand.Value);
             }
             else
             {
                 string choice = ReadChoice(decisions.Keys.ToList<string>());
                 production.DevelopPrototype(choice);
+                Console.WriteLine("Which evidence for ProductQuality?");
+                Dictionary<string, double> evidences = production.PrototypeEvidence();
+                foreach (KeyValuePair<string, double> pair in evidences)
+                    Console.WriteLine("{0} {1}", pair.Key, pair.Value);
+                choice = ReadChoice(evidences.Keys.ToList<string>());
+                production.SetPrototypeEvidence(choice);
             }
-            KeyValuePair<string,double> rand=production.RandomEvidencePrototype();
-            Console.WriteLine("Random choice with prob. {1} : {0}", rand.Key, rand.Value);
+            
             Console.WriteLine();
         }
 

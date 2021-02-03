@@ -50,7 +50,6 @@ namespace ProgettoAI
 		{
 			Dictionary<string, double> chances = ChancesWithProbabilities(nodeId);
 			double num = new Random().NextDouble();
-			Console.WriteLine(num);
 			KeyValuePair<string, double> choice = chances.ToList()[0];
 			double sum = 0;
 			bool end = false;
@@ -77,9 +76,18 @@ namespace ProgettoAI
 			for (int i = 0; i < chances.Count; i++)
 				set.Add(chances[i], probs[i]);
 			return set;
-        }
+        } 
 
 		public void SetEvidence(string nodeId, string evidence) => DecisionNetwork.SetEvidence(nodeId, evidence); //Imposta l'evidenza di un nodo
+
+		public Dictionary<string, double> Evidence(string nodeId)
+		{
+			Dictionary<string, double> set = new Dictionary<string, double>();
+			Dictionary<string, double> chances = ChancesWithProbabilities(nodeId);
+			foreach (KeyValuePair<string, double> chance in chances)
+				if (chance.Value > 0) set.Add(chance.Key,chance.Value);
+			return set;
+		}
 
 		private License GenieLicense() //Licenza di Genie
 		{

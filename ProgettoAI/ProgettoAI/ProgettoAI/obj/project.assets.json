@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Marco-PC\\Desktop\\Progetto AI\\progetto-ai\\ProgettoAI\\ProgettoAI\\ProgettoAI\\ProgettoAI.csproj",
+      "projectUniqueName": "C:\\Users\\Marco-PC\\Desktop\\UniUpo\\Progetto AI\\progetto-ai\\ProgettoAI\\ProgettoAI\\ProgettoAI\\ProgettoAI.csproj",
       "projectName": "ProgettoAI",
-      "projectPath": "C:\\Users\\Marco-PC\\Desktop\\Progetto AI\\progetto-ai\\ProgettoAI\\ProgettoAI\\ProgettoAI\\ProgettoAI.csproj",
+      "projectPath": "C:\\Users\\Marco-PC\\Desktop\\UniUpo\\Progetto AI\\progetto-ai\\ProgettoAI\\ProgettoAI\\ProgettoAI\\ProgettoAI.csproj",
       "packagesPath": "C:\\Users\\Marco-PC\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Marco-PC\\Desktop\\Progetto AI\\progetto-ai\\ProgettoAI\\ProgettoAI\\ProgettoAI\\obj\\",
+      "outputPath": "C:\\Users\\Marco-PC\\Desktop\\UniUpo\\Progetto AI\\progetto-ai\\ProgettoAI\\ProgettoAI\\ProgettoAI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Marco-PC\\AppData\\Roaming\\NuGet\\NuGet.Config",

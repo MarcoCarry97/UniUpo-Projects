@@ -1,0 +1,57 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>eserciziCLPmodellidecisione</title></head>
+<body><div style="text-align: center;"><h2>NOTA</h2></div>Usando clpr
+conviene scrivere sempre i numeri interi, es. 10, se al di fuori di {}
+(es. negli argomenti dei predicati e dei goal) nella forma 10.0
+(altrimenti in qualche caso si può ottenere un errore:
+"not_normalized(10)")<br><h2 style="text-align: center;">ESERCIZIO A</h2>Tratto da: J<span itemprop="author" itemscope="" itemtype="http://schema.org/Person"><span class="this-person" itemprop="name">acob Feldman</span></span>:<span class="title" itemprop="name"> What-If Analyzer for DMN-based Decision Models. Rule ML </span>2016 Challenge, <a href="http://ceur-ws.org/Vol-1620/paper2.pdf">http://ceur-ws.org/Vol-1620/paper2.pdf</a><br><br>Nella
+decisione per valutare se concedere un prestito ad una persona, una
+delle condizioni può essere che abbia&nbsp;esito positivo una verifica
+su quanto il potenziale cliente guadagna (<span style="font-style: italic;">income validation</span>)
+tenendo conto dell'importo da concedere in prestito e di quanto la
+persona abbia già da ripagare per altri prestiti (es. prestito per
+pagare gli studi universitari, molto diffuso in USA; mutuo, etc; in
+questo esercizio non consideriamo la storia precedente del credito
+della persona, importante per considerare come tali i famigerati mutui <span style="font-style: italic;">subprime, </span>cioè ad alto rischio di non essere ripagati,<span style="font-style: italic;"> </span>che hanno fatto scoppiare la crisi nel 2007-08).<br><br>Più in dettaglio, le quantità coinvolte sono:<br><br><span style="font-weight: bold;">Loan Amoun</span>t: importo del prestito<br><span style="font-weight: bold;">Loan Term</span> : durata (in mesi) del prestito<br><span style="font-weight: bold;">Monthly Income</span>: introito mensile del potenziale cliente<br><span style="font-weight: bold;">Monthly Debt</span>:
+quanto mensilmente paga il potenziale cliente per ripagare prestiti già
+contratti (es. mutuo); supponiamo rimanga invariata durante il LoanTerm<br><span style="font-weight: bold;">Result: </span>esito della verifica, ok/no<br><br>In una <span style="font-weight: bold;">prima fase</span>, non consideriamo gli interessi su questo prestito.<br>Le
+prime 4 quantità non sono necessariamente fornite in input, e la quinta
+attesa in output, ma supponiamo che (solo) dalle prime 4 dipenda la quinta nel
+modo seguente; detti:<br><br><span style="font-weight: bold;">Total Income</span>: introito totale previsto del potenziale cliente durante la durata del prestito<br><span style="font-weight: bold;">Total Debt: </span>debito da ripagare (per altri prestiti contratti in precedenza) durante la durata di questo prestito<br><span style="font-weight: bold;">Accumulated Debt</span>: quanto si prevede che il potenziale cliente dovrà ripagare nel periodo del prestito: TotalDebt + Loan Amount (<span style="font-style: italic; font-weight: bold;">non
+considerando in questa fase gli interessi su questo prestito, quindi
+approssimando con LoanAmount la somma che il potenziale cliente dovrebbe
+ripagare in totale per questo prestito</span>)<br><br>la verifica ha esito positivo se <span style="font-weight: bold;">TotalIncome &gt; AccumulatedDebt</span> (ignoriamo il fatto che il potenziale cliente avrà anche altre spese...), ha esito negativo altrimenti <br><br>Definire una relazione <span style="font-weight: bold;">incomev </span>che possa essere usata per determinare ad esempio:<br><ul><li>che si ha esito positivo per LoanAmount=30000, LoanTerm=24, MonthlyIncome=2000, MonthlyDebt=500</li><li>quale
+condizione deve valere per LoanAmount per avere esito positivo con
+LoanTerm=24, MonthlyIncome=2000, MonthlyDebt=500 (risposta: LoanAmount
+&lt; 36000)</li><li>una condizione per LoanTerm (da interpretare a cura
+dell'utente sui numeri interi) per avere esito positivo con
+LoanAmount=40000, MonthlyIncome=2000,MonthlyDebt=500 (T &gt;= 27)</li></ul><span style="font-weight: bold;"></span>In una <span style="font-weight: bold;">seconda fase, </span>si definisca un altro predicato <span style="font-weight: bold;">incomeval</span>,&nbsp;utilizzando <span style="font-weight: bold;">incomev </span>e la relazione <span style="font-weight: bold;">mortgage </span>già disponibile (restiringendosi al caso con <span style="font-weight: bold;">saldo finale zero</span>).<br>Questa definizione deve tenere conto del fatto che la somma <span style="font-weight: bold;">TotalRepayment, </span>che
+il potenziale cliente deve ripagare per il prestito oggetto di analisi,
+dipende dal tasso di interesse e dal numero di rate; non è uguale
+all'ammontare del prestito, sarà invece uguale all'importo della rata
+per il numero di rate. Ora avremo<br><span style="font-weight: bold;">Accumulated Debt = TotalDebt + TotalRepayment</span>, mantenendo la condizione <span style="font-weight: bold;">TotalIncome &gt; AccumulatedDebt </span>per avere esito positivo di questa analisi.<br>La definizione di <span style="font-weight: bold;">incomev</span> può rimanere uguale, ma se ad es. si è usato un argomento <span style="font-weight: bold;">LoanAmount </span>per <span style="font-weight: bold;">incomev, </span>ridenominarlo <span style="font-weight: bold;">TotalRepayment </span>e aggiungere un commento che indichi che si tratta appunto della cifra totale che il cliente dovrà ripagare per questo prestito.<br>Per maggior chiarezza, come argomento per <span style="font-weight: bold;">incomeval </span>&nbsp;si utilizzi ad es. il nome <span style="font-weight: bold;">Principal </span>per la somma da prendere in prestito. <br><br>Utilizzare <span style="font-weight: bold;">incomeval </span>per determinare:<br><ul><li>che
+si ha esito positivo per Principal=30000, LoanTerm=24, Interest=0.01,
+MonthlyIncome=2000, MonthlyDebt=500, e qual è l'importo della rata
+(1412.2)</li><li>quale
+condizione deve valere per&nbsp;Principal per avere esito positivo con
+LoanTerm=24,&nbsp;Interest=0.01, MonthlyIncome=2000, MonthlyDebt=500 (Principal
+&lt; 31865.080886441767)</li><li>la prima soluzione per LoanTerm&nbsp; per avere esito positivo con&nbsp;Principal=40000,&nbsp;Interest=0.01,
+MonthlyIncome=2000, MonthlyDebt=500 (LoanTerm =32.0)</li></ul><div style="text-align: center;"><h2>ESERCIZIO B</h2></div><br>Tratto da: <a href="https://dmcommunity.org/challenge/challenge-jan-2016/">https://dmcommunity.org/challenge/challenge-jan-2016/</a><br><br>Si
+considerino queste regole per determinare il numero di giorni di ferie
+a cui ha diritto un dipendente (regole con struttura simile potrebbero
+determinare gli sconti sul prezzo di vendita di un oggetto):<br><br><img style="width: 683px; height: 287px;" alt="" src="vacationdaysproblem.jpg"><br><br>intendendo "non combinare" come: si dà priorità alla regola che fornisce 5 giorni.<br><br>Definire una relazione che correli giorni di ferie, età e anzianità di servizio.<br>Utilizzarla non solo per determinare quanti giorni ottengono persone con età e
+anzianità date, ma anche per determinare quali sono i numeri di giorni
+di ferie effettivamente possibili, e per ciascuno le condizioni su età
+e anzianità per ottenerli (senza pretendere che per ogni possibile
+numero di giorni si ottenga una sola soluzione con associata una unica
+condizione). Sarebbe opportuno considerare un vincolo
+generale tra età e anzianità (es. età &gt;= anzianità +14, dove 14 è
+l'età minima per essere dipendenti), ma le condizioni su età e
+anzianità risulteranno più esplicite se lo si ignora.<br><br>Per
+rendere più generale la soluzione, dopo una eventuale prima versione
+con i soli requisiti di cui sopra, scrivere la relazione in modo che
+permetta di risolvere problemi nella cui descrizione in CLP c'è:<br><ul><li>un numero "base" di giorni di ferie; </li><li>un insieme di regole "additive" (nel caso particolare, la seconda) che forniscono giorni da aggiungere, se soddisfatte;</li><li>un
+(unico, per semplicità) insieme di regole "mutuamente esclusive" (nel
+caso particolare, la prima e la terza) che prevedono di assegnare il
+massimo numero di giorni (anche zero) fra quelli che risulterebbero
+dall'applicazione di ciascuna regola</li></ul>Nella descrizione del problema si può quindi ad esempio prevedere: <br><ul><li>un nome per le regole (es. r1, r2, r3)</li><li>dei fatti che permettano di considerle in un modo o nell'altro (es.: rules([r1,r2,r3]), mutexrules([r1,r3]) )</li><li>per descrivere i giorni extra che si ottengono (o otterrebbero) in base a ciascuna regola, delle clausole della forma:</li></ul><div style="margin-left: 40px;">&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; r1(...) :- ...<br></div><div style="margin-left: 40px;">oppure:<br></div><div style="margin-left: 40px;">&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;extra(r1,.....) :- ....<br></div><a href="http://dblp.uni-trier.de/db/conf/ruleml/ruleml2016s.html#Feldman16"><span itemprop="datePublished"></span></a></body></html>

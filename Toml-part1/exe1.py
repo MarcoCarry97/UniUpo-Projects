@@ -27,7 +27,7 @@ p.addIneq(ineq2)
 
 results=[]
 for x0 in starts:
-    print("Use "+str(x0)+":\n\n\n\n\n\n")
+    print("Use "+str(x0)+":\n")
     results+=[p.solve(x0,"SLSQP")]
 
 for i in range(0,len(results)):
@@ -35,3 +35,39 @@ for i in range(0,len(results)):
     print("     pstar:"+ str(results[i].fun))
     print("     xstar:"+str(results[i].x))
       
+def jacobian(x):
+    dx0=math.exp(x[0])*(4*x[0]**2+2*x[1]**2+4*x[0]*x[1]+2*x[1]+12*x[0])
+    dx1=math.exp(x[0])*(4*x[1]+4*x[0]+2)
+    return  [dx0,dx1]
+
+def hessian(x):
+    dxx=math.exp(x[0])*(4*x[0]**2+2*x[1]**2+4*x[0]*x[1]+20*x[0]+0+4*x[1]+12*x[0]+12)
+    dxy=math.exp(x[0])*(4*x[1]+4*x[0]+2)
+    dyx=math.exp(x[0])(4*x[1]+4*x[0]+6)
+    dyy=math.exp(x[0])*4
+    return [[dxx,dxy],[dyx,dyy]]
+
+results=[]
+
+for x0 in starts:
+    print("Use "+str(x0)+":\n")
+    results+=[p.solveWithJacob(x0,"SLSQP",jacobian)]
+
+
+for i in range(0,len(starts)):
+    print("results for "+ str(starts[i])+" : ")
+    print("     pstar:"+ str(results[i].fun))
+    print("     xstar:"+str(results[i].x)+"\n")
+
+
+results=[]
+
+for x0 in starts:
+    print("Use "+str(x0)+":\n")
+    results+=[p.solveWithJacobHess(x0,jacobian,hessian)]
+
+
+for i in range(0,len(starts)):
+    print("results for "+ str(starts[i])+" : ")
+    print("     pstar:"+ str(results[i].fun))
+    print("     xstar:"+str(results[i].x)+"\n")

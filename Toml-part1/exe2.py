@@ -30,6 +30,31 @@ for r in results:
     print("     xstar:"+str(r.value.x))
 
 
+def jacobian(x):
+    return [2*x[0],2*x[1]]
 
+def hessian(x):
+    return [[2,0],[0,2]]
+
+
+results=[]
+
+for p in points:
+    results+=[Result(p,problem.solveWithJacob(p,"SLSQP",jacobian))]
+
+for r in results:
+    print("point "+str(r.point))
+    print("     pstar:"+ str(r.value.fun))
+    print("     xstar:"+str(r.value.x))
+
+results=[]
+
+for p in points:
+    results+=[Result(p,problem.solveWithJacobHess(p,jacobian,hessian))]
+
+for r in results:
+    print("point "+str(r.point))
+    print("     pstar:"+ str(r.value.fun))
+    print("     xstar:"+str(r.value.x))
 
 

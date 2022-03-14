@@ -20,3 +20,29 @@ for r in results:
     print("point "+str(r.point))
     print("     pstar:"+ str(r.value.fun))
     print("     xstar:"+str(r.value.x))
+
+def jacobian(x):
+    return [2*x[0],2*x[1]]
+
+def hessian(x):
+    return [[2,0],[0,2]]
+
+results=[]
+
+for x in feases+notfeases:
+    results+=[Result(x,p.solveWithJacob(x,"SLSQP",jacobian))]
+
+for r in results:
+    print("point "+str(r.point))
+    print("     pstar:"+ str(r.value.fun))
+    print("     xstar:"+str(r.value.x))
+
+results=[]
+
+for x in feases+notfeases:
+    results+=[Result(x,p.solveWithJacobHess(x,jacobian,hessian))]
+
+for r in results:
+    print("point "+str(r.point))
+    print("     pstar:"+ str(r.value.fun))
+    print("     xstar:"+str(r.value.x))

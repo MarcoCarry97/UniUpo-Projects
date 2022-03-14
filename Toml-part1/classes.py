@@ -51,13 +51,20 @@ class Problem:
             cons+=[eq.toDictio()]
         return(minimize(fun,x,method=m,bounds=self.bnds,constraints=cons))
 
-
     def solveWithJacob(self,x,m,myjac):
         cons=list()
         fun=lambda x:-self.ptype*self.fzero(x)
         for obj in self.eqs+self.ineqs :
             cons+=[obj.toDictio()]
         return(minimize(fun,x,method=m,bounds=self.bnds,constraints=cons,jac=myjac))
+
+
+    def solveWithJacobHess(self,x,myjac,myhess):
+        cons=list()
+        fun=lambda x:-self.ptype*self.fzero(x)
+        for obj in self.eqs+self.ineqs :
+            cons+=[obj.toDictio()]
+        return(minimize(fun,x,bounds=self.bnds,constraints=cons,jac=myjac,hess=myhess))
 
 class Result:
     def __init__(self,point,value):

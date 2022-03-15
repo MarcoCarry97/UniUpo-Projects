@@ -1,31 +1,46 @@
-from cvxclasses import CvxProblem,CvxIneq,CvxEq,CvxResult
-import cvxpy as cp
-import numpy as np
+from classes import Inequality,Problem,Result
 
+fzero=lambda x: x[0]**2 +1
 
-x0=cp.Variable()
+ineq=Inequality(lambda x:-x**2+6*x-8)
 
+problem=Problem(fzero,-1)
 
-fzero=lambda x:x**2 + 1
+problem.addIneq(ineq)
 
-ineq1=CvxIneq(lambda x:x**2 -6*x + 8)
+feases=[2,3,4]
 
+notfeases=[0,1,5,6,7]
 
-ineqs=[ineq1]
-eqs=[]
+results=[]
+for p in feases+notfeases:
+    results+=[problem.solve(p,"SLSQP")]
 
-p=CvxProblem(fzero,-1)
+for r in results:
+    print("Point: "+str(r.point))
+    print("     Opt. value: "+str(r.value.fun))
+    print("     Opt. point: "+str(r.value.x))
 
-for ineq in ineqs:
-    p.setIneq(ineq)
+def jacobian(x):
+    return 2*x
 
-for eq in eqs:
-    p.setEq(eq)
+def hessian(x):
+    return 2
 
-res=p.solve(x0)
+results=[]
+for p in feases+notfeases:
+    results+=[problem.solveWithJacob(p,"SLSQP",jacobian)]
 
-print("Result:\n")
-print("    x*="+str(res.xstar))
-print("    p*="+str(res.pstar))
-print("    l*="+str(res.lambdas))
-#print("    d*="+str(res.dstar))
+for r in results:
+    print("Point: "+str(r.point))
+    print("     Opt. value: "+str(r.value.fun))
+    print("     Opt. point: "+str(r.value.x))
+
+results=[]
+for p in feases+notfeases:
+    results+=[problem.solveWithJacobHess(p,jacobian,hessian)]
+
+for r in results:
+    print("Point: "+str(r.point))
+    print("     Opt. value: "+str(r.value.fun))
+    print("     Opt. point: "+str(r.value.x))

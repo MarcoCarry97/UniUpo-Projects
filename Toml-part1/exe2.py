@@ -1,7 +1,7 @@
-from classes import Inequality
-from classes import Equality
-from classes import Problem
-from classes import Result
+from scipyUtils import Inequality
+from scipyUtils import Equality
+from scipyUtils import Problem
+from scipyUtils import Result
 import math
 
 fzero=lambda x: (x[0]**2)+(x[1]**2)

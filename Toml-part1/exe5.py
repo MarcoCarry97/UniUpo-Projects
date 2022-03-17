@@ -12,7 +12,7 @@ problem.addIneq(ineq2)
 
 feases=[(1,0),(0,-1)]
 
-notfeases=[(0,0),(1,1),(-1,-1),(1,-1),(-1,1)]
+notfeases=[(0,0),(1,1),(-1,-1),(1,-1),(-1,1),(10,10)]
 
 results=[]
 for p in feases+notfeases:

@@ -35,11 +35,11 @@ class Problem:
         self.bnds=[(None,None),(None,None)]
 
     def addEq(self,eq):
-        assert(isinstance(eq,Equality)==False,"eq must be an Equality")
+        #assert(isinstance(eq,Equality)==False,"eq must be an Equality")
         self.eqs+=[eq]
 
     def addIneq(self,ineq):
-        assert(isinstance(ineq,Inequality)==False,"ineq must be an Inequality")
+        #assert(isinstance(ineq,Inequality)==False,"ineq must be an Inequality")
         self.ineqs+=[ineq]
 
 

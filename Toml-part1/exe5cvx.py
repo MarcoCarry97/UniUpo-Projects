@@ -1,4 +1,4 @@
-from cvxclasses import CvxProblem,CvxIneq,CvxEq,CvxResult
+from cvxUtils import CvxProblem,CvxIneq,CvxEq,CvxResult
 import cvxpy as cp
 import numpy as np
 

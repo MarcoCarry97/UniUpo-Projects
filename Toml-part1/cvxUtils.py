@@ -49,9 +49,19 @@ class CvxProblem:
         prob=cp.Problem(cp.Minimize(fun(x)),cons)
         prob.solve()
         res=CvxResult()
-        res.xstar=x.value
+        if isinstance(x,list):
+            l=[]
+            for sl in x:
+                for v in sl:
+                    l+=[v.value]
+            res.xstar=l
+        else:
+            res.xstar=x.value
         res.pstar=prob.value
-        res.lambdas=prob.constraints[0].dual_value
+        lambdas=[]
+        for con in prob.constraints:
+            lambdas+=[con.dual_value]
+        res.lambdas=lambdas
         #res.dstar=prob.
         return res
 

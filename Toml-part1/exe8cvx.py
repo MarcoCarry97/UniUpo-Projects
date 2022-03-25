@@ -27,6 +27,4 @@ for ineq in ineqs:
 res=problem.solve(p0)
 
 print("Result:\n")
-print("    x*="+str(res.xstar))
-print("    p*="+str(res.pstar))
-print("    l="+str(res.lambdas))
+res.printRes()

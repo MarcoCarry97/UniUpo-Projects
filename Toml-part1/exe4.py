@@ -1,4 +1,4 @@
-from classes import Inequality,Problem,Result
+from scipyUtils import Inequality,Problem,Result
 
 fzero=lambda x: x[0]**2 +1
 
@@ -14,12 +14,11 @@ notfeases=[0,1,5,6,7]
 
 results=[]
 for p in feases+notfeases:
+    #print(str(p)+" feasible? "+str(problem.isFeasible(p)))
     results+=[problem.solve(p,"SLSQP")]
 
 for r in results:
-    print("Point: "+str(r.point))
-    print("     Opt. value: "+str(r.value.fun))
-    print("     Opt. point: "+str(r.value.x))
+    r.printRes()
 
 def jacobian(x):
     return 2*x
@@ -29,18 +28,15 @@ def hessian(x):
 
 results=[]
 for p in feases+notfeases:
+    #print(str(p)+" feasible? "+str(problem.isFeasible(p)))
     results+=[problem.solveWithJacob(p,"SLSQP",jacobian)]
 
 for r in results:
-    print("Point: "+str(r.point))
-    print("     Opt. value: "+str(r.value.fun))
-    print("     Opt. point: "+str(r.value.x))
+    r.printRes()
 
 results=[]
 for p in feases+notfeases:
     results+=[problem.solveWithJacobHess(p,jacobian,hessian)]
 
 for r in results:
-    print("Point: "+str(r.point))
-    print("     Opt. value: "+str(r.value.fun))
-    print("     Opt. point: "+str(r.value.x))
+    r.printRes()

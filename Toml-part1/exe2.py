@@ -15,19 +15,16 @@ problem.addIneq(Inequality(lambda x:9*(x[0]**2)+(x[1]**2)-9))
 problem.addIneq(Inequality(lambda x:(x[0]**2)-x[1]))
 problem.addIneq(Inequality(lambda x:(x[1]**2)-x[0]))
 
-feas=(1,0)
-notfeas1=(7,-2)
-notfeas2=(0,0)
-points=[feas,notfeas1,notfeas2]
+feases=[(1,1),(4,3),(2,4)]
+notfeases=[(-1,-1),(0,0),(-3,2)]
+points=feases+notfeases
 
 results=[]
 for p in points:
-    results+=[Result(p,problem.solve(p,"SLSQP"))]
+    results+=[problem.solve(p,"SLSQP")]
 
 for r in results:
-    print("point "+str(r.point))
-    print("     pstar:"+ str(r.value.fun))
-    print("     xstar:"+str(r.value.x))
+    r.printRes()
 
 
 def jacobian(x):
@@ -40,21 +37,18 @@ def hessian(x):
 results=[]
 
 for p in points:
-    results+=[Result(p,problem.solveWithJacob(p,"SLSQP",jacobian))]
+    #print(str()+" feasible? "+str(problem.isFeasible(p)))
+    results+=[problem.solveWithJacob(p,"SLSQP",jacobian)]
 
 for r in results:
-    print("point "+str(r.point))
-    print("     pstar:"+ str(r.value.fun))
-    print("     xstar:"+str(r.value.x))
+    r.printRes()
 
 results=[]
 
 for p in points:
-    results+=[Result(p,problem.solveWithJacobHess(p,jacobian,hessian))]
+    results+=[problem.solveWithJacobHess(p,jacobian,hessian)]
 
 for r in results:
-    print("point "+str(r.point))
-    print("     pstar:"+ str(r.value.fun))
-    print("     xstar:"+str(r.value.x))
+    r.printRes()
 
 

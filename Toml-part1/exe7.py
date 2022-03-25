@@ -37,9 +37,7 @@ for p in feases+notfeases:
     results+=[problem.solve(p,"SLSQP")]
 
 for r in results:
-    print("Point: "+str(r.point))
-    print("     x*: "+str(r.value.x))
-    print("     p*: "+str(r.value.fun))
+    r.printRes()
 
 def jacobian(x):
     dx0=x[0]**-1
@@ -57,12 +55,11 @@ def hessian(x):
 results=[]
 
 for p in feases+notfeases:
+    print(str(p)+" feasible? "+str(problem.isFeasible(p)))
     results+=[problem.solveWithJacob(p,"SLSQP",jacobian)]
 
 for r in results:
-    print("Point: "+str(r.point))
-    print("     x*: "+str(r.value.x))
-    print("     p*: "+str(r.value.fun))
+    r.printRes()
 
 results=[]
 
@@ -70,6 +67,4 @@ for p in feases+notfeases:
     results+=[problem.solveWithJacobHess(p,jacobian,hessian)]
 
 for r in results:
-    print("Point: "+str(r.point))
-    print("     x*: "+str(r.value.x))
-    print("     p*: "+str(r.value.fun))
+    r.printRes()

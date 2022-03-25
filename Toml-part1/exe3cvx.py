@@ -27,9 +27,6 @@ for eq in eqs:
 
 res=p.solve(x0)
 
-print("Result:\n")
-print("    x*="+str(res.xstar))
-print("    p*="+str(res.pstar))
-print("    l="+str(res.lambdas))
+res.printRes()
 
 

@@ -21,8 +21,10 @@ xs=[x1,x2]
 
 for i in range(0, len(funs)):
     gradient=GradientDescent(funs[i],epss[i])
+    print(funs[i])
     for x0 in xs[i]:
         results+=[gradient.descend(x0)]
+        print("\n")
 
 print("Results: ")
 for r in results:

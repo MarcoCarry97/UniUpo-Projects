@@ -1,4 +1,4 @@
-from scipy.optimize import minimize
+import scipy.optimize as sp
 
 class Inequality:
     def __init__(self,func):
@@ -8,9 +8,9 @@ class Inequality:
         return(self.func(x))
 
     def applyBool(self,x):
-        return(self.apply(x)<=0)
+        return(self.apply(x)>=0)
 
-    def toDictio(self):
+    def toDictio(self): #convert the inequality in the format of scipy
         return({'type':'ineq','fun':self.func})
 
 class Equality:
@@ -23,7 +23,7 @@ class Equality:
     def applyBool(self,x):
         return(self.apply(x)==0)
 
-    def toDictio(self):
+    def toDictio(self): #convert the equality in the format of scipy
         return({'type':'eq','fun':self.func})
 
 class Problem:
@@ -44,35 +44,54 @@ class Problem:
 
 
 
-    def solve(self,x,m):
+    def solve(self,x,m): #solve the problem given the point x and the method m
         cons=list()
         fun=lambda x:-self.ptype*self.fzero(x)
         for eq in self.eqs+self.ineqs:
             cons+=[eq.toDictio()]
-        sol=minimize(fun,x,method=m,bounds=self.bnds,constraints=cons)
-        return Result(x,sol)
+        sol=sp.minimize(fun,x,method=m,bounds=self.bnds,constraints=cons)
+      
+        return Result(x,sol,sol.nit)
 
-    def solveWithJacob(self,x,m,myjac):
+    def solveWithJacob(self,x,m,myjac): #solve the problem using the jacobian
         cons=list()
         fun=lambda x:-self.ptype*self.fzero(x)
         for obj in self.eqs+self.ineqs :
             cons+=[obj.toDictio()]
-        sol=minimize(fun,x,method=m,bounds=self.bnds,constraints=cons,jac=myjac)
-        return Result(x,sol)
+        sol=sp.minimize(fun,x,method=m,bounds=self.bnds,constraints=cons,jac=myjac)
+        
+        return Result(x,sol,sol.nit)
 
 
-    def solveWithJacobHess(self,x,myjac,myhess):
+    def solveWithJacobHess(self,x,myjac,myhess): #solve the problem using the jacobian and the hessian
         cons=list()
         fun=lambda x:-self.ptype*self.fzero(x)
         for obj in self.eqs+self.ineqs :
             cons+=[obj.toDictio()]
-        sol=minimize(fun,x,bounds=self.bnds,constraints=cons,jac=myjac,hess=myhess)
-        return Result(x,sol)
+        sol=sp.minimize(fun,x,bounds=self.bnds,constraints=cons,jac=myjac,hess=myhess)
+        return Result(x,sol,sol.nit)
+
+    def isFeasible(self,x):
+        res=True
+        #print(x)
+        for op in self.eqs+self.ineqs:
+            tmp=op.applyBool(x)
+            #print(tmp)
+            res=res and tmp
+        return res
 
 class Result:
-    def __init__(self,point,value):
+    def __init__(self,point,value,numIt):
         self.point=point
         self.value=value
+        self.numIt=numIt
+
+    def printRes(self):
+        print("start: "+str(self.point))
+        print("xstar: "+str(self.value.x))
+        print("pstar: "+str(self.value.fun))
+        print("numIt: "+str(self.numIt))
+        print("\n")
 
     def compare(self,r):
         if(self.value.fun>r.value.fun):

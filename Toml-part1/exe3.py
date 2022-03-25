@@ -1,4 +1,4 @@
-from classes import Equality,Inequality,Problem,Result
+from scipyUtils import Equality,Inequality,Problem,Result
 
 fzero=lambda x:x[0]**2 + x[1]**2
 
@@ -9,17 +9,16 @@ p=Problem(fzero,-1)
 p.addIneq(ineq1)
 p.addIneq(ineq2)
 
-feases=[(1,1),(1,0)]
-notfeases=[(15,20),(30,-640),(1000,1004)]
+feases=[(1,1),(1,0),(1,0.5)]
+notfeases=[(5,-5),(7,-7),(10,-10)]
 
 results=[]
 for x in feases+notfeases:
-    results+=[Result(x,p.solve(x,"SLSQP"))]
+    #print(str(x)+" feasible? "+str(p.isFeasible(x)))
+    results+=[p.solve(x,"SLSQP")]
 
 for r in results:
-    print("point "+str(r.point))
-    print("     pstar:"+ str(r.value.fun))
-    print("     xstar:"+str(r.value.x))
+    r.printRes()
 
 def jacobian(x):
     return [2*x[0],2*x[1]]
@@ -30,19 +29,16 @@ def hessian(x):
 results=[]
 
 for x in feases+notfeases:
-    results+=[Result(x,p.solveWithJacob(x,"SLSQP",jacobian))]
+    #print(str(x)+" feasible? "+str(p.isFeasible(x)))
+    results+=[p.solveWithJacob(x,"SLSQP",jacobian)]
 
 for r in results:
-    print("point "+str(r.point))
-    print("     pstar:"+ str(r.value.fun))
-    print("     xstar:"+str(r.value.x))
+    r.printRes()
 
 results=[]
 
 for x in feases+notfeases:
-    results+=[Result(x,p.solveWithJacobHess(x,jacobian,hessian))]
+    results+=[p.solveWithJacobHess(x,jacobian,hessian)]
 
 for r in results:
-    print("point "+str(r.point))
-    print("     pstar:"+ str(r.value.fun))
-    print("     xstar:"+str(r.value.x))
+    r.printRes()

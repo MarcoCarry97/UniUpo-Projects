@@ -10,7 +10,10 @@ problem=Problem(fzero,-1)
 problem.addIneq(ineq1)
 problem.addIneq(ineq2)
 
-points=[(-1.34,-1.86),(-1.35,-1.86),(0,0),(0.5,-0.01),(1.86,-0.75),(1,0)]
+points=[(2.33,0.11),(1.25,0.18),(-0.12,2.18),(0.68,-1.49),(-1.28,0.66),(0.69,-0.06)]
+
+for p in points:
+    print(str(p) +" feasible? "+str(problem.isFeasible(p)))
 
 results=[]
 for p in points:

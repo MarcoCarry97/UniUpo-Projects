@@ -70,6 +70,10 @@ class CvxProblem:
         for con in prob.constraints:
             lambdas+=[con.dual_value]
         res.lambdas=lambdas
+        #print(str(prob.solver_stats.solve_time))
+        #print(str(prob.solver_stats.setup_time))
+        #print(str(prob.solver_stats.num_iters))
+        #print(str(prob.solver_stats.extra_stats))
         res.numIt=prob.solver_stats.num_iters
         #res.dstar=prob.
         

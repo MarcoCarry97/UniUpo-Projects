@@ -42,7 +42,7 @@ class GradientDescent:
         self.eps=eps
 
     def getT(self,x,d): #Backtracking line search
-        a=(30/2)*0.01 #randrange(1,30)*0.01
+        a=(31/2)*0.01 
         b=0.45
         count=0
         def cond(x0,t0,d0):
@@ -54,15 +54,17 @@ class GradientDescent:
         while cond(x,t,d):
             t=b*t
             count+=1
-            #print("getT")
         return t,count
+
+    def getDirection(self,x):
+        return -self.fun.applyGrad(x)[0]
 
     def descend(self,x0): #calc the optimal point beginning from x0
         print(x0)
         x=x0 #step 1
         count=0
         while self.fun.twoNorm(x)>self.eps: #step 5
-            d=-self.fun.applyGrad(x)[0] #step 2
+            d=self.getDirection(x)#step 2
             t,ct=self.getT(x,d) #step 3
             x=x+t*d #step 4
             count+=(ct+1)

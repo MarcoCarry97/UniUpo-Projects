@@ -2,18 +2,18 @@ from asyncio.windows_events import INFINITE
 from scipyUtils import Inequality
 from scipyUtils import Equality
 from scipyUtils import Problem
-import math
+import numpy as np
 
 
 starts=list()
 starts+=[(0,0),(10,20),(-10,1),(-30,-30)]
 
 def e(x):
-    if(x[0]<=50):
-        return math.exp(x[0])
-    else:
-        print("Overlimit")
-    return INFINITE;
+    #if(x[0]<=50):
+    return np.exp(x[0])
+    #else:
+     #   print("Overlimit")
+    #return INFINITE;
 
 poly=lambda x:4*(x[0]**2)+2*(x[1]**2)+x[0]*x[1]+2*x[1]+1
 
@@ -21,8 +21,8 @@ fzero=lambda x: e(x)*poly(x)
 
 print("The function fzero is convex because e^x is convex and the quadratic function too")
 
-ineq1=Inequality(lambda x:-x[0]*x[1]+x[0]+x[1]-1.5)
-ineq2=Inequality(lambda x:+x[0]*x[1]+10)
+ineq1=Inequality(lambda x:-(x[0]*x[1]-x[0]-x[1]+1.5))
+ineq2=Inequality(lambda x:-(-x[0]*x[1]-10))
 
 p=Problem(fzero,-1)
 p.addIneq(ineq1)
@@ -42,7 +42,7 @@ def jacobian(x):
     return  [dx0,dx1]
 
 def hessian(x):
-    dxx=e(x)*(4*x[0]**2+2*x[1]**2+4*x[0]*x[1]+2*x[1]+1+8*x[0]+4*x[1]+8*x[0]+4*x[1]+8)
+    dxx=e(x)*(4*x[0]**2+2*x[1]**2+4*x[0]*x[1]+2*x[1]+1+8*x[0]+4*x[1]+8*x[0]+4*x[1]+9)
     dxy=e(x)*(4*x[1]+4*x[0]+2+4)
     dyx=e(x)*(4*x[1]+4*x[0]+2+4)
     dyy=e(x)*4

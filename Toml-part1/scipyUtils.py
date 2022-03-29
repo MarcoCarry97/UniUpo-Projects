@@ -49,8 +49,11 @@ class Problem:
         fun=lambda x:-self.ptype*self.fzero(x)
         for eq in self.eqs+self.ineqs:
             cons+=[eq.toDictio()]
-        sol=sp.minimize(fun,x,method=m,bounds=self.bnds,constraints=cons)
-      
+        sol=sp.minimize(fun,[x],method=m,bounds=self.bnds,constraints=cons)
+        print(x)
+        print("\n")
+        print(sol)
+        print("\n")
         return Result(x,sol,sol.nit)
 
     def solveWithJacob(self,x,m,myjac): #solve the problem using the jacobian
@@ -59,7 +62,10 @@ class Problem:
         for obj in self.eqs+self.ineqs :
             cons+=[obj.toDictio()]
         sol=sp.minimize(fun,x,method=m,bounds=self.bnds,constraints=cons,jac=myjac)
-        
+        print(x)
+        print("\n")
+        print(sol)
+        print("\n")
         return Result(x,sol,sol.nit)
 
 
@@ -69,6 +75,10 @@ class Problem:
         for obj in self.eqs+self.ineqs :
             cons+=[obj.toDictio()]
         sol=sp.minimize(fun,x,bounds=self.bnds,constraints=cons,jac=myjac,hess=myhess)
+        print(x)
+        print("\n")
+        print(sol)
+        print("\n")
         return Result(x,sol,sol.nit)
 
     def isFeasible(self,x):

@@ -3,6 +3,8 @@ library(car)
 library(carData)
 library(sandwich)
 
+library(lmtest)
+
 v1=rnorm(200, mean=10, sd=50)
 v2=rnorm(200, mean=50, sd=50)
 v3=rnorm(200, mean=80, sd=50)
@@ -21,24 +23,26 @@ data=mergeRows(v1n, v2n, common.only=FALSE)
 data=mergeRows(as.data.frame(data), v3n, common.only=FALSE)
 head(data)
 
-posthoc <- function(x,y,data)
+posthoc <- function(v1,v2,catName,data)
 {
-  AnovaModel <- aov(x ~ y, data=data)
-  # Boxplot(x~y,data=data,id=FALSE)
-  # dwtest(AnovaModel, alternative ="two.sided")
-  # shapiro.test(residuals(AnovaModel))
-  # bptest(AnovaModel)
+  model <- aov(v1$x1~data$x2, data=data)
+  shapiro.test(residuals(model)) #normality
+  dwtest(amodel, alternative ="two.sided")#omogeneity
+  #leveneTest(v2,data=data) #independency
+  #bptest(amodel)
 }
 
 ### ANOVA on simulated data ####
-AnovaModel.1 <- aov(x1 ~ x2, data=data)
-summary(AnovaModel.1)
-Boxplot(x1~x2,data=data,id=FALSE)
-library(lmtest)
-dwtest(AnovaModel.1, alternative ="two.sided")
+#AnovaModel.1 <- aov(x1 ~ x2, data=data)
+#summary(AnovaModel.1)
+#Boxplot(x1~x2,data=data,id=FALSE)
 
-shapiro.test(residuals(AnovaModel.1))
+#dwtest(AnovaModel.1, alternative ="two.sided")
 
-bptest(AnovaModel.1)
+#shapiro.test(residuals(AnovaModel.1))
 
-posthoc(v1n,v2n,data)
+#bptest(AnovaModel.1)
+
+posthoc(v1n,data)
+posthoc(v2n,data)
+posthoc(v3n,data)

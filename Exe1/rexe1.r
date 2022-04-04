@@ -86,6 +86,8 @@ t1=t.test(n1,n2)
 t2=t.test(n1,n3)
 t3=t.test(n2,n3)
 
+
+shapiro.test(n1)
 #TODO
 
 #step e: Use the t-test to verify if there are differences

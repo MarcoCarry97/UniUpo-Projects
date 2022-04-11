@@ -3,6 +3,7 @@ library(carData)
 library(sandwich)
 library(lmtest)
 library(RcmdrMisc)
+library(agricolae)
 
 v1=rnorm(200, mean=10, sd=50)
 v2=rnorm(200, mean=50, sd=50)
@@ -31,59 +32,132 @@ createData=function(x,y,z)
 
 #PART 1
 
-posthoc=function(formula,data)
+posthoc=function(x1,x2,n1,n2,data)
 {
+  formula=x1~x2
   model=aov(formula,data=data) 
   print(shapiro.test(residuals(model))) #normality
   print(dwtest(model,alternative = "two.sided")) #independency
   print(bptest(model)) #omogeneity
+  #print(LSD.test(model,n1)) 
+ # print(LSD.test(model,n2))
   #print(leveneTest(formula,data=data))
 }
 
 data=createData(v1,v2,v3)
 print("v1 and v2")
-posthoc(v1~v2,data)
+posthoc(v1,v2,"x1","x2",data)
 print("v1 and v3")
-posthoc(v1~v3,data)
+posthoc(v1,v3,"x1","x2",data)
 print("v2 and v3")
-posthoc(v2~v3,data)
+posthoc(v2,v3,"x1","x2",data)
 
 #PART 2
 
 diabetes=read.csv("diabetes.csv")
 
-catByYears=factor(ifelse(diabetes$Age<=30,"young",
-                  ifelse(diabetes$Age<=50,"middle","old")))
+
+
+diabetes$AgeCat=factor(ifelse(diabetes$Age<=30,"young",
+                              ifelse(diabetes$Age<=50,"middle","old")))
+
+diabetes$OutCat=factor(ifelse(diabetes$Outcome==1,"True","False"))
+
+summary(diabetes)
+#Q1
+
+postgroup=function(data,independent)
+{
+  print("PREGNANCY")
+  posthoc(data$Pregnancies,independent,"AgeCat","Pregnancies",data)
+  print("GLUCOSE")
+  posthoc(data$Glucose,independent,"AgeCat","Glucose",data)
+  print("BLOOD PRESSURE")
+  posthoc(data$BloodPressure,independent,"AgeCat","BloodPressure",data)
+  print("THICKNESS")
+  posthoc(data$SkinThickness,independent,"AgeCat","SkinThickness",data)
+  print("INSULIN")
+  posthoc(data$Insulin,independent,"AgeCat","Insulin",data)
+  print("BMI")
+  posthoc(data$BMI,independent,"AgeCat","BMI",data)
+  print("DIABETES FUNCTION")
+  posthoc(data$DiabetesPedigreeFunction,independent,"AgeCat","DiabetesPedigreeFunction",data)
+  #print("OUTCOME")
+  #posthoc(data$Outcome,data$AgeCat,"AgeCat","Outcome",data)
+}
+
+
+
+plotline=function(data)
+{
+  plot(density(data$Pregnancies),main="Diabetes")
+  lines(density(data$Glucose),col=2)
+  lines(density(data$BloodPressure),col=3)
+  lines(density(data$SkinThickness),col=4)
+  lines(density(data$Insulin),col=5)
+  lines(density(data$BMI),col=6)
+  lines(density(data$DiabetesPedigreeFunction),col=7)
+}
+
+boxgroup=function(data)
+{
+  boxplot(data$Pregnancies~data$AgeCat+data$Outcome,data=data)
+  boxplot(data$Glucose~data$AgeCat+data$Outcome,data=data)
+  boxplot(data$BloodPressure~data$AgeCat+data$Outcome,data=data)
+  boxplot(data$SkinThickness~data$AgeCat+data$Outcome,data=data)
+  boxplot(data$Insulin~data$AgeCat+data$Outcome,data=data)
+  boxplot(data$BMI~data$AgeCat+data$Outcome,data=data)
+  boxplot(data$DiabetesPedigreeFunction~data$AgeCat+data$Outcome,data=data)
+  #boxplot(data$Pregnancies~data$AgeCat+data$Outcome,data=data)
+  
+}
+
+formhoc=function(formula,data)
+{
+  model=aov(formula,data=data) 
+  print(shapiro.test(residuals(model))) #normality
+  print(dwtest(model,alternative = "two.sided")) #independency
+  print(bptest(model))
+}
+
+analyzeInteraction=function(depVar,indVar1,indVar2,data)
+{
+  formula=depVar~indVar1+indVar2
+  formhoc(formula,data)
+}
+
+analyzeInteractionOne=function(depVar,indVar,data)
+{
+  formula=depVar~indVar
+  formhoc(formula,data)
+}
+  
 
 #Q1
 
-postgroup=function(cat,data)
-{
-  print("PREGNANCY")
-  posthoc(data$Age~data$Pregnancies,data)
-  print("GLUCOSE")
-  posthoc(data$Age~data$Glucose,data)
-  print("BLOOD PRESSURE")
-  posthoc(data$Age~data$BloodPressure,data)
-  print("THICKNESS")
-  posthoc(data$Age~data$SkinThickness,data)
-  print("INSULIN")
-  posthoc(data$Age~data$Insulin,data)
-  print("BMI")
-  posthoc(data$Age~data$BMI,data)
-  print("DIABETES FUNCTION")
-  posthoc(data$Age~data$DiabetesPedigreeFunction,data)
-  print("OUTCOME")
-  posthoc(data$Age~data$Outcome,data)
-}
+print("\n\n\n\n\n\n\n\n\n")
 
-postgroup(catByYears,diabetes)
+postgroup(diabetes,diabetes$AgeCat)
+
+plotline(diabetes)
 
 #Q2
+
+postgroup(diabetes,diabetes$OutCat)
+  
+boxgroup(diabetes)
+
 
 #Q3
 
 
+analyzeInteraction(diabetes$BloodPressure,diabetes$AgeCat,diabetes$OutCat)
 
+
+#Q4
+
+analyzeInteractionOne(diabetes$Insulin,diabetes$AgeCat,diabetes)
+analyzeInteractionOne(diabetes$Insulin,diabetes$OutCat,diabetes)
+analyzeInteraction(diabetes$Insulin,diabetes$AgeCat,diabetes$OutCat,diabetes)
 
 

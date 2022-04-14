@@ -14,6 +14,13 @@ linearRegression=function(x,y,mydata)
   return(model)
 }
 
+linearRegr=function(formula,data)
+{
+  model=lm(formula,data)
+  print(model)
+  return(model)
+}
+
 
 #model=linearRegression(x,y,data)
 
@@ -37,6 +44,7 @@ makePrediction=function(model,mydata)
 testModel=function(model)
 {
   qqnorm(residuals(model))
+  qqline(residuals(model),col="red")
   print(shapiro.test(residuals(model)))
   print(bptest(model))
   print(dwtest(model))
@@ -71,10 +79,15 @@ linearRegression(data$X1500m,data$Points,data)
 
 bestCor=data$X400m
 
+
+print("CORRELATION")
+cor(heptathlon)
+
 model=linearRegression(data$X1500m,bestCor,data)
-newdata=data.frame(x400m=55)
+
 makePrediction(model,newdata)
 testModel(model)
+
 plotModel(model)
 
 #testModel(model)

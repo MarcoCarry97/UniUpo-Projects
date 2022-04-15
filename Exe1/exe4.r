@@ -40,7 +40,18 @@ kmo <- function(x)
   return(list(KMO=KMO, MSA=MSA))
 }
 
-makePCA=function(data,offset)
+makePCA=function(data)
+{
+  res=PCA(data)
+  print(res$eig)
+  print(res$var$coord)
+  print(res$var$cor)
+  plot(res,choix="var")
+  plot(res,choix="ind")
+  return(res)
+}
+
+makePCAExclude=function(data,offset)
 {
   res=PCA(data,quanti.sup = offset)
   print(res$eig)
@@ -82,12 +93,12 @@ changeDirection=function(data)
 stdHepta=standard(heptathlon)
 correlation(stdHepta)
 kmo(stdHepta)
-pca=makePCA(stdHepta,ncol(stdHepta))
+pca=makePCA(stdHepta)
 print(pca)
 stdHepta=changeDirection(stdHepta)
 
 #PART 2
-pca=makePCA(stdHepta,offset=ncol(stdHepta))
+pca=makePCAExclude(stdHepta,offset=ncol(stdHepta))
 stdHepta$PC1=pca$ind$coord[,1]
 stdHepta$PC2=pca$ind$coord[,2]
 n=nrow(stdHepta)

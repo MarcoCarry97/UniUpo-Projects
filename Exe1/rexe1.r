@@ -72,11 +72,11 @@ size=50
 
 mean1=7
 
-mean2=9
+mean2=22
 
 sd1=15
 
-sd2=3
+sd2=70
 
 n1=rnorm(size,mean1,sd1)
 n2=rnorm(size,mean1,sd2)
@@ -97,4 +97,6 @@ x400m=data$X400m
 
 t4=t.test(x100m,x400m)
 
+plot(density(x100m),type="l")
+lines(density(x400m))
 #TODO

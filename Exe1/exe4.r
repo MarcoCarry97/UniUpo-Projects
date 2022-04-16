@@ -15,8 +15,6 @@ standard=function(data)
   return(std)
 }
 
-stdHepta=standard(heptathlon)
-
 correlation=function(data)
 {
   r=cor(data[,])
@@ -87,6 +85,20 @@ changeDirection=function(data)
   return(data)
 }
 
+changeDirection2=function(data)
+{
+  data$hurdles=max(data$hurdles)-data$hurdles
+  data$javelin=max(data$javelin)-data$javelin
+  return(data)
+}
+
+changeDirection3=function(data)
+{
+  data$hurdles=max(data$hurdles)-data$hurdles
+  data$highjump=max(data$highjump)-data$highjump
+  return(data)
+}
+
 #PART 1
 
 
@@ -95,7 +107,9 @@ correlation(stdHepta)
 kmo(stdHepta)
 pca=makePCA(stdHepta)
 print(pca)
-stdHepta=changeDirection(stdHepta)
+#stdHepta=changeDirection(stdHepta)
+#stdHepta=changeDirection2(stdHepta)
+stdHepta=changeDirection3(stdHepta)
 
 #PART 2
 pca=makePCAExclude(stdHepta,offset=ncol(stdHepta))

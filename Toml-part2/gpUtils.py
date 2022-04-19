@@ -8,7 +8,7 @@ class GeoIneq:
         return self.fun(x)
 
     def applyBool(self,x):
-        return self.apply(x)<=1
+        return self.apply(x)
 
     def toLambda(self):
         return lambda x:self.apply(x)

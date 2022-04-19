@@ -1,8 +1,9 @@
 
-from gpkit import Variable
+import gpkit as gp
+import numpy as np
+import cvxpy as cp
 from gpUtils import GeoIneq,GeoProblem
 from scipyUtils import Inequality
-import numpy as np
 import scipyUtils as sp
 from cvxUtils import CvxIneq, CvxProblem
 
@@ -56,7 +57,7 @@ class Optimizer:
         problem=GeoProblem(fzero)
         for c in cons:
             problem.addIneq(c)
-        Tw=Variable("Tw")
+        Tw=gp.Variable("Tw")
         #problem.addVar(Tw)
         res=problem.solve(Tw)
         return res
@@ -168,132 +169,3 @@ class LatencyOptimizer(Optimizer):
         ineq3=GeoIneq(lambda Tw:Tw,lambda Tw:self.time.wmax)
         return [ineq1,ineq2,ineq3,bot]
 
-#PROBLEM 3: FIND AN EQUILIBRIUM BETWEEN ENERGY AND LATENCY
-
-class BalanceOptimizer:
-
-    #def getCoefficients(self):
-     #   a=self.calcAlpha(self.numRings)
-      #  b=self.calcBeta(1)
-       # return a,b
-    
-    def __init__(self,payload,radiorate,numRings,numNeighbors,maxEnergy,latencies,times,samplingFreq):
-        self.payload=payload
-        self.radiorate=radiorate
-        self.numRings=numRings
-        self.numNeighbors=numNeighbors
-        self.maxEnergy=maxEnergy
-        self.latency=latencies
-        self.time=times
-        self.samplingFreq=samplingFreq
-        times.hdr=latencies.hdr/radiorate
-        times.ack=latencies.ack/radiorate
-        times.ps=latencies.ps/radiorate
-        times.data=times.hdr+payload/radiorate+times.ack
-
-    def numNodes(self):
-        return self.numNeighbors*((self.numRings)**2)
-
-    def outFrequency(self,Fs,d):
-        D=self.numRings
-        if(d==D):
-            return Fs
-        else:
-            return ((D**2-d**2+2*d-1)/(2*d-1))*Fs
-
-    def inFrequency(self,Fs,d):
-        D=self.numRings
-        C=self.numNeighbors
-        if(d==0):
-            return (C*D**2)*Fs
-        else:
-            return ((D**2-d**2)/(2*d-1))*Fs
-
-    def numBiasNodes(self,d):
-        return self.numNeighbors*d
-
-    def numInputs(self,d):
-        if(d==self.numRings):
-            return 0
-        elif(d==0):
-            return self.numNeighbors
-        else:
-            return ((2*d+1)/(2*d-1))
-
-    def calcAlpha(self,d):
-        Tcs=self.time.cs
-        Tal=self.time.al
-        Tps=self.time.ps
-        Tack=self.time.ack
-        Tdata=self.time.data
-        B=self.numBiasNodes(d)
-        Fout=self.outFrequency(self.samplingFreq,d)
-        Fin=self.inFrequency(self.samplingFreq,d)
-        Fb=B*Fout
-        a1=Tcs+Tal+(3/2)*Tps*((Tps+Tal)/2+Tack+Tdata)*Fb
-        a3=((Tps+Tal)/2+Tcs+Tal+Tack+Tdata)*Fout +((3/2)*Tps+Tack+Tdata)*Fin+(3/4)*Tps*Fb
-        a2=Fout/2
-        return [a1,a2,a3]
-
-    def calcBeta(self,d):
-        Tcw=self.time.cw
-        Tdata=self.time.data
-        b1=d/2
-        b2=(Tcw/2+Tdata)*d
-        return [b1,b2]
-
-    def getCoefficients(self):
-        a=self.calcAlpha(1)
-        b=self.calcBeta(self.numRings)
-        return a,b
-
-    def bottleneck(self):
-        I=self.numInputs(0)
-        return GeoIneq(lambda Tw: I*self.calcEnergy(Tw,1),lambda x:1/4)
-
-    def calcEnergy(self,Tw,d):
-        Tack=self.time.ack
-        Tdata=self.time.data
-        Tcs=self.time.cs
-        Tal=self.time.al
-        numInput=self.numInputs(d-1)
-        Fout=self.outFrequency(self.samplingFreq,d)
-        Ttx=Tack+Tdata+Tw/2
-        return (Tcs+Tal+Ttx)*Fout
-
-    def makeFzero(self):
-        a,b=self.getCoefficients()
-        e=lambda Tw:a[0]/Tw+a[1]*Tw+a[2]
-        l=lambda Tw:b[0]*Tw+b[1]
-        ePart=lambda Tw: np.log(e(self.time.wmin)-Tw[1])
-        lPart=lambda Tw: np.log(l(self.time.wmax)-Tw[2])
-        fzero=lambda Tw:ePart(Tw)+lPart(Tw)
-        return fzero
-
-    def makeConstraints(self):
-        a,b=self.getCoefficients()
-        bot=self.bottleneck()
-        e=lambda Tw:a[0]/Tw[0]+a[1]*Tw[0]+a[2]
-        l=lambda Tw:b[0]*Tw[0]+b[1]
-        ineq1=GeoIneq(lambda Tw:e(self.time.wmin),lambda Tw:e(Tw[0]))
-        ineq2=GeoIneq(lambda Tw:Tw[1],lambda Tw:e(Tw[0]))
-        ineq3=GeoIneq(lambda Tw:l(self.time.wmax), lambda Tw:l(Tw[0]))
-        ineq4=GeoIneq(lambda Tw:Tw[2], lambda Tw:l(Tw[0]))
-        ineq5=GeoIneq(lambda Tw:Tw, lambda Tw:self.time.wmin)
-        ineq6=GeoIneq(lambda Tw:self.time.wmax, lambda Tw:Tw[0])
-
-        return [ineq1,ineq2,ineq3,ineq4,ineq5,ineq6,bot]
-
-    def solve(self):
-        fzero=self.makeFzero()
-        cons=self.makeConstraints()
-        problem=CvxProblem(fzero,-1)
-        for c in cons:
-            problem.addIneq(c)
-        Tw=0
-        E=0
-        L=0
-        x=[Tw,E,L]
-        #problem.addVar(Tw)
-        res=problem.solve(x,"SLSQP")
-        return res

@@ -65,6 +65,7 @@ class CvxProblem:
         cons=[]
         for obj in self.eqs+self.ineqs:
             cons+=[obj.applyBool(x)]
+            print("ok")
         prob=cp.Problem(cp.Minimize(fun(x)),cons)
         prob.solve()
         res=CvxResult()

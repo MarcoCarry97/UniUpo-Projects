@@ -61,34 +61,27 @@ class CvxProblem:
         self.eqs+=[eq]
 
     def solve(self,x):
-        fun=lambda x0: -self.ptype*self.fzero(x0)
+        fun=None
+        if self.ptype==1:
+            fun=cp.Maximize(self.fzero(x))
+        else:
+            fun=cp.Minimize(self.fzero(x))
         cons=[]
         for obj in self.eqs+self.ineqs:
             cons+=[obj.applyBool(x)]
-            print("ok")
-        prob=cp.Problem(cp.Minimize(fun(x)),cons)
+        prob=cp.Problem(fun,cons)
         prob.solve()
         res=CvxResult()
-        if isinstance(x,list):
-            l=[]
-            for sl in x:
-                for v in sl:
-                    l+=[v.value]
-            res.xstar=l
-        else:
-            res.xstar=x.value
+        l=[]
+        for xi in x:
+            l+=[xi.value]
+        res.xstar=l
         res.pstar=prob.value
         lambdas=[]
         for con in prob.constraints:
             lambdas+=[con.dual_value]
         res.lambdas=lambdas
-        #print(str(prob.solver_stats.solve_time))
-        #print(str(prob.solver_stats.setup_time))
-        #print(str(prob.solver_stats.num_iters))
-        #print(str(prob.solver_stats.extra_stats))
-        res.numIt=prob.solver_stats.num_iters
-        #res.dstar=prob.
-        
+        res.numIt=prob.solver_stats.num_iters       
         return res
 
     def toConvex(self):

@@ -1,72 +1,57 @@
-import gpkit as gp
-import cvxpy as cp
+from cvxUtils import CvxProblem,CvxIneq,CvxResult
 from supply import Optimizer,Latency,Time
-import numpy as np
-from cvxUtils import CvxResult
+import cvxpy as cp
 
-lat=Latency(5000,4,9,9,5)
+def preparation():     #prepare the optimizer, it has a method to compute the coefficient a and b
+    lat=Latency(5000,4,9,9,5)
+    time=Time(0.95,15*0.62,2.6,500,100)
+    payload=32
+    radiorate=31.25
+    numRings=8
+    numNeighbors=5
+    maxEnergy=1
+    sampleFreq=1/(60*30*1000)
+    opt=Optimizer(payload,radiorate,numRings,numNeighbors,maxEnergy,lat,time,sampleFreq)
+    return opt
 
-time=Time(0.95,15*0.62,2.6,500,100)
-
-payload=32
-radiorate=31.25
-numRings=8
-numNeighbors=5
-maxEnergy=1
-sampleFreq=1/(60*30*1000)
-
-def bottleneck(opt,Tw):
+def bottleneck(opt): #bottleneck constraint
     I=opt.numInputs(0)
-    return I*opt.calcEnergy(Tw,1)<=1/4
+    return CvxIneq(lambda x:I*opt.calcEnergy(x[0],1)-1/4)
 
-opt=Optimizer(payload,radiorate,numRings,numNeighbors,maxEnergy,lat,time,sampleFreq)
+def vars(): #variables
+    Tw=cp.Variable()
+    E=cp.Variable()
+    L=cp.Variable()
+    return [Tw,E,L]
+
+opt=preparation()
 
 a,b=opt.getCoefficients()
 
-energy=lambda Tw:a[0]*Tw**-1+a[1]*Tw+a[2]
-latency=lambda Tw:b[0]*Tw+b[1]
+energy=lambda x:a[0]*x**-1+a[1]*x+a[2] #functions to calc energy and latency
+latency=lambda x:b[0]*x+b[1]
 
-Ew=energy(time.wmin)
-Lw=latency(time.wmax)
+Ew=energy(opt.time.wmin) #worst cases
+Lw=latency(opt.time.wmax)
 
-Tw=cp.Variable()
-E=cp.Variable()
-L=cp.Variable()
+fzero=lambda x:cp.log(Ew-x[1])+cp.log(Lw-x[2]) #function to maximize
 
-fzero=cp.log(Ew-E)+cp.log(Lw-L)
 
-ineq1=Ew>=energy(Tw)
-ineq2=E>=energy(Tw)
-ineq3=Lw>=latency(Tw)
-ineq4=L>=latency(Tw)
-ineq5=Tw>=time.wmin
-ineq6=time.wmax>=Tw
-ineq7=bottleneck(opt,Tw)
+#function to optimize
+ineq0=bottleneck(opt)
+ineq1=CvxIneq(lambda x:-Ew+energy(x[0]))
+ineq2=CvxIneq(lambda x:-x[1]+energy(x[0]))
+ineq3=CvxIneq(lambda x: -Lw+energy(x[0]))
+ineq4=CvxIneq(lambda x: -x[2]+latency(x[0]))
+ineq5=CvxIneq(lambda x: -x[0]+opt.time.wmin)
+ineq6=CvxIneq(lambda x: -opt.time.wmax+x[0])
 
-cons=[ineq1,ineq2,ineq3,ineq4,ineq4,ineq5,ineq6,ineq7]
+cons=[ineq0,ineq1,ineq2,ineq3,ineq4,ineq5,ineq6]
 
-def solve(fzero,cons):
-    prob=cp.Problem(cp.Maximize(fzero),cons)
-    prob.solve()
-    res=CvxResult()
-    #if isinstance(x,list):
-    #    l=[]
-    #    for sl in x:
-    #        for v in sl:
-    #            l+=[v.value]
-    #    res.xstar=l
-    #else:
-    #    res.xstar=x.value
-    res.xstar=[Tw.value,E.value,L.value]
-    res.pstar=prob.value
-    lambdas=[]
-    for con in prob.constraints:
-        lambdas+=[con.dual_value]
-    res.lambdas=lambdas
-    res.numIt=prob.solver_stats.num_iters
-    #res.dstar=prob.  
-    return res
-
-res=solve(fzero,cons)
-
+#problem resolution
+problem=CvxProblem(fzero,1)
+for ineq in cons:
+    problem.setIneq(ineq)
+x=vars()
+res=problem.solve(x)
 res.printRes()

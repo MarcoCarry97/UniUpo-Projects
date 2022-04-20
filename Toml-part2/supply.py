@@ -1,11 +1,6 @@
 
 import gpkit as gp
-import numpy as np
-import cvxpy as cp
 from gpUtils import GeoIneq,GeoProblem
-from scipyUtils import Inequality
-import scipyUtils as sp
-from cvxUtils import CvxIneq, CvxProblem
 
 #CLASS CONTAINING ALL THE LATENCIES
 

@@ -1,6 +1,7 @@
 from cvxUtils import CvxProblem,CvxIneq,CvxResult
 from supply import Optimizer,Latency,Time
 import cvxpy as cp
+from plotter import Plotter
 
 def preparation():     #prepare the optimizer, it has a method to compute the coefficient a and b
     lat=Latency(5000,4,9,9,5)
@@ -23,6 +24,8 @@ def vars(): #variables
     E=cp.Variable()
     L=cp.Variable()
     return [Tw,E,L]
+
+
 
 opt=preparation()
 

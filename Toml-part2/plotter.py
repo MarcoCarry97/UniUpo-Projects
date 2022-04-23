@@ -7,6 +7,8 @@ Created on Thu Apr 21 10:02:51 2022
 
 from matplotlib import pyplot as plt
 import numpy as np
+import os
+import shutil as sh
 
 class Plotter:
     def __init__(self,funx,funy):
@@ -19,15 +21,19 @@ class Plotter:
         self.limitx=(None,None)
         self.limity=(None,None)
         
-    def show(self,nmin,nmax,step):
+    def show(self,nmin,nmax,step,delete=False):
         n=np.arange(nmin,nmax,step)
         x=self.funx(n)
         y=self.funy(n)
+        fig=plt.figure()
         plt.plot(x,y)
         plt.xlabel(self.xlab,fontSize=self.size)
         plt.ylabel(self.ylab,fontSize=self.size)
         plt.title(self.title, fontSize=self.size)
-        
+        if(os.path.exists("./plots") and delete):
+            sh.rmtree("./plots")
+            os.mkdir("./plots")
+        fig.savefig("./plots/"+self.title+".jpg")
         plt.show()
         
     def labels(self,xlab,ylab):

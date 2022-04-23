@@ -123,7 +123,7 @@ class Optimizer:
         Tdata=self.time.data
         Tcs=self.time.cs
         Tal=self.time.al
-        numInput=self.numInputs(d-1)
+        #numInput=self.numInputs(d-1)
         Fout=self.outFrequency(self.samplingFreq,d)
         Ttx=Tack+Tdata+Tw/2
         return (Tcs+Tal+Ttx)*Fout

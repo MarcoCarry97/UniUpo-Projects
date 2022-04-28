@@ -45,5 +45,6 @@ for i in range (0,len(sampleFreqs)):
     delete=False
     plot(lambda x:x,energy,"Tw","Energy(Tw)","Energy "+measureString,opt)
     if( i==0):
-        plot(lambda x:x,latency,"Tw","Latency(Tw)","Latency "+measureString,opt)
+        plot(lambda x:x,latency,"Tw (ms)","Latency(Tw)","Latency "+measureString,opt)
     plot(lambda x:x,balance,"Tw","Balance(Tw)","Balance "+measureString,opt)
+    

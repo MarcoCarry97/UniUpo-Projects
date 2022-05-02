@@ -34,7 +34,8 @@ for e in enerList: #trying with different budgets of energy
         print("Solution for the second problem: (Fs: "+str(Fs)+" Hz)")
         res.printRes()
         print("\n\n\n\n")
-        timeWorks[i]+=[res.xstar["Tw"]]
+        
+        timeWorks[i]+=[round(res.xstar["Tw"],1)]
 
 for i in range(0,len(timeWorks)): #making a plot
     p=Plotter(lambda x:enerList,lambda x:timeWorks[i])

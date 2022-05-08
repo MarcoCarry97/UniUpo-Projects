@@ -6,9 +6,8 @@ Created on Sun May  8 10:29:36 2022
 """
 
 from base import prepareData
-from dplotter import BoxPlotter
+import dplotter as dp
 import numpy as np
-from dplotter import Plotter
 
 def sensorData():
     listfiles=["captor17013-sensor1.csv",
@@ -19,11 +18,9 @@ def sensorData():
     return prepareData(listfiles, ";")
 
 data=sensorData()
-#print(data)
-#pd.set_option("display.max.columns", None)
-delete=True
-#print(data)
-bp=BoxPlotter(data)
-bp.show()
-
-
+delete=False
+for ptype in dp.plotTypes():
+    p=dp.Plotter()
+    y=data["Temp"]
+    x=np.arange(0,len(y),1)
+    p.show(ptype,x, y)

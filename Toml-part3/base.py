@@ -10,6 +10,14 @@ def readData(filename,separator):
     data=data.dropna()
     if("date" in data.keys()):
         data["date"]=pd.to_datetime(data["date"]).dt.strftime('%Y-%m-%dT%H:%M')
+    if("Sensor_O3" in data.keys()):
+        nums=[]
+        for n in data["Sensor_O3"]:
+            if n.count(".")>1:
+                n=n.replace(".","",1)
+            nums+=[np.float64(n)]
+        data["Sensor_O3"]=np.array(nums)
+                
     data.head()
     return data;
 

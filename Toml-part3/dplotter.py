@@ -10,62 +10,75 @@ import numpy as np
 import os
 import shutil as sh
 import pandas as pd
+import seaborn as sb
+
+def plotTypes():
+    return [
+            "bar",
+            "count",
+            "scatter",
+            "pain",
+            "line",
+            "box",
+            "strip",
+            "violin",
+            "heat"
+        ]
 
 class Plotter:
-    def __init__(self,datax,datay):
-        self.datax=datax
-        self.datay=datay
-        self.xlab="x"
-        self.ylab="y"
-        self.title="plot"
+    def __init__(self):
+        self.xlabel="x"
+        self.ylabel="y"
+        self.ptitle="plot"
         self.size=10
-        self.limitx=(None,None)
-        self.limity=(None,None)
-        
-    def show(self,delete=False):
-        x=self.datax
-        y=self.datay
-        fig=plt.figure()
-        plt.plot(x,y)
-        plt.xlabel(self.xlab,fontSize=self.size)
-        plt.ylabel(self.ylab,fontSize=self.size)
-        plt.title(self.title, fontSize=self.size)
-        if(os.path.exists("./plots") and delete):
-            sh.rmtree("./plots")
-            os.mkdir("./plots")
-        fig.savefig("./plots/"+self.title+".jpg")
-        plt.show()
-        
-    def labels(self,xlab,ylab):
-        self.xlab=xlab
-        self.ylab=ylab
-        
-    def fontSize(self,size):
-        self.size=size
-     
-    def limits(self,xmin,xmax,ymin,ymax):
-        self.limitx=(xmin,xmax)
-        self.limity=(ymin,ymax)
-      
-        
-      
-        
-      
-        
-class BoxPlotter(Plotter):
-    def __init__(self, data):
-        self.data=data
-        self.xlab="x"
-        self.ylab="y"
-        self.title="plot"
-        self.size=10
-        
-    def show(self,delete=False):
-        keys=[]
-        by="Sensor_O3"
-        for key in self.data.keys():
-            if(key!="date" and key!=by):
-                keys+=[key]
-        self.data.boxplot(column=keys,by=by,grid=False, color="black")
+        sb.set_style("whitegrid")
     
-       
+    def labels(self,x,y):
+        self.xlabel=x
+        self.ylabel=y
+    
+    def title(self,t):
+        self.ptitle=t
+    
+    def show(self,plotType,x,y,delete=False,save=False,hue=None,dking=None,vmin=-1,vmax=1):
+        fig=plt.figure(figsize=(10,9))
+        plt.xlabel(self.xlabel,fontsize=self.size)
+        plt.ylabel(self.xlabel,fontsize=self.size)
+        plt.title(self.ptitle,fontsize=self.size)
+        p=self.choosePlot(plotType,x=x,y=y)
+        plt.show()
+        if(os.path.exists("./plot") and delete and save):
+            sh.rmtree("./plot")
+        if(delete and save):
+            os.mkdir("./plot")
+        fig.savefig(self.ptitle+".jpg")
+        
+    
+        
+    def choosePlot(self,x=None,y=None,hue=None,dkind=None,vmin=-1,vmax=1):
+        p=None
+        plotType=self.plotType
+        if(plotType=="bar"):
+            p=sb.barplot(x=x,y=y)
+        elif(plotType=="count"):
+            p=sb.countplot(x=x,y=y)
+        elif(plotType=="scatter"):
+            p=sb.scatterplot(x=x,y=y)
+        elif(plotType=="pain"):
+            p=sb.pairplot(x,hue=hue,diag_kind=dkind)
+        elif(plotType=="line"):
+            p=sb.lineplot(x=x, y=y)
+        elif(plotType=="box"):
+            p=sb.boxplot(data=x)
+        elif(plotType=="strip"):
+            p=sb.stripplot(data=x)
+        elif(plotType=="violin"):
+            p=sb.violinplot(data=x)
+        elif(plotType=="heat"):
+            p=sb.heatmap(x,annot=True,cmap="RdBu",vmin=vmin,vmax=vmax)
+            #eventual labels
+        return p
+    
+        
+        
+        

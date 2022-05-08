@@ -9,11 +9,12 @@ from matplotlib import pyplot as plt
 import numpy as np
 import os
 import shutil as sh
+import pandas as pd
 
 class Plotter:
-    def __init__(self,funx,funy):
-        self.funx=funx
-        self.funy=funy
+    def __init__(self,datax,datay):
+        self.datax=datax
+        self.datay=datay
         self.xlab="x"
         self.ylab="y"
         self.title="plot"
@@ -21,10 +22,9 @@ class Plotter:
         self.limitx=(None,None)
         self.limity=(None,None)
         
-    def show(self,nmin,nmax,step,delete=False):
-        n=np.arange(nmin,nmax,step)
-        x=self.funx(n)
-        y=self.funy(n)
+    def show(self,delete=False):
+        x=self.datax
+        y=self.datay
         fig=plt.figure()
         plt.plot(x,y)
         plt.xlabel(self.xlab,fontSize=self.size)
@@ -46,5 +46,26 @@ class Plotter:
     def limits(self,xmin,xmax,ymin,ymax):
         self.limitx=(xmin,xmax)
         self.limity=(ymin,ymax)
+      
         
+      
         
+      
+        
+class BoxPlotter(Plotter):
+    def __init__(self, data):
+        self.data=data
+        self.xlab="x"
+        self.ylab="y"
+        self.title="plot"
+        self.size=10
+        
+    def show(self,delete=False):
+        keys=[]
+        by="Sensor_O3"
+        for key in self.data.keys():
+            if(key!="date" and key!=by):
+                keys+=[key]
+        self.data.boxplot(column=keys,by=by,grid=False, color="black")
+    
+       

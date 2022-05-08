@@ -6,10 +6,10 @@ Created on Sat May  7 23:52:55 2022
 """
 
 import sklearn.linear_model as lm
-import sklearn.metrics as skm
-import math
+#import sklearn.metrics as skm
+#import math
 
-from base import Algorithm, Model, Result
+from base import Algorithm, Model
 
 class LinearRegression(Algorithm):
     def __init__(data,percentual):
@@ -17,20 +17,19 @@ class LinearRegression(Algorithm):
         
     def makeModel(self):
         labels=self.trainingSet.keys()
-        return LinearModel(self.trainingSet,self.testSet,labels)
+        return LinearModel(self.trainingSet,self.testSet,labels,self.modelType,self.alpha)
         
 class LinearModel(Model):
-    def __init__(self, trainingSet, testSet, labels):
+    def __init__(self, trainingSet, testSet, labels,modelType,alpha):
         super.__init__(self,trainingSet,testSet,labels)
-        self.model=lm.LinearRegression(normalize=True)
+        self.model=None
+        if(modelType=="Normal"):
+            self.model=lm.LinearRegression(normalize=True)
+        elif(modelType=="Lasso"):
+            self.model=lm.Lasso(alpha=alpha,normalize=True)
+        else:
+            self.model=lm.Ridge(alpha=alpha,normalize=True)
         self.model.fit(trainingSet.values,labels.values)
     
-    def predict(self):
-        prediction=self.model.predict(self.testSet)
-        score=self.model.score(self.testSet,self.labels)
-        rsquare=skm.r2_score(truevalue, prediction)
-        rmse=math.sqrt(skm.mean_squared_error(truevalue,prediction))
-        mae=skm.mean_absolute_error(truevalue,prediction)
-        prob=self.model.predict_proba(self.testSet)
-        return Result(prediciton,score)
+    
 

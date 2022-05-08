@@ -1,11 +1,15 @@
 import pandas as pd
 import numpy as np
 import sklearn as sk
+import sklearn.metrics as skm
+import math
 
 def readData(filename,separator):
     data=pd.read_csv(filename,delimiter=separator)
     data.isnull().values.any()
     data=data.dropna()
+    if("date" in data.keys()):
+        data["date"]=pd.to_datetime(data["date"]).dt.strftime('%Y-%m-%dT%H:%M')
     data.head()
     return data;
 
@@ -27,12 +31,25 @@ def prepareData(listFileNames,separator):
     
 
 class Algorithm:
-    def __init__(self,data,percentual):
+    def __init__(self,data,percentual,predictLabels,alpha):
         self.trainingSet=data[0:len(data)*percentual]
         self.testSet=data[len(data)*percentual+1,len(data)]
+        self.predictLabels=predictLabels
+        self.modelType="Normal"
+        self.alpha=alpha
 
     def makeModel():
         pass
+    
+    def useRidgeRegression(self):
+        self.modelType="Ridge"
+        
+    def useLasso(self):
+        self.modelType="Lasso"
+        
+    def noRegularization(self):
+        self.modelType="Normal"
+
 
 
 class Model:
@@ -48,23 +65,15 @@ class Model:
         return self.model.coef_
     
     def predict(self):
-        pass
+        prediction=self.model.predict(self.testSet)
+        truevalue=self.testSet[self.labels]
+        score=self.model.score(self.testSet,self.labels)
+        rsquare=skm.r2_score(truevalue, prediction)
+        rmse=math.sqrt(skm.mean_squared_error(truevalue,prediction))
+        mae=skm.mean_absolute_error(truevalue,prediction)
+        prob=self.model.predict_proba(self.testSet)
+        return Results(prediction,prob,score,rsquare,rmse,mae)
     
-    def useRidgeRegression(self):
-        self.ridge=True
-        self.lasso=False
-        self.none=False
-        
-    def useLasso(self):
-        self.lasso=True
-        self.ridge=False
-        self.none=False
-        
-    def noRegularization(self):
-        self.none=True
-        self.ridge=False
-        self.lasso=False
-
 class Results:
     def __init__(self,prediction,prob,score,rsquare,rmse,mae):
         self.prediction=prediction;
@@ -74,5 +83,4 @@ class Results:
         self.rmse=rmse
         self.mae=mae
     
-    def __str__(self):
-        return 
+ 

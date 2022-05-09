@@ -40,17 +40,35 @@ class Plotter:
     def title(self,t):
         self.ptitle=t
     
-    def show(self,plotType,x,y,delete=False,save=False,hue=None,dking=None,vmin=-1,vmax=1):
+    def show(self,plotType,data,x,y,delete=False,save=False,hue=None,dkind=None,vmin=-1,vmax=1):
         fig=plt.figure(figsize=(10,9))
         plt.xlabel(self.xlabel,fontsize=self.size)
         plt.ylabel(self.xlabel,fontsize=self.size)
         plt.title(self.ptitle,fontsize=self.size)
-        p=self.choosePlot(plotType,x=x,y=y)
+        if(plotType=="bar"):
+            p=sb.barplot(x=x,y=y)
+        elif(plotType=="count"):
+            p=sb.countplot(x)
+        elif(plotType=="scatter"):
+            p=sb.scatterplot(x=x,y=y)
+        elif(plotType=="pain"):
+            p=sb.pairplot(data,hue=hue,diag_kind=dkind)
+        elif(plotType=="line"):
+            p=sb.lineplot(x=x, y=y)
+        elif(plotType=="box"):
+            p=sb.boxplot(data=x)
+        elif(plotType=="strip"):
+            p=sb.stripplot(data=x)
+        elif(plotType=="violin"):
+            p=sb.violinplot(data=x)
+        elif(plotType=="heat"):
+            p=sb.heatmap(x,annot=True,cmap="RdBu",vmin=vmin,vmax=vmax)
         plt.show()
         if(os.path.exists("./plot") and delete and save):
             sh.rmtree("./plot")
         if(delete and save):
             os.mkdir("./plot")
+        plt.show()
         fig.savefig(self.ptitle+".jpg")
         
     

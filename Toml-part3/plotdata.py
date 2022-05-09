@@ -19,8 +19,14 @@ def sensorData():
 
 data=sensorData()
 delete=False
-for ptype in dp.plotTypes():
+plotTypes=["scatter","line","bar"]
+for ptype in plotTypes:
     p=dp.Plotter()
-    y=data["Temp"]
+    y=data["Sensor_O3"].values
     x=np.arange(0,len(y),1)
-    p.show(ptype,x, y)
+    p.labels("time","O3")
+    p.title("O3 - "+ptype)
+    for key in data.keys():
+        if(key!="date" and key!="Sensor_O3"):
+               data.plot.pie(startangle=90)
+            delete=False

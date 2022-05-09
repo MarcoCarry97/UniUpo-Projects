@@ -8,16 +8,15 @@ def readData(filename,separator):
     data=pd.read_csv(filename,delimiter=separator)
     data.isnull().values.any()
     data=data.dropna()
-    if("date" in data.keys()):
+    if("date" in data.keys()): #converting date string in datetime
         data["date"]=pd.to_datetime(data["date"]).dt.strftime('%Y-%m-%dT%H:%M')
-    if("Sensor_O3" in data.keys()):
+    if("Sensor_O3" in data.keys()): #converting O3 value in floats
         nums=[]
         for n in data["Sensor_O3"]:
             if n.count(".")>1:
                 n=n.replace(".","",1)
             nums+=[np.float64(n)]
         data["Sensor_O3"]=np.array(nums)
-                
     data.head()
     return data;
 
@@ -35,6 +34,8 @@ def prepareData(listFileNames,separator):
     for i in range(1,len(listdata)): #Merging
         data=mergeData(data,listdata[i],"inner","date","date")
         data.head()
+    time=np.arange(0,len(data.values),1)
+    data.insert(0, "time", time)
     return data
     
 

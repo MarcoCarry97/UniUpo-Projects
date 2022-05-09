@@ -12,18 +12,16 @@ import shutil as sh
 import pandas as pd
 import seaborn as sb
 
-def plotTypes():
-    return [
-            "bar",
-            "count",
-            "scatter",
-            "pain",
-            "line",
-            "box",
-            "strip",
-            "violin",
-            "heat"
-        ]
+#useful plots:
+    #lineplot
+    #pairplot
+    #boxplot
+    #scatterplot
+    #barplot
+    #heatmap
+    #clustermap
+    
+    
 
 class Plotter:
     def __init__(self):
@@ -40,30 +38,14 @@ class Plotter:
     def title(self,t):
         self.ptitle=t
     
-    def show(self,plotType,data,x,y,delete=False,save=False,hue=None,dkind=None,vmin=-1,vmax=1):
+    def show(self,data,delete=False,save=False,hue=None,dkind=None,vmin=-1,vmax=1):
         fig=plt.figure(figsize=(10,9))
         plt.xlabel(self.xlabel,fontsize=self.size)
         plt.ylabel(self.xlabel,fontsize=self.size)
         plt.title(self.ptitle,fontsize=self.size)
-        if(plotType=="bar"):
-            p=sb.barplot(x=x,y=y)
-        elif(plotType=="count"):
-            p=sb.countplot(x)
-        elif(plotType=="scatter"):
-            p=sb.scatterplot(x=x,y=y)
-        elif(plotType=="pain"):
-            p=sb.pairplot(data,hue=hue,diag_kind=dkind)
-        elif(plotType=="line"):
-            p=sb.lineplot(x=x, y=y)
-        elif(plotType=="box"):
-            p=sb.boxplot(data=x)
-        elif(plotType=="strip"):
-            p=sb.stripplot(data=x)
-        elif(plotType=="violin"):
-            p=sb.violinplot(data=x)
-        elif(plotType=="heat"):
-            p=sb.heatmap(x,annot=True,cmap="RdBu",vmin=vmin,vmax=vmax)
-        plt.show()
+        
+        #plot here
+        
         if(os.path.exists("./plot") and delete and save):
             sh.rmtree("./plot")
         if(delete and save):
@@ -72,31 +54,60 @@ class Plotter:
         fig.savefig(self.ptitle+".jpg")
         
     
-        
-    def choosePlot(self,x=None,y=None,hue=None,dkind=None,vmin=-1,vmax=1):
-        p=None
-        plotType=self.plotType
-        if(plotType=="bar"):
-            p=sb.barplot(x=x,y=y)
-        elif(plotType=="count"):
-            p=sb.countplot(x=x,y=y)
-        elif(plotType=="scatter"):
-            p=sb.scatterplot(x=x,y=y)
-        elif(plotType=="pain"):
-            p=sb.pairplot(x,hue=hue,diag_kind=dkind)
-        elif(plotType=="line"):
-            p=sb.lineplot(x=x, y=y)
-        elif(plotType=="box"):
-            p=sb.boxplot(data=x)
-        elif(plotType=="strip"):
-            p=sb.stripplot(data=x)
-        elif(plotType=="violin"):
-            p=sb.violinplot(data=x)
-        elif(plotType=="heat"):
-            p=sb.heatmap(x,annot=True,cmap="RdBu",vmin=vmin,vmax=vmax)
-            #eventual labels
-        return p
+class LinePlotter(Plotter):
+    def __init__(self):
+        super().__init__()
     
+    def show(self,data,delete=False,save=False,hue=None,dkind=None,vmin=-1,vmax=1):
+        fig=plt.figure(figsize=(10,9))
+        plt.xlabel(self.xlabel,fontsize=self.size)
+        plt.ylabel(self.xlabel,fontsize=self.size)
+        plt.title(self.ptitle,fontsize=self.size)
         
+        sb.lineplot(data=data,x=self.xlabel,y=self.ylabel)
         
+        if(os.path.exists("./plot") and delete and save):
+            sh.rmtree("./plot")
+        if(delete and save):
+            os.mkdir("./plot")
+        plt.show()
+        fig.savefig(self.ptitle+".jpg")
+        
+class PairPlotter(Plotter):
+    def __init__(self):
+        super().__init__()
+    
+    def show(self,data,delete=False,save=False,hue=None,dkind=None,vmin=-1,vmax=1):
+        fig=plt.figure(figsize=(10,9))
+        plt.xlabel(self.xlabel,fontsize=self.size)
+        plt.ylabel(self.xlabel,fontsize=self.size)
+        plt.title(self.ptitle,fontsize=self.size)
+        
+        sb.pairplot(data=data)
+        
+        if(os.path.exists("./plot") and delete and save):
+            sh.rmtree("./plot")
+        if(delete and save):
+            os.mkdir("./plot")
+        plt.show()
+        fig.savefig(self.ptitle+".jpg")
+        
+class BoxPlotter(Plotter):
+    def __init__(self):
+        super().__init__()
+    
+    def show(self,data,delete=False,save=False,hue=None,dkind=None,vmin=-1,vmax=1):
+        fig=plt.figure(figsize=(10,9))
+        plt.xlabel(self.xlabel,fontsize=self.size)
+        plt.ylabel(self.xlabel,fontsize=self.size)
+        plt.title(self.ptitle,fontsize=self.size)
+        
+        sb.boxplot(x=self.xlabel,y=self.ylabel,data=data)
+        
+        if(os.path.exists("./plot") and delete and save):
+            sh.rmtree("./plot")
+        if(delete and save):
+            os.mkdir("./plot")
+        #plt.show()
+        fig.savefig(self.ptitle+".jpg")
         

@@ -8,6 +8,7 @@ Created on Sun May  8 10:29:36 2022
 from base import prepareData
 import dplotter as dp
 import numpy as np
+import pandas as pd
 
 def sensorData():
     listfiles=["captor17013-sensor1.csv",
@@ -18,15 +19,10 @@ def sensorData():
     return prepareData(listfiles, ";")
 
 data=sensorData()
+delete=True
+o3="Sensor_O3"
+p=dp.BoxPlotter()
+p.labels("time",o3)
+p.show(data,delete=delete,save=True)
 delete=False
-plotTypes=["scatter","line","bar"]
-for ptype in plotTypes:
-    p=dp.Plotter()
-    y=data["Sensor_O3"].values
-    x=np.arange(0,len(y),1)
-    p.labels("time","O3")
-    p.title("O3 - "+ptype)
-    for key in data.keys():
-        if(key!="date" and key!="Sensor_O3"):
-               data.plot.pie(startangle=90)
-            delete=False
+   

@@ -14,16 +14,16 @@ from sklearn.feature_selection import SelectFromModel as forwardSelection
 from base import Algorithm, Model
 
 class LinearRegression(Algorithm):
-    def __init__(data,percentual):
-        super().__init__(data, percentual)
+    def __init__(self,data,percentual,predictLabels):
+        super().__init__(data, percentual,predictLabels)
         
     def makeModel(self):
-        labels=self.trainingSet.keys()
+        labels=self.predictLabels
         return LinearModel(self.trainingSet,self.testSet,labels,self.modelType,self.alpha)
         
 class LinearModel(Model):
     def __init__(self, trainingSet, testSet, labels,modelType,alpha):
-        super.__init__(self,trainingSet,testSet,labels)
+        super().__init__(trainingSet,testSet,labels)
         self.model=None
         if(modelType=="Normal"):
             self.model=lm.LinearRegression(normalize=True)
@@ -31,7 +31,8 @@ class LinearModel(Model):
             self.model=lm.Lasso(alpha=alpha,normalize=True)
         else:
             self.model=lm.Ridge(alpha=alpha,normalize=True)
-        self.model.fit(trainingSet.values,labels.values)
+        self.model=forwardSelection(self.model)
+        self.model.fit(trainingSet.values,labels)
     
     
 

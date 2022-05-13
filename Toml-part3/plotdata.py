@@ -5,7 +5,7 @@ Created on Sun May  8 10:29:36 2022
 @author: Marco-PC
 """
 
-from base import prepareData
+import base as b
 import dplotter as dp
 import numpy as np
 import pandas as pd
@@ -15,10 +15,10 @@ def sensorData():
     listfiles=["captor17013-sensor1.csv",
                "NO_Manlleu.csv",
                "SO2_Manlleu.csv",
-               "NO2_Manlleu.csv",
+               "NO2_Manlleu.csv"
                #"PM10_Manlleu.csv"
                ]
-    return prepareData(listfiles, ";")
+    return b.prepareData(listfiles, ";")
 
 def boxplot(data,x,y,title,delete,save):
     p=dp.BoxPlotter()
@@ -60,6 +60,11 @@ labels=["Temp",
 delete=True
 save=True
 
+print(dp.getCorrelationMatrix(data))
+
+b.addTime(data)
+b.addNormalizedData(data)
+
 for label in labels:
     scatterplot(data,label,refSt,label+" - SensorO3",delete,save)
     delete=False
@@ -71,4 +76,4 @@ scatterplot(data,"normalizedO3","normalizedRefSt", "normalizedO3 - normalizedRef
 lineplot(data,o3,time,o3+" on "+time,delete,save)
 lineplot(data,refSt,time,refSt+" on "+time,delete,save)
 
-print(dp.getCorrelationMatrix(data))
+

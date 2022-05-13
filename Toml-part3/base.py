@@ -10,6 +10,14 @@ def calcNormalizedData(data):
     std=np.std(data);
     return (data-mean)/std
 
+def addNormalizedData(data):
+    data.insert(0,"normalizedO3",calcNormalizedData(data["Sensor_O3"].values))
+    data.insert(0,"normalizedRefSt",calcNormalizedData(data["RefSt"].values))
+
+def addTime(data):
+    time=np.arange(0,len(data.values),1)
+    data.insert(0, "time", time)
+
 def readData(filename,separator):
     data=pd.read_csv(filename,delimiter=separator)
     data.isnull().values.any()
@@ -40,17 +48,13 @@ def prepareData(listFileNames,separator):
     for i in range(1,len(listdata)): #Merging
         data=mergeData(data,listdata[i],"inner","date","date")
         data.head()
-    time=np.arange(0,len(data.values),1)
-    data.insert(0, "time", time)
-    data.insert(0,"normalizedO3",calcNormalizedData(data["Sensor_O3"].values))
-    data.insert(0,"normalizedRefSt",calcNormalizedData(data["RefSt"].values))
     return data
     
 
 class Algorithm:
-    def __init__(self,data,percentual,predictLabels,alpha):
-        self.trainingSet=data[0:len(data)*percentual]
-        self.testSet=data[len(data)*percentual+1,len(data)]
+    def __init__(self,data,percentual,predictLabels,alpha=1):
+        self.trainingSet=data.iloc[:int(len(data)*percentual)]
+        self.testSet=data.iloc[int(len(data)*percentual):]
         self.predictLabels=predictLabels
         self.modelType="Normal"
         self.alpha=alpha  
@@ -92,6 +96,9 @@ class Model:
         prob=self.model.predict_proba(self.testSet)
         return Results(prediction,prob,score,rsquare,rmse,mae)
     
+    def plot(self):
+        pass
+    
 class Results:
     def __init__(self,prediction,prob,score,rsquare,rmse,mae):
         self.prediction=prediction;
@@ -100,5 +107,13 @@ class Results:
         self.rsquare=rsquare
         self.rmse=rmse
         self.mae=mae
+        
+    def printRes(self):
+        print("prediction: ",self.prediction)
+        print("probability: ",self.probability)
+        print("score: ",self.score)
+        print("rsquare: ",self.rsquare)
+        print("rmse: ",self.rmse)
+        print("mae: ",self.mae)
     
  

@@ -17,18 +17,16 @@ import seaborn as sb
     #pairplot
     #boxplot
     #scatterplot
-    #barplot
-    #heatmap
-    #clustermap
     
-    
+def getCorrelationMatrix(data):
+    return data.corr()
 
 class Plotter:
     def __init__(self):
         self.xlabel="x"
         self.ylabel="y"
         self.ptitle="plot"
-        self.size=10
+        self.size=20
         sb.set_style("whitegrid")
     
     def labels(self,x,y):
@@ -41,7 +39,7 @@ class Plotter:
     def show(self,data,delete=False,save=False,hue=None,dkind=None,vmin=-1,vmax=1):
         fig=plt.figure(figsize=(10,9))
         plt.xlabel(self.xlabel,fontsize=self.size)
-        plt.ylabel(self.xlabel,fontsize=self.size)
+        plt.ylabel(self.ylabel,fontsize=self.size)
         plt.title(self.ptitle,fontsize=self.size)
         
         #plot here
@@ -61,7 +59,7 @@ class LinePlotter(Plotter):
     def show(self,data,delete=False,save=False,hue=None,dkind=None,vmin=-1,vmax=1):
         fig=plt.figure(figsize=(10,9))
         plt.xlabel(self.xlabel,fontsize=self.size)
-        plt.ylabel(self.xlabel,fontsize=self.size)
+        plt.ylabel(self.ylabel,fontsize=self.size)
         plt.title(self.ptitle,fontsize=self.size)
         
         sb.lineplot(data=data,x=self.xlabel,y=self.ylabel)
@@ -80,7 +78,7 @@ class PairPlotter(Plotter):
     def show(self,data,delete=False,save=False,hue=None,dkind=None,vmin=-1,vmax=1):
         fig=plt.figure(figsize=(10,9))
         plt.xlabel(self.xlabel,fontsize=self.size)
-        plt.ylabel(self.xlabel,fontsize=self.size)
+        plt.ylabel(self.ylabel,fontsize=self.size)
         plt.title(self.ptitle,fontsize=self.size)
         
         sb.pairplot(data=data)
@@ -99,10 +97,29 @@ class BoxPlotter(Plotter):
     def show(self,data,delete=False,save=False,hue=None,dkind=None,vmin=-1,vmax=1):
         fig=plt.figure(figsize=(10,9))
         plt.xlabel(self.xlabel,fontsize=self.size)
-        plt.ylabel(self.xlabel,fontsize=self.size)
+        plt.ylabel(self.ylabel,fontsize=self.size)
         plt.title(self.ptitle,fontsize=self.size)
         
         sb.boxplot(x=self.xlabel,y=self.ylabel,data=data)
+        
+        if(os.path.exists("./plot") and delete and save):
+            sh.rmtree("./plot")
+        if(delete and save):
+            os.mkdir("./plot")
+        #plt.show()
+        fig.savefig(self.ptitle+".jpg")
+        
+class ScatterPlotter(Plotter):
+    def __init__(self):
+        super().__init__()
+    
+    def show(self,data,delete=False,save=False,hue=None,dkind=None,vmin=-1,vmax=1):
+        fig=plt.figure(figsize=(10,9))
+        plt.xlabel(self.xlabel,fontsize=self.size)
+        plt.ylabel(self.ylabel,fontsize=self.size)
+        plt.title(self.ptitle,fontsize=self.size)
+        
+        sb.scatterplot(x=self.xlabel,y=self.ylabel,data=data)
         
         if(os.path.exists("./plot") and delete and save):
             sh.rmtree("./plot")

@@ -9,20 +9,66 @@ from base import prepareData
 import dplotter as dp
 import numpy as np
 import pandas as pd
+import seaborn as sb
 
 def sensorData():
     listfiles=["captor17013-sensor1.csv",
                "NO_Manlleu.csv",
-               "PM10_Manlleu.csv",
                "SO2_Manlleu.csv",
-               "NO2_Manlleu.csv"]
+               "NO2_Manlleu.csv",
+               #"PM10_Manlleu.csv"
+               ]
     return prepareData(listfiles, ";")
 
+def boxplot(data,x,y,title,delete,save):
+    p=dp.BoxPlotter()
+    p.labels(x, y)
+    p.title(title)
+    p.show(data,delete=delete,save=save)
+    
+def scatterplot(data,x,y,title,delete,save):
+    p=dp.ScatterPlotter()
+    p.labels(x, y)
+    p.title(title)
+    p.show(data,delete=delete,save=save)
+    
+def pairplot(data,x,y,title,delete,save):
+    p=dp.PairPlotter()
+    p.labels(x, y)
+    p.title(title)
+    p.show(data,delete=delete,save=save)
+    
+def lineplot(data,x,y,title,delete,save):
+    p=dp.LinePlotter()
+    p.labels(x, y)
+    p.title(title)
+    p.show(data,delete=delete,save=save)
+    
 data=sensorData()
-delete=True
+refSt="RefSt"
 o3="Sensor_O3"
-p=dp.BoxPlotter()
-p.labels("time",o3)
-p.show(data,delete=delete,save=True)
-delete=False
+time="time"
+
+labels=["Temp",
+        "RelHum",
+        "Sensor_NO",
+        "Sensor_SO2",
+        "Sensor_NO2",
+        #"Sensor_PM10"
+        ]
+
+delete=True
+save=True
+
+for label in labels:
+    scatterplot(data,label,refSt,label+" - SensorO3",delete,save)
+    delete=False
+    scatterplot(data,label,o3,label+" - RefSt",delete,save)  
+
+scatterplot(data,o3,refSt, o3+" - "+refSt, delete, save)
+scatterplot(data,"normalizedO3","normalizedRefSt", "normalizedO3 - normalizedRefSt", delete, save)
    
+lineplot(data,o3,time,o3+" on "+time,delete,save)
+lineplot(data,refSt,time,refSt+" on "+time,delete,save)
+
+print(dp.getCorrelationMatrix(data))

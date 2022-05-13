@@ -4,6 +4,11 @@ import sklearn as sk
 import sklearn.metrics as skm
 import math
 
+def calcNormalizedData(data):
+    mean=np.mean(data);
+    std=np.std(data);
+    return (data-mean)/std
+
 def readData(filename,separator):
     data=pd.read_csv(filename,delimiter=separator)
     data.isnull().values.any()
@@ -36,6 +41,8 @@ def prepareData(listFileNames,separator):
         data.head()
     time=np.arange(0,len(data.values),1)
     data.insert(0, "time", time)
+    data.insert(0,"normalizedO3",calcNormalizedData(data["Sensor_O3"].values))
+    data.insert(0,"normalizedRefSt",calcNormalizedData(data["RefSt"].values))
     return data
     
 

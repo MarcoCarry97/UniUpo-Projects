@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import sklearn as sk
 import sklearn.metrics as skm
+from sklearn.feature_selection import SelectFromModel as forwardSelection
 import math
 
 def calcNormalizedData(data):
@@ -52,7 +53,7 @@ class Algorithm:
         self.testSet=data[len(data)*percentual+1,len(data)]
         self.predictLabels=predictLabels
         self.modelType="Normal"
-        self.alpha=alpha
+        self.alpha=alpha  
 
     def makeModel():
         pass
@@ -76,6 +77,7 @@ class Model:
         self.ridge=False
         self.lasso=False
         self.none=True
+        self.model=None
         
     def getCoefficients(self):
         return self.model.coef_

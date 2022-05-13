@@ -6,6 +6,8 @@ Created on Sat May  7 23:52:55 2022
 """
 
 import sklearn.linear_model as lm
+from sklearn.feature_selection import SelectFromModel as forwardSelection
+
 #import sklearn.metrics as skm
 #import math
 

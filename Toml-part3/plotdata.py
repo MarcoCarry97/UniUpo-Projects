@@ -44,6 +44,11 @@ def lineplot(data,x,y,title,delete,save):
     p.title(title)
     p.show(data,delete=delete,save=save)
     
+def heatmap(data,title,delete,save):
+    p=dp.HeatMap()
+    p.title(title)
+    p.show(data,delete=delete,save=save)
+    
 data=sensorData()
 refSt="RefSt"
 o3="Sensor_O3"
@@ -60,14 +65,14 @@ labels=["Temp",
 delete=True
 save=True
 
-print(dp.getCorrelationMatrix(data))
+heatmap(data,"Correlation", delete, save)
+delete=False
 
 b.addTime(data)
 b.addNormalizedData(data)
 
 for label in labels:
     scatterplot(data,label,refSt,label+" - SensorO3",delete,save)
-    delete=False
     scatterplot(data,label,o3,label+" - RefSt",delete,save)  
 
 scatterplot(data,o3,refSt, o3+" - "+refSt, delete, save)

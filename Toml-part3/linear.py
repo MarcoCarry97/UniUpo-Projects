@@ -32,7 +32,7 @@ class LinearModel(Model):
         else:
             self.model=lm.Ridge(alpha=alpha,normalize=True)
         self.model=forwardSelection(self.model)
-        self.model.fit(trainingSet.values,labels)
+        self.model.fit(trainingSet.values,labels.values)
     
     
 

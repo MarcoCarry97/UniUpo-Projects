@@ -60,8 +60,8 @@ class Algorithm:
         self.testSet=parts[1]
         self.trainingLabels=parts[2]
         self.testLabels=parts[3]
-        self.trainingSet.drop([predictLabel],axis=1)
-        self.testSet.drop([predictLabel],axis=1)
+        self.trainingSet=self.trainingSet.drop([predictLabel],axis=1)
+        self.testSet=self.testSet.drop([predictLabel],axis=1)
         if(scale):
             scale=StandardScaler()
             self.trainingSet=scale.fit_transform(self.trainingSet)
@@ -102,13 +102,16 @@ class Model:
     def predict(self):
         prediction=self.model.predict(self.testSet)
         truevalue=self.testLabels
-        dt=pd.DataFrame({"prediction":prediction,"actual":truevalue})
-        score=self.model.score(self.testSet,truevalue)
-        rsquare=skm.r2_score(truevalue, prediction)
-        rmse=math.sqrt(skm.mean_squared_error(truevalue,prediction))
-        mae=skm.mean_absolute_error(truevalue,prediction)
+        return self.getResults(prediction,truevalue)
+    
+    def getResults(self,prediction,actual):
+        dt=pd.DataFrame({"prediction":prediction,"actual":actual})
+        score=self.model.score(self.testSet,actual)
+        rsquare=skm.r2_score(actual, prediction)
+        rmse=math.sqrt(skm.mean_squared_error(actual,prediction))
+        mae=skm.mean_absolute_error(actual,prediction)
 #        prob=self.model.predict_proba(self.testSet)
-        return Results(dt,score,rsquare,rmse,mae)
+        return Results(dt,score,rsquare,rmse,mae)        
     
     def plot(self):
         pass

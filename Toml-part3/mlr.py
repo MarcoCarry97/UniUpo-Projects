@@ -19,7 +19,9 @@ def sensorData():
 
 
 data=sensorData()
-linearRegr=lm.LinearRegression(data,0.7,["Sensor_O3"])
+data=data.drop(["date"],axis=1)
+linearRegr=lm.LinearRegression(data,0.7,"Sensor_O3")
+
 model=linearRegr.makeModel()
 res=model.predict()
 res.printRes()

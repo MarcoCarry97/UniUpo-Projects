@@ -3,6 +3,8 @@ import numpy as np
 import sklearn as sk
 import sklearn.metrics as skm
 from sklearn.feature_selection import SelectFromModel as forwardSelection
+from sklearn.model_selection import train_test_split as datasetSplit
+from sklearn.preprocessing import StandardScaler
 import math
 
 def calcNormalizedData(data):
@@ -52,10 +54,19 @@ def prepareData(listFileNames,separator):
     
 
 class Algorithm:
-    def __init__(self,data,percentual,predictLabels,alpha=1):
-        self.trainingSet=data.iloc[:int(len(data)*percentual)]
-        self.testSet=data.iloc[int(len(data)*percentual):]
-        self.predictLabels=predictLabels
+    def __init__(self,data,percentual,predictLabel,alpha=1,scale=False):
+        parts=datasetSplit(data,data[predictLabel],train_size=percentual,random_state=1)
+        self.trainingSet=parts[0]
+        self.testSet=parts[1]
+        self.trainingLabels=parts[2]
+        self.testLabels=parts[3]
+        self.trainingSet.drop([predictLabel],axis=1)
+        self.testSet.drop([predictLabel],axis=1)
+        if(scale):
+            scale=StandardScaler()
+            self.trainingSet=scale.fit_transform(self.trainingSet)
+            self.testSet=scale.fit_transform(self.testSet)
+        self.predictLabel=predictLabel
         self.modelType="Normal"
         self.alpha=alpha  
 
@@ -74,35 +85,38 @@ class Algorithm:
 
 
 class Model:
-    def __init__(self,trainingSet,testSet,labels):
+    def __init__(self,trainingSet,trainingLabels,testSet,testLabels,modelType="Normal",alpha=1):
         self.trainingSet=trainingSet
         self.testSet=testSet
-        self.labels=labels
+        self.trainingLabels=trainingLabels
+        self.testLabels=testLabels
+        self.alpha=alpha
         self.ridge=False
-        self.lasso=False
         self.none=True
         self.model=None
+        self.features=None
         
     def getCoefficients(self):
         return self.model.coef_
     
     def predict(self):
         prediction=self.model.predict(self.testSet)
-        truevalue=self.testSet[self.labels]
-        score=self.model.score(self.testSet,self.labels)
+        truevalue=self.testLabels
+        dt=pd.DataFrame({"prediction":prediction,"actual":truevalue})
+        score=self.model.score(self.testSet,truevalue)
         rsquare=skm.r2_score(truevalue, prediction)
         rmse=math.sqrt(skm.mean_squared_error(truevalue,prediction))
         mae=skm.mean_absolute_error(truevalue,prediction)
-        prob=self.model.predict_proba(self.testSet)
-        return Results(prediction,prob,score,rsquare,rmse,mae)
+#        prob=self.model.predict_proba(self.testSet)
+        return Results(dt,score,rsquare,rmse,mae)
     
     def plot(self):
         pass
     
 class Results:
-    def __init__(self,prediction,prob,score,rsquare,rmse,mae):
+    def __init__(self,prediction,score,rsquare,rmse,mae):
         self.prediction=prediction;
-        self.probability=prob
+       # self.probability=prob
         self.score=score
         self.rsquare=rsquare
         self.rmse=rmse
@@ -110,7 +124,7 @@ class Results:
         
     def printRes(self):
         print("prediction: ",self.prediction)
-        print("probability: ",self.probability)
+       # print("probability: ",self.probability)
         print("score: ",self.score)
         print("rsquare: ",self.rsquare)
         print("rmse: ",self.rmse)

@@ -14,25 +14,24 @@ from sklearn.feature_selection import SelectFromModel as forwardSelection
 from base import Algorithm, Model
 
 class LinearRegression(Algorithm):
-    def __init__(self,data,percentual,predictLabels):
-        super().__init__(data, percentual,predictLabels)
+    def __init__(self,data,percentual,predictLabel,alpha=1,scale=False):
+        super().__init__(data, percentual,predictLabel,alpha=alpha,scale=scale)
         
     def makeModel(self):
-        labels=self.predictLabels
-        return LinearModel(self.trainingSet,self.testSet,labels,self.modelType,self.alpha)
+        return LinearModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,self.alpha)
         
 class LinearModel(Model):
-    def __init__(self, trainingSet, testSet, labels,modelType,alpha):
-        super().__init__(trainingSet,testSet,labels)
+    def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1):
+        super().__init__(trainingSet, trainingLabels, testSet, testLabels,modelType=modelType, alpha=alpha)
         self.model=None
         if(modelType=="Normal"):
-            self.model=lm.LinearRegression(normalize=True)
+            self.model=lm.LinearRegression()
         elif(modelType=="Lasso"):
-            self.model=lm.Lasso(alpha=alpha,normalize=True)
+            self.model=lm.Lasso(alpha=alpha)
         else:
-            self.model=lm.Ridge(alpha=alpha,normalize=True)
-        self.model=forwardSelection(self.model)
-        self.model.fit(trainingSet.values,labels.values)
-    
+            self.model=lm.Ridge(alpha=alpha)
+        #self.model=forwardSelection(self.model)
+        self.model.fit(trainingSet,trainingLabels)
+        #self.features=self.model.trainsform(self.trainingSet)
     
 

@@ -6,6 +6,7 @@ from sklearn.feature_selection import SelectFromModel as forwardSelection
 from sklearn.model_selection import train_test_split as datasetSplit
 from sklearn.preprocessing import StandardScaler
 import math
+import fplotter as fp
 
 def calcNormalizedData(data):
     mean=np.mean(data);
@@ -110,11 +111,15 @@ class Model:
         rsquare=skm.r2_score(actual, prediction)
         rmse=math.sqrt(skm.mean_squared_error(actual,prediction))
         mae=skm.mean_absolute_error(actual,prediction)
-#        prob=self.model.predict_proba(self.testSet)
+        #prob=self.model.predict_proba(self.testSet)
         return Results(dt,score,rsquare,rmse,mae)        
     
     def plot(self):
-        pass
+        coeff=self.getCoefficients()
+        b0=coeff[0]
+        b1=coeff[1]
+        plot=fp.Plotter(lambda x:x,lambda x:b0+b1*x)
+        plot.show(0, len(self.trainingSet),1)
     
 class Results:
     def __init__(self,prediction,score,rsquare,rmse,mae):

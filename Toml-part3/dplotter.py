@@ -147,3 +147,32 @@ class HeatMap(Plotter):
             os.mkdir("./plot")
         #plt.show()
         fig.savefig(self.ptitle+".jpg")
+        
+def boxplot(data,x,y,title,delete,save):
+    p=BoxPlotter()
+    p.labels(x, y)
+    p.title(title)
+    p.show(data,delete=delete,save=save)
+    
+def scatterplot(data,x,y,title,delete,save):
+    p=ScatterPlotter()
+    p.labels(x, y)
+    p.title(title)
+    p.show(data,delete=delete,save=save)
+    
+def pairplot(data,x,y,title,delete,save):
+    p=PairPlotter()
+    p.labels(x, y)
+    p.title(title)
+    p.show(data,delete=delete,save=save)
+    
+def lineplot(data,x,y,title,delete,save):
+    p=LinePlotter()
+    p.labels(x, y)
+    p.title(title)
+    p.show(data,delete=delete,save=save)
+    
+def heatmap(data,title,delete,save):
+    p=HeatMap()
+    p.title(title)
+    p.show(data,delete=delete,save=save)

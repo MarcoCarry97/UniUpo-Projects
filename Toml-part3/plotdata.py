@@ -20,34 +20,7 @@ def sensorData():
                ]
     return b.prepareData(listfiles, ";")
 
-def boxplot(data,x,y,title,delete,save):
-    p=dp.BoxPlotter()
-    p.labels(x, y)
-    p.title(title)
-    p.show(data,delete=delete,save=save)
-    
-def scatterplot(data,x,y,title,delete,save):
-    p=dp.ScatterPlotter()
-    p.labels(x, y)
-    p.title(title)
-    p.show(data,delete=delete,save=save)
-    
-def pairplot(data,x,y,title,delete,save):
-    p=dp.PairPlotter()
-    p.labels(x, y)
-    p.title(title)
-    p.show(data,delete=delete,save=save)
-    
-def lineplot(data,x,y,title,delete,save):
-    p=dp.LinePlotter()
-    p.labels(x, y)
-    p.title(title)
-    p.show(data,delete=delete,save=save)
-    
-def heatmap(data,title,delete,save):
-    p=dp.HeatMap()
-    p.title(title)
-    p.show(data,delete=delete,save=save)
+
     
 data=sensorData()
 refSt="RefSt"
@@ -65,20 +38,20 @@ labels=["Temp",
 delete=True
 save=True
 
-heatmap(data,"Correlation", delete, save)
+dp.heatmap(data,"Correlation", delete, save)
 delete=False
 
 b.addTime(data)
 b.addNormalizedData(data)
 
 for label in labels:
-    scatterplot(data,label,refSt,label+" - SensorO3",delete,save)
-    scatterplot(data,label,o3,label+" - RefSt",delete,save)  
+    dp.scatterplot(data,label,refSt,label+" - SensorO3",delete,save)
+    dp.scatterplot(data,label,o3,label+" - RefSt",delete,save)  
 
-scatterplot(data,o3,refSt, o3+" - "+refSt, delete, save)
-scatterplot(data,"normalizedO3","normalizedRefSt", "normalizedO3 - normalizedRefSt", delete, save)
+dp.scatterplot(data,o3,refSt, o3+" - "+refSt, delete, save)
+dp.scatterplot(data,"normalizedO3","normalizedRefSt", "normalizedO3 - normalizedRefSt", delete, save)
    
-lineplot(data,o3,time,o3+" on "+time,delete,save)
-lineplot(data,refSt,time,refSt+" on "+time,delete,save)
+dp.lineplot(data,o3,time,o3+" on "+time,delete,save)
+dp.lineplot(data,refSt,time,refSt+" on "+time,delete,save)
 
 

@@ -19,38 +19,35 @@ def sensorData():
     return b.prepareData(listfiles, ";")
 
 
-
+predLabel="RefSt"
 
 
 print("\n\n\nLINEAR REGRESSION WITHOUT REGULARIZATION\n\n\n")
 data=sensorData()
 data=data.drop(["date"],axis=1)
-linearRegr=lm.LinearRegression(data,0.7,"Sensor_O3",alpha=5)
+linearRegr=lm.LinearRegression(data,0.7,predLabel,alpha=5)
 linearRegr.noRegularization()
 model=linearRegr.makeModel()
 res=model.predict()
 res.printRes()
-print(model.trainingSet)
-model.plot()
+#model.plot()
 
 print("\n\n\nLINEAR REGRESSION WITH LASSO\n\n\n")
 data=sensorData()
 data=data.drop(["date"],axis=1)
-linearRegr=lm.LinearRegression(data,0.7,"Sensor_O3",alpha=5)
+linearRegr=lm.LinearRegression(data,0.7,predLabel,alpha=25)
 linearRegr.useLasso()
 model=linearRegr.makeModel()
 res=model.predict()
 res.printRes()
-print(model.trainingSet)
-model.plot()
+#model.plot()
 
 print("\n\n\nLINEAR REGRESSION WITH RIDGE REGRESSION\n\n\n")
 data=sensorData()
 data=data.drop(["date"],axis=1)
-linearRegr=lm.LinearRegression(data,0.7,"Sensor_O3",alpha=5)
+linearRegr=lm.LinearRegression(data,0.7,predLabel,alpha=250000)
 linearRegr.useRidgeRegression()
 model=linearRegr.makeModel()
 res=model.predict()
 res.printRes()
-print(model.trainingSet)
-model.plot()
+#model.plot()

@@ -32,12 +32,13 @@ class LinearModel(Model):
             select.fit(trainingSet,trainingLabels)
             self.featuresSelected=np.array(self.trainingSet.columns[select.get_support()])
             self.trainingSet=self.makeDataset(self.featuresSelected,select.transform(self.trainingSet).T)
+            self.testSet=self.makeDataset(self.featuresSelected,select.transform(self.testSet).T)
         elif(modelType=="Lasso"):
             self.model=lm.Lasso(alpha=alpha)
         else:
             self.model=lm.Ridge(alpha=alpha)
         
-        self.model.fit(trainingSet,trainingLabels)
+        self.model.fit(self.trainingSet,self.trainingLabels)
         
         #self.features=self.model.transform(self.trainingSet)
     def makeDataset(self,labels,arrays):

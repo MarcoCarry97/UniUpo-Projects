@@ -98,7 +98,8 @@ class Model:
         self.features=None
         
     def getCoefficients(self):
-        return self.model.coef_
+        intercept=self.model.intercept_
+        return np.array([intercept]+self.model.coef_)
     
     def predict(self):
         prediction=self.model.predict(self.testSet)
@@ -116,9 +117,13 @@ class Model:
     
     def plot(self):
         coeff=self.getCoefficients()
-        b0=coeff[0]
-        b1=coeff[1]
-        plot=fp.Plotter(lambda x:x,lambda x:b0+b1*x)
+        def predFun(coeff,labels):
+            acc=coeff[0]
+            for i in range(1,len(labels)):
+                acc+=coeff[i]*self.testSet[labels[i]]
+            return acc
+        labels=self.testSet.columns
+        plot=fp.Plotter(lambda x:x,lambda x:predFun(coeff, labels)[x])
         plot.show(0, len(self.trainingSet),1)
     
 class Results:
@@ -131,7 +136,7 @@ class Results:
         self.mae=mae
         
     def printRes(self):
-        print("prediction: ",self.prediction)
+        print("prediction: \n",self.prediction)
        # print("probability: ",self.probability)
         print("score: ",self.score)
         print("rsquare: ",self.rsquare)

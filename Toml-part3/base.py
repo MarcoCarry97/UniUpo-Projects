@@ -6,7 +6,7 @@ from sklearn.feature_selection import SelectFromModel as forwardSelection
 from sklearn.model_selection import train_test_split as datasetSplit
 from sklearn.preprocessing import StandardScaler
 import math
-import fplotter as fp
+import dplotter as dp
 
 def calcNormalizedData(data):
     mean=np.mean(data);
@@ -98,8 +98,10 @@ class Model:
         self.features=None
         
     def getCoefficients(self):
-        intercept=self.model.intercept_
-        return np.array([intercept]+self.model.coef_)
+        return self.model.coef_
+    
+    def getIntercept(self):
+        return self.model.intercept_
     
     def predict(self):
         prediction=self.model.predict(self.testSet)
@@ -115,16 +117,25 @@ class Model:
         #prob=self.model.predict_proba(self.testSet)
         return Results(dt,score,rsquare,rmse,mae)        
     
-    def plot(self):
-        coeff=self.getCoefficients()
-        def predFun(coeff,labels):
-            acc=coeff[0]
-            for i in range(1,len(labels)):
-                acc+=coeff[i]*self.testSet[labels[i]]
-            return acc
+    def predictFromModel(self):
+        intercept=self.model.intercept_
+        coeff=self.model.coef_
+        acc=intercept
         labels=self.testSet.columns
-        plot=fp.Plotter(lambda x:x,lambda x:predFun(coeff, labels)[x])
-        plot.show(0, len(self.trainingSet),1)
+        for i in range(0,len(labels)):
+            acc+=coeff[i]*self.testSet[labels[i]]
+        return acc
+            
+    
+    def plot(self):
+        preds=self.predictFromModel()
+        label=self.testLabels.name
+        print(label)
+        print(len(preds))
+        print(len(self.testLabels.values))
+        data=pd.DataFrame({"prediction":preds,label:self.trainingLabels})
+        dp.lineplot(data, "prediction", label, "predictions - "+label,False,True)
+        
     
 class Results:
     def __init__(self,prediction,score,rsquare,rmse,mae):

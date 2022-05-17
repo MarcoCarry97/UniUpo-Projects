@@ -5,29 +5,43 @@ Created on Tue May 17 00:32:11 2022
 @author: Marco-PC
 """
 
+def max(a,b):
+    if a>=b:
+        return a
+    return b
+
+def min(a,b):
+    if a<b:
+        return a
+    return b
+
 import pandas as pd
 import numpy as np
-import os
 
 numIt=50
 
-alpha=5.1
-beta=0.17
+alpha=-4
+beta=0.1259
 gamma=5
 mu=0.002
 N=7653845
 
 S=N-1
-E=0
-I=1
+E=1
+I=0
 R=0
 D=0
     
 
 def compute():
+    #dS=-beta*S*I/N
+    #dE=beta*S*I/N - alpha*E
+    #dI=alpha*E-gamma*I
+    #dR=gamma*(1-mu)*I
+    #dD=gamma*mu*I
     dS=-beta*S*I/N
-    dE=beta*S*I/N - alpha*E
-    dI=alpha*E-gamma*I
+    dE=-dS -alpha*E
+    dI=-alpha*E+gamma*I
     dR=gamma*(1-mu)*I
     dD=gamma*mu*I
     return dS,dE,dI,dR,dD
@@ -37,15 +51,17 @@ Ea=[E]
 Ia=[I]
 Ra=[R]
 Da=[D]
+
     
 for i in range(0,numIt):
-    print(S,E,I,R,D)
+    Nt=S+E+I+R+D
+    print(S,E,I,R,D,Nt)
     dS,dE,dI,dR,dD=compute()
-    S+=np.round(dS)
-    E+=np.round(dE)
-    I+=np.round(dI)
-    R+=np.round(dR)
-    D+=np.round(dD)
+    S=max(S+np.round(dS),0)
+    E+=max(E+np.round(dE),0)
+    I+=max(I+np.round(dI),0)
+    R+=max(R+np.round(dR),0)
+    D+=max(D+np.round(dD),0)
     Sa+=[S]
     Ea+=[E]
     Ia+=[I]

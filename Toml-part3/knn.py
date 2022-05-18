@@ -28,9 +28,8 @@ class KnnRegression(Algorithm):
         return KnnModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha,k=k)
       
 class KnnModel(Model):
-    def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1,kernelType="linear",k=1):
+    def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1,k=1):
         super().__init__(trainingSet, trainingLabels, testSet, testLabels,modelType=modelType, alpha=alpha)
-        self.kernelType=kernelType
         self.model=None
         self.k=k
         self.model=knn.KNeighborsRegressor(self.k)

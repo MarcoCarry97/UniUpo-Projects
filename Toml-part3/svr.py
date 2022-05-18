@@ -1,31 +1,31 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed May 18 16:30:20 2022
+Created on Wed May 18 17:51:58 2022
 
 @author: Marco-PC
 """
 
 import sklearn as sk
-import sklearn.ensemble as ens
+import sklearn.svm as skv
 import pandas as pd
 import numpy as np
 
 from base import Algorithm, Model
 
-class RandForestRegression(Algorithm):
+class SupportVectorRegression(Algorithm):
     def __init__(self,data,percentual,predictLabel,alpha=1,gamma=None,scale=False):
         super().__init__(data, percentual,predictLabel,alpha=alpha,scale=scale)
         
-    def makeModel(self,numEst):
-        return RandForestModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha,numEst=numEst)
+    def makeModel(self,kernel):
+        return SvrModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha,kernelType=kernel)
       
-class RandForestModel(Model):
-    def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1,numEst=1):
+class SvrModel(Model):
+    def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1,kernelType="rbf"):
         super().__init__(trainingSet, trainingLabels, testSet, testLabels,modelType=modelType, alpha=alpha)
-        
+        self.kernelType=kernelType
         self.model=None
-        self.numEst=numEst
-        self.model=ens.RandomForestRegressor(n_estimators=self.numEst)
+        self.kernelType=kernelType
+        self.model=skv.SVR(kernel=self.kernelType)
        
         #self.model.fit(self.trainingSet,self.trainingLabels)
         #select=forwardSelection(self.model)

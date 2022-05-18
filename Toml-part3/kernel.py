@@ -29,16 +29,15 @@ class KernelModel(Model):
         self.kernelType=kernelType
         self.model=None
         
-        if(modelType=="RBF"):
-            self.model=kr.KernelRidge(alpha=self.alpha,kernel=gp.RBF(1))
-        else:
-            self.model=kr.KernelRidge(alpha=self.alpha,kernel=self.kernelType)
-        
-        select=forwardSelection(self.model)
-        select.fit(trainingSet,trainingLabels)
-        self.featuresSelected=np.array(self.trainingSet.columns[select.get_support()])
-        self.trainingSet=self.makeDataset(self.featuresSelected,select.transform(self.trainingSet).T)
-        self.testSet=self.makeDataset(self.featuresSelected,select.transform(self.testSet).T)
+        self.model=kr.KernelRidge(alpha=self.alpha,kernel=self.kernelType)
+       
+        #self.model.fit(self.trainingSet,self.trainingLabels)
+        #select=forwardSelection(self.model)
+        #self.model.fit(self.trainingSet,self.trainingLabels)
+        #select.fit(trainingSet,trainingLabels)
+        #self.featuresSelected=np.array(self.trainingSet.columns[select.get_support()])
+        #self.trainingSet=self.makeDataset(self.featuresSelected,select.transform(self.trainingSet).T)
+        #self.testSet=self.makeDataset(self.featuresSelected,select.transform(self.testSet).T)
         
         
         self.model.fit(self.trainingSet,self.trainingLabels)

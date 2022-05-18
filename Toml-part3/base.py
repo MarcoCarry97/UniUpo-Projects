@@ -109,7 +109,7 @@ class Model:
         return self.getResults(prediction,truevalue)
     
     def getResults(self,prediction,actual):
-        dt=pd.DataFrame({"prediction":prediction,"actual":actual})
+        dt=pd.DataFrame({"prediction":prediction,self.trainingLabels.name:actual})
         score=self.model.score(self.testSet,actual)
         rsquare=skm.r2_score(actual, prediction)
         rmse=math.sqrt(skm.mean_squared_error(actual,prediction))
@@ -128,12 +128,9 @@ class Model:
             
     
     def plot(self):
-        preds=self.predictFromModel()
-        label=self.testLabels.name
-        print(label)
-        print(len(preds))
-        print(len(self.testLabels.values))
-        data=pd.DataFrame({"prediction":preds,label:self.trainingLabels})
+        data=self.predict().prediction
+        #data=pd.DataFrame({"prediction":preds,label:self.trainingLabels})
+        label=self.trainingLabels.name
         dp.lineplot(data, "prediction", label, "predictions - "+label,False,True)
         
     

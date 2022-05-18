@@ -37,168 +37,50 @@ class Plotter:
     def title(self,t):
         self.ptitle=t
     
-    def show(self,data,delete=False,save=False,hue=None,dkind=None,vmin=-1,vmax=1):
-        fig=plt.figure(figsize=(10,9))
-        plt.xlabel(self.xlabel,fontsize=self.size)
-        plt.ylabel(self.ylabel,fontsize=self.size)
-        plt.title(self.ptitle,fontsize=self.size)
-        
-        #plot here
-        
+    def show(self,data,delete=False,save=False,hue=None,kind="line",vmin=-1,vmax=1):
+
+        if(kind=="heatmap"):
+            data.style.background_gradient(cmap ='viridis').set_properties(**{'font-size': '20px'})
+        else:
+            data.plot(x=self.xlabel,y=self.ylabel,kind=kind,title=self.ptitle)
         if(os.path.exists("./plot") and delete and save):
             sh.rmtree("./plot")
         if(delete and save):
             os.mkdir("./plot")
-        plt.show()
-        fig.savefig(self.ptitle+".jpg")
         
-    
-class LinePlotter(Plotter):
-    def __init__(self):
-        super().__init__()
-    
-    def show(self,data,delete=False,save=False,hue=None,dkind=None,vmin=-1,vmax=1):
-        fig=plt.figure(figsize=(10,9))
-        plt.xlabel(self.xlabel,fontsize=self.size)
-        plt.ylabel(self.ylabel,fontsize=self.size)
-        plt.title(self.ptitle,fontsize=self.size)
-        
-        sb.lineplot(data=data,x=self.xlabel,y=self.ylabel)
-        
-        if(os.path.exists("./plot") and delete and save):
-            sh.rmtree("./plot")
-        if(delete and save):
-            os.mkdir("./plot")
-        plt.show()
-        fig.savefig(self.ptitle+".jpg")
-        
-class PairPlotter(Plotter):
-    def __init__(self):
-        super().__init__()
-    
-    def show(self,data,delete=False,save=False,hue=None,dkind=None,vmin=-1,vmax=1):
-        fig=plt.figure(figsize=(10,9))
-        plt.xlabel(self.xlabel,fontsize=self.size)
-        plt.ylabel(self.ylabel,fontsize=self.size)
-        plt.title(self.ptitle,fontsize=self.size)
-        
-        sb.pairplot(data=data)
-        
-        if(os.path.exists("./plot") and delete and save):
-            sh.rmtree("./plot")
-        if(delete and save):
-            os.mkdir("./plot")
-        plt.show()
-        fig.savefig(self.ptitle+".jpg")
-        
-class BoxPlotter(Plotter):
-    def __init__(self):
-        super().__init__()
-    
-    def show(self,data,delete=False,save=False,hue=None,dkind=None,vmin=-1,vmax=1):
-        fig=plt.figure(figsize=(10,9))
-        plt.xlabel(self.xlabel,fontsize=self.size)
-        plt.ylabel(self.ylabel,fontsize=self.size)
-        plt.title(self.ptitle,fontsize=self.size)
-        
-        sb.boxplot(x=self.xlabel,y=self.ylabel,data=data)
-        
-        if(os.path.exists("./plot") and delete and save):
-            sh.rmtree("./plot")
-        if(delete and save):
-            os.mkdir("./plot")
-        #plt.show()
-        fig.savefig(self.ptitle+".jpg")
-        
-class ScatterPlotter(Plotter):
-    def __init__(self):
-        super().__init__()
-    
-    def show(self,data,delete=False,save=False,hue=None,dkind=None,vmin=-1,vmax=1):
-        fig=plt.figure(figsize=(10,9))
-        plt.xlabel(self.xlabel,fontsize=self.size)
-        plt.ylabel(self.ylabel,fontsize=self.size)
-        plt.title(self.ptitle,fontsize=self.size)
-        
-        sb.scatterplot(x=self.xlabel,y=self.ylabel,data=data)
-        
-        if(os.path.exists("./plot") and delete and save):
-            sh.rmtree("./plot")
-        if(delete and save):
-            os.mkdir("./plot")
-        #plt.show()
-        fig.savefig(self.ptitle+".jpg")
-        
-class HeatMap(Plotter):
-    def __init__(self):
-        super().__init__()
-        
-    def show(self,data,delete=False,save=False,hue=None,dkind=None,vmin=-1,vmax=1):
-        fig=plt.figure(figsize=(10,9))
-        plt.xlabel(self.xlabel,fontsize=self.size)
-        plt.ylabel(self.ylabel,fontsize=self.size)
-        plt.title(self.ptitle,fontsize=self.size)
-        
-        corrMatrix=getCorrelationMatrix(data)
-        sb.heatmap(corrMatrix,annot=True,cmap="Blues")
-        
-        if(os.path.exists("./plot") and delete and save):
-            sh.rmtree("./plot")
-        if(delete and save):
-            os.mkdir("./plot")
-        #plt.show()
-        fig.savefig(self.ptitle+".jpg")
- 
-class QqPlotter(Plotter):
-    def __init__(self):
-        super().__init__()
-        
-    def show(self,data,delete=False,save=False,hue=None,dkind=None,vmin=-1,vmax=1):
-        fig=plt.figure(figsize=(10,9))
-        plt.xlabel(self.xlabel,fontsize=self.size)
-        plt.ylabel(self.ylabel,fontsize=self.size)
-        plt.title(self.ptitle,fontsize=self.size)
-        
-        pplot(data,x=self.xlabel,y=self.ylabel, kind="qq")
-        
-        if(os.path.exists("./plot") and delete and save):
-            sh.rmtree("./plot")
-        if(delete and save):
-            os.mkdir("./plot")
-        #plt.show()
-        fig.savefig(self.ptitle+".jpg")
  
 def boxplot(data,x,y,title,delete,save):
-    p=BoxPlotter()
+    p=Plotter()
     p.labels(x, y)
     p.title(title)
-    p.show(data,delete=delete,save=save)
+    p.show(data,kind="box",delete=delete,save=save)
     
 def scatterplot(data,x,y,title,delete,save):
-    p=ScatterPlotter()
+    p=Plotter()
     p.labels(x, y)
     p.title(title)
-    p.show(data,delete=delete,save=save)
+    p.show(data,kind="scatter",delete=delete,save=save)
     
 def pairplot(data,x,y,title,delete,save):
-    p=PairPlotter()
+    p=Plotter()
     p.labels(x, y)
     p.title(title)
-    p.show(data,delete=delete,save=save)
+    p.show(data,kind="pair",delete=delete,save=save)
     
 def lineplot(data,x,y,title,delete,save):
-    p=LinePlotter()
+    p=Plotter()
     p.labels(x, y)
     p.title(title)
-    p.show(data,delete=delete,save=save)
+    p.show(data,kind="line",delete=delete,save=save)
     
 def heatmap(data,title,delete,save):
-    p=HeatMap()
+    p=Plotter()
     p.title(title)
-    p.show(data,delete=delete,save=save)
+    print(data)
+    p.show(data,kind="heatmap",delete=delete,save=save)
     
 def qqplot(data,x,y,title,delete,save):
-    p=QqPlotter()
+    p=Plotter()
     p.labels(x, y)
     p.title(title)
     p.show(data,delete=delete,save=save)

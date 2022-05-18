@@ -5,7 +5,7 @@ Created on Wed May 18 00:48:10 2022
 @author: Marco-PC
 """
 
-from kernel import KernelRegression, KernelModel
+from kernel import KernelRegression
 import base as b
 
 def sensorData():

@@ -7,9 +7,6 @@ Created on Sun May  8 10:29:36 2022
 
 import base as b
 import dplotter as dp
-import numpy as np
-import pandas as pd
-import seaborn as sb
 
 def sensorData():
     listfiles=["captor17013-sensor1.csv",
@@ -51,7 +48,7 @@ for label in labels:
 dp.scatterplot(data,o3,refSt, o3+" - "+refSt, delete, save)
 dp.scatterplot(data,"normalizedO3","normalizedRefSt", "normalizedO3 - normalizedRefSt", delete, save)
    
-dp.lineplot(data,o3,time,o3+" on "+time,delete,save)
-dp.lineplot(data,refSt,time,refSt+" on "+time,delete,save)
-
+dp.lineplot(data,time,o3,o3+" on "+time,delete,save)
+dp.lineplot(data,time,refSt,refSt+" on "+time,delete,save)
+dp.lineplot(data,time,[o3,refSt],o3+", "+refSt+" on "+time,delete,save)
 

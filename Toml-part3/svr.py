@@ -5,10 +5,8 @@ Created on Wed May 18 17:51:58 2022
 @author: Marco-PC
 """
 
-import sklearn as sk
 import sklearn.svm as skv
-import pandas as pd
-import numpy as np
+
 
 from base import Algorithm, Model
 

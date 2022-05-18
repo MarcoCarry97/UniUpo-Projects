@@ -5,10 +5,7 @@ Created on Wed May 18 16:30:20 2022
 @author: Marco-PC
 """
 
-import sklearn as sk
 import sklearn.ensemble as ens
-import pandas as pd
-import numpy as np
 
 from base import Algorithm, Model
 

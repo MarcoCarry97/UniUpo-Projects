@@ -1,8 +1,6 @@
 import pandas as pd
 import numpy as np
-import sklearn as sk
 import sklearn.metrics as skm
-from sklearn.feature_selection import SelectFromModel as forwardSelection
 from sklearn.model_selection import train_test_split as datasetSplit
 from sklearn.preprocessing import StandardScaler
 import math
@@ -127,11 +125,13 @@ class Model:
         return acc
             
     
-    def plot(self):
+    def plot(self,other):
         data=self.predict().prediction
         #data=pd.DataFrame({"prediction":preds,label:self.trainingLabels})
-        label=self.trainingLabels.name
-        dp.qqplot(data, "prediction", label, "predictions - "+label,False,True)
+        #label=self.trainingLabels.name
+        addTime(data)
+        data.insert(0, other, self.testSet[other].values)
+        dp.lineplot(data, "time",["prediction",other], "predictions - "+other+" on time",False,True)
         
     
 class Results:

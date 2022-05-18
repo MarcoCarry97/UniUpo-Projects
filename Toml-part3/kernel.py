@@ -5,13 +5,7 @@ Created on Tue May 17 23:40:57 2022
 @author: Marco-PC
 """
 
-import sklearn as sk
 import sklearn.kernel_ridge as kr
-import sklearn.gaussian_process.kernels as kernels
-import sklearn.gaussian_process as gp
-from sklearn.feature_selection import SelectFromModel as forwardSelection
-import pandas as pd
-import numpy as np
 
 from base import Algorithm, Model
 

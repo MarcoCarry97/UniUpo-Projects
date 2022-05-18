@@ -26,7 +26,6 @@ class SvrModel(Model):
         self.model=None
         self.kernelType=kernelType
         self.model=skv.SVR(kernel=self.kernelType)
-       
         #self.model.fit(self.trainingSet,self.trainingLabels)
         #select=forwardSelection(self.model)
         #self.model.fit(self.trainingSet,self.trainingLabels)

@@ -22,15 +22,15 @@ def sensorData():
 predLabel="RefSt"
 
 
-estValues=[1,2,3,4,5]
+kernels=["linear","poly","rbf","sigmoid"]
 
-for val in estValues:
+for ker in kernels:
     print("\n\n\nSUPPORT VECTOR REGRESSION WITH RBF KERNEL\n\n\n")
     data=sensorData()
     data=data.drop(["date"],axis=1)
     svRegr=svr.SupportVectorRegression(data,0.7,predLabel,alpha=1)
     svRegr.noRegularization()
-    model=svRegr.makeModel(val)
+    model=svRegr.makeModel(ker)
     res=model.predict()
     res.printRes()
     model.plot()

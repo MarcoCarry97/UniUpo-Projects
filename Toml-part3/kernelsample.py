@@ -20,29 +20,14 @@ def sensorData():
 
 predictLabel="RefSt"
 
-print("\n\n\nLINEAR KERNEL RIDGE REGRESSION\n\n\n")
-data=sensorData()
-data=data.drop(["date"],axis=1)
-kernelRegr=KernelRegression(data,0.7,predictLabel)
-model=kernelRegr.makeModel("linear")
-res=model.predict()
-res.printRes()
-model.plot()
+kernels=["linear","polynomial","rbf"]
 
-print("\n\n\nPOLYNOMIAL KERNEL RIDGE REGRESSION\n\n\n")
-data=sensorData()
-data=data.drop(["date"],axis=1)
-kernelRegr=KernelRegression(data,0.7,predictLabel)
-model=kernelRegr.makeModel("polynomial")
-res=model.predict()
-res.printRes()
-model.plot()
-
-print("\n\n\nRADIAL BASE FUNCTION KERNEL\n\n\n")
-data=sensorData()
-data=data.drop(["date"],axis=1)
-kernelRegr=KernelRegression(data,0.7,predictLabel)
-model=kernelRegr.makeModel("rbf")
-res=model.predict()
-res.printRes()
-model.plot()
+for ker in kernels:
+    print("\n\n\n"+ker+" KERNEL RIDGE REGRESSION\n\n\n")
+    data=sensorData()
+    data=data.drop(["date"],axis=1)
+    kernelRegr=KernelRegression(data,0.7,predictLabel)
+    model=kernelRegr.makeModel(ker)
+    res=model.predict()
+    res.printRes()
+    model.plot()

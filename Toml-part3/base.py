@@ -131,7 +131,7 @@ class Model:
         data=self.predict().prediction
         #data=pd.DataFrame({"prediction":preds,label:self.trainingLabels})
         label=self.trainingLabels.name
-        dp.lineplot(data, "prediction", label, "predictions - "+label,False,True)
+        dp.qqplot(data, "prediction", label, "predictions - "+label,False,True)
         
     
 class Results:

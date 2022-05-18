@@ -18,16 +18,17 @@ def sensorData():
     return b.prepareData(listfiles, ";")
 
 
-predictLabel="RefSt"
+predLabel="Sensor_O3"
+otherLabel="RefSt"
 
 kernels=["linear","poly","rbf","sigmoid"]
 
 for ker in kernels:
     print("\n\n\n"+ker+" KERNEL RIDGE REGRESSION\n\n\n")
     data=sensorData()
-    data=data.drop(["date"],axis=1)
-    kernelRegr=KernelRegression(data,0.7,predictLabel)
+    data=data.drop(["date"],axis=1) 
+    kernelRegr=KernelRegression(data,0.7,predLabel)
     model=kernelRegr.makeModel(ker)
     res=model.predict()
     res.printRes()
-    model.plot()
+    model.plot(otherLabel)

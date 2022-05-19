@@ -19,12 +19,14 @@ import pandas as pd
 import numpy as np
 
 dt=1
-numIt=20
+numIt=25
 alpha=5.1
 beta=4.3
-gamma=5
-mu=0.002
+#gamma=5
+gamma=0.1288659794
+mu=0.1
 N=7653845
+#N=100000
 
 S=N-1
 E=0

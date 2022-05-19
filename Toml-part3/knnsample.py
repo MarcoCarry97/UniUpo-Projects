@@ -22,16 +22,22 @@ def sensorData():
 predLabel="RefSt"
 otherLabel="Sensor_O3"
 
+k=5
 
-kvalues=[1,2,3,4,5]
+first=["Sensor_O3","Temp","Sensor_SO2"] #best positives
+second=["RelHum","Sensor_NO2","Sensor_NO"] #best negatives
+third=["Sensor_O3","Temp","RelHum"] #best squares
 
-for k in kvalues:
+features=[first,second,third]
+
+for feature in features:
     print("\n\n\nKNN REGRESSION WITH K="+str(k)+"\n\n\n")
     data=sensorData()
     data=data.drop(["date"],axis=1)
     knnRegr=knn.KnnRegression(data,0.7,predLabel,alpha=1)
     knnRegr.noRegularization()
-    model=knnRegr.makeModel(k)
+    model=knnRegr.makeModel(k,labels=feature)
     res=model.predict()
+
     res.printRes()
     model.plot()

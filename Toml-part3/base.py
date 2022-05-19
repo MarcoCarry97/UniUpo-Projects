@@ -74,7 +74,7 @@ class Algorithm:
         self.modelType="Normal"
         self.alpha=alpha  
 
-    def makeModel():
+    def makeModel(features=[]):
         pass
     
     def useRidgeRegression(self):

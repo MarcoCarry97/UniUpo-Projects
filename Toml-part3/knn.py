@@ -21,12 +21,12 @@ class KnnRegression(Algorithm):
     def __init__(self,data,percentual,predictLabel,alpha=1,gamma=None,scale=False):
         super().__init__(data, percentual,predictLabel,alpha=alpha,scale=scale)
         
-    def makeModel(self,k):
-        return KnnModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha,k=k)
+    def makeModel(self,k,labels=[]):
+        return KnnModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha,k=k,labels=labels)
       
 class KnnModel(Model):
-    def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1,k=1):
-        super().__init__(trainingSet, trainingLabels, testSet, testLabels,modelType=modelType, alpha=alpha)
+    def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1,k=1,labels=[]):
+        super().__init__(trainingSet, trainingLabels, testSet, testLabels,modelType=modelType, alpha=alpha,selectedLabels=labels)
         self.model=None
         self.k=k
         self.model=knn.KNeighborsRegressor(self.k)

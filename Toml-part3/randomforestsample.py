@@ -22,16 +22,21 @@ def sensorData():
 predLabel="RefSt"
 otherLabel="Sensor_O3"
 
+numEst=5
 
-estValues=[1,2,3,4,5]
+first=["Sensor_O3","Temp","Sensor_SO2"] #best positives
+second=["RelHum","Sensor_NO2","Sensor_NO"] #best negatives
+third=["Sensor_O3","Temp","RelHum"] #best squares
 
-for val in estValues:
-    print("\n\n\nRANDOM FOREST REGRESSION WITH "+str(val)+" ESTIMATORS\n\n\n")
+features=[first,second,third]
+
+for feature in features:
+    print("\n\n\nRANDOM FOREST REGRESSION WITH "+str(numEst)+" ESTIMATORS\n\n\n")
     data=sensorData()
     data=data.drop(["date"],axis=1)
     rfRegr=rf.RandForestRegression(data,0.7,predLabel,alpha=1)
     rfRegr.noRegularization()
-    model=rfRegr.makeModel(val)
+    model=rfRegr.makeModel(numEst,labels=feature)
     res=model.predict()
     res.printRes()
     model.plot()

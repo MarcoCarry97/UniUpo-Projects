@@ -21,14 +21,21 @@ def sensorData():
 predLabel="RefSt"
 #otherLabel="Sensor_O3"
 
-kernels=["linear","poly","rbf","sigmoid"]
+kernel="rbf"
 
-for ker in kernels:
-    print("\n\n\n"+ker+" KERNEL RIDGE REGRESSION\n\n\n")
+first=["Sensor_O3","Temp","Sensor_SO2"] #best positives
+second=["RelHum","Sensor_NO2","Sensor_NO"] #best negatives
+third=["Sensor_O3","Temp","RelHum"] #best squares
+
+features=[first,second,third]
+
+for feature in features:
+    print("\n\n\n"+kernel+" KERNEL RIDGE REGRESSION\n\n\n")
     data=sensorData()
     data=data.drop(["date"],axis=1) 
     kernelRegr=KernelRegression(data,0.7,predLabel)
-    model=kernelRegr.makeModel(ker)
+    model=kernelRegr.makeModel(kernel,features=feature)
+    print(model.trainingSet)
     res=model.predict()
     res.printRes()
     model.plot()

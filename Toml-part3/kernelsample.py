@@ -18,8 +18,8 @@ def sensorData():
     return b.prepareData(listfiles, ";")
 
 
-predLabel="Sensor_O3"
-otherLabel="RefSt"
+predLabel="RefSt"
+#otherLabel="Sensor_O3"
 
 kernels=["linear","poly","rbf","sigmoid"]
 
@@ -31,4 +31,4 @@ for ker in kernels:
     model=kernelRegr.makeModel(ker)
     res=model.predict()
     res.printRes()
-    model.plot(otherLabel)
+    model.plot()

@@ -14,16 +14,17 @@ class KernelRegression(Algorithm):
         super().__init__(data, percentual,predictLabel,alpha=alpha,scale=scale)
         self.gamma=gamma
         
-    def makeModel(self,kernelType):
-        return KernelModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,kernelType=kernelType,modelType=self.modelType,alpha=self.alpha)
+    def makeModel(self,kernelType,labels):
+        return KernelModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,kernelType=kernelType,modelType=self.modelType,alpha=self.alpha,selectedLabels=labels)
       
 class KernelModel(Model):
-    def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1,kernelType="linear"):
-        super().__init__(trainingSet, trainingLabels, testSet, testLabels,modelType=modelType, alpha=alpha)
+    def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1,kernelType="linear",selectedLabels=[]):
+        super().__init__(trainingSet, trainingLabels, testSet, testLabels,modelType=modelType, alpha=alpha,selectedLabels=selectedLabels)
         self.kernelType=kernelType
         self.model=None
         
         self.model=kr.KernelRidge(alpha=self.alpha,kernel=self.kernelType)
+        self.redefineSets()
        
         #self.model.fit(self.trainingSet,self.trainingLabels)
         #select=forwardSelection(self.model)

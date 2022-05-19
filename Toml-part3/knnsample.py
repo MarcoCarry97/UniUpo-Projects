@@ -19,8 +19,8 @@ def sensorData():
     return b.prepareData(listfiles, ";")
 
 
-predLabel="Sensor_O3"
-otherLabel="RefSt"
+predLabel="RefSt"
+otherLabel="Sensor_O3"
 
 
 kvalues=[1,2,3,4,5]
@@ -34,4 +34,4 @@ for k in kvalues:
     model=knnRegr.makeModel(k)
     res=model.predict()
     res.printRes()
-    model.plot(otherLabel)
+    model.plot()

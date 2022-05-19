@@ -74,10 +74,8 @@ def lineplot(data,x,y,title,delete,save):
     p.show(data,kind="line",delete=delete,save=save)
     
 def heatmap(data,title,delete,save):
-    p=Plotter()
-    p.title(title)
-    print(data)
-    p.show(data,kind="heatmap",delete=delete,save=save)
+    corMatrix=data.corr()
+    sb.heatmap(corMatrix,annot=True)
     
 def qqplot(data,x,y,title,delete,save):
     p=Plotter()

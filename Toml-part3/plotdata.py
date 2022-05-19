@@ -16,6 +16,7 @@ def sensorData():
                #"PM10_Manlleu.csv"
                ]
     return b.prepareData(listfiles, ";")
+    
 
 
     

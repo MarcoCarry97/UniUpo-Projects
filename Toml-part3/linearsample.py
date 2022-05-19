@@ -19,8 +19,8 @@ def sensorData():
     return b.prepareData(listfiles, ";")
 
 
-predLabel="Sensor_O3"
-otherLabel="RefSt"
+predLabel="RefSt"
+otherLabel="Sensor_O3"
 
 print("\n\n\nLINEAR REGRESSION WITHOUT REGULARIZATION\n\n\n")
 data=sensorData()
@@ -30,7 +30,7 @@ linearRegr.noRegularization()
 model=linearRegr.makeModel()
 res=model.predict()
 res.printRes()
-model.plot(otherLabel)
+model.plot()
 
 print("\n\n\nLINEAR REGRESSION WITH LASSO\n\n\n")
 data=sensorData()
@@ -40,7 +40,7 @@ linearRegr.useLasso()
 model=linearRegr.makeModel()
 res=model.predict()
 res.printRes()
-model.plot(otherLabel)
+model.plot()
 
 print("\n\n\nLINEAR REGRESSION WITH RIDGE REGRESSION\n\n\n")
 data=sensorData()
@@ -50,4 +50,4 @@ linearRegr.useRidgeRegression()
 model=linearRegr.makeModel()
 res=model.predict()
 res.printRes()
-model.plot(otherLabel)
+model.plot()

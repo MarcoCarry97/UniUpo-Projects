@@ -18,6 +18,9 @@ def addNormalizedData(data):
 def addTime(data):
     time=np.arange(0,len(data.values),1)
     data.insert(0, "time", time)
+    
+def changeDirection(data):
+    return max(data)-data
 
 def readData(filename,separator):
     data=pd.read_csv(filename,delimiter=separator)
@@ -32,6 +35,8 @@ def readData(filename,separator):
                 n=n.replace(".","",1)
             nums+=[np.float64(n)]
         data["Sensor_O3"]=np.array(nums)
+   # elif("RelHum" in data.keys()):
+    #    data["RelHum"]=changeDirection(data["RelHum"])
     data.head()
     return data;
 
@@ -84,7 +89,7 @@ class Algorithm:
 
 
 class Model:
-    def __init__(self,trainingSet,trainingLabels,testSet,testLabels,modelType="Normal",alpha=1):
+    def __init__(self,trainingSet,trainingLabels,testSet,testLabels,modelType="Normal",alpha=1,selectedLabels=[]):
         self.trainingSet=trainingSet
         self.testSet=testSet
         self.trainingLabels=trainingLabels
@@ -94,6 +99,7 @@ class Model:
         self.none=True
         self.model=None
         self.features=None
+        self.selectedLabels=selectedLabels
         
     def getCoefficients(self):
         return self.model.coef_
@@ -105,6 +111,11 @@ class Model:
         prediction=self.model.predict(self.testSet)
         truevalue=self.testLabels
         return self.getResults(prediction,truevalue)
+    
+    def redefineSets(self):
+        if(len(self.selectedLabels)>0):
+            self.trainingSet=self.trainingSet[self.selectedLabels]
+            self.testSet=self.testSet[self.selectedLabels]
     
     def getResults(self,prediction,actual):
         dt=pd.DataFrame({"prediction":prediction,self.trainingLabels.name:actual})
@@ -125,14 +136,17 @@ class Model:
         return acc
             
     
-    def plot(self,other):
+    def plot(self):
         data=self.predict().prediction
         #data=pd.DataFrame({"prediction":preds,label:self.trainingLabels})
         #label=self.trainingLabels.name
         addTime(data)
-        data.insert(0, other, self.testSet[other].values)
-        dp.lineplot(data, "time",["prediction",other], "predictions - "+other+" on time",False,True)
+        #data.insert(0, other, self.testSet[other].values)
+        label=self.testLabels.name
+        dp.lineplot(data, "time",["prediction",label], "predictions - "+label+" on time",False,True)
         
+    def tune():
+        pass
     
 class Results:
     def __init__(self,prediction,score,rsquare,rmse,mae):

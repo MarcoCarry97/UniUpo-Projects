@@ -30,7 +30,7 @@ class KnnModel(Model):
         self.model=None
         self.k=k
         self.model=knn.KNeighborsRegressor(self.k)
-       
+        self.redefineSets()
         #self.model.fit(self.trainingSet,self.trainingLabels)
         #select=forwardSelection(self.model)
         #self.model.fit(self.trainingSet,self.trainingLabels)

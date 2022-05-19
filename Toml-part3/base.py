@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split as datasetSplit
 from sklearn.preprocessing import StandardScaler
 import math
 import dplotter as dp
+from sklearn.model_selection import GridSearchCV as gridTuner
 
 def calcNormalizedData(data):
     mean=np.mean(data);
@@ -145,8 +146,13 @@ class Model:
         label=self.testLabels.name
         dp.lineplot(data, "time",["prediction",label], "predictions - "+label+" on time",False,True)
         
-    def tune():
+    def params(self):
         pass
+        
+    def tune(self):
+        grid=gridTuner(self.model,self.params(),)
+        grid.fit(self.trainingSet, self.trainingLabels)
+        self.model=grid.best_estimator_
     
 class Results:
     def __init__(self,prediction,score,rsquare,rmse,mae):

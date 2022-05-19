@@ -19,7 +19,7 @@ import pandas as pd
 import numpy as np
 
 dt=1
-numIt=25
+numIt=50
 alpha=5.1
 beta=4.3
 #gamma=5

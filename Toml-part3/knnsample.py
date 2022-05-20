@@ -37,6 +37,7 @@ for feature in features:
     knnRegr=knn.KnnRegression(data,0.7,predLabel,alpha=1)
     knnRegr.noRegularization()
     model=knnRegr.makeModel(k,labels=feature)
+    model.tune()
     res=model.predict()
 
     res.printRes()

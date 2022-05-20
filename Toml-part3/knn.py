@@ -43,4 +43,12 @@ class KnnModel(Model):
         self.model.fit(self.trainingSet,self.trainingLabels)
         
         #self.features=self.model.transform(self.trainingSet)
-
+    
+    def params(self):
+        return {
+            "n_neighbors":[1,2,5,10,25,50],
+            "weights":["uniform","distance"],
+            "leaf_size":[10,20,30,40,50,60,70,80,90,100],
+            "p":[1,2,3,4,5,6,7,8,9,10]
+            
+            }

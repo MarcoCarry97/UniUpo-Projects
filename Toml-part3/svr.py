@@ -19,7 +19,7 @@ class SupportVectorRegression(Algorithm):
       
 class SvrModel(Model):
     def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1,kernelType="rbf",labels=[]):
-        super().__init__(trainingSet, trainingLabels, testSet, testLabels,modelType=modelType, alpha=alpha,labels=labels)
+        super().__init__(trainingSet, trainingLabels, testSet, testLabels,modelType=modelType, alpha=alpha,selectedLabels=labels)
         self.kernelType=kernelType
         self.model=None
         self.kernelType=kernelType
@@ -37,3 +37,9 @@ class SvrModel(Model):
         self.model.fit(self.trainingSet,self.trainingLabels)
         
         #self.features=self.model.transform(self.trainingSet)
+    def params(self):
+        return {
+            "gamma":["scale","auto",1,2,3,4,5],
+            "C":[1,2,5,10,25,50,100,250,500,1000],
+            "kernel":["rbf"]
+            }

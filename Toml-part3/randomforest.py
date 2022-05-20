@@ -36,3 +36,17 @@ class RandForestModel(Model):
         self.model.fit(self.trainingSet,self.trainingLabels)
         
         #self.features=self.model.transform(self.trainingSet)
+    def params(self):
+        return {
+            "n_estimators":[1,2,5,10],
+            "criterion":["squared_error","absolute_error","poisson"],
+            "max_depth":[None,1,2,5,10],
+            "min_samples_split":[1,2,5,10],
+            "min_samples_leaf":[1,2,3,4,5,6,7,8,9,10],
+            "max_features":["sqrt","log2",None,1,2,3,0.7],
+            "max_leaf_nodes":[None,1,2,3,4,5],
+            "max_samples":[None,1,2,3,4,5,0.7,0.3]
+            }
+    
+    
+        

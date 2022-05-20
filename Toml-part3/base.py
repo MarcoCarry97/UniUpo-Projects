@@ -153,6 +153,7 @@ class Model:
         grid=gridTuner(self.model,self.params(),)
         grid.fit(self.trainingSet, self.trainingLabels)
         self.model=grid.best_estimator_
+        print(grid.best_params_)
     
 class Results:
     def __init__(self,prediction,score,rsquare,rmse,mae):

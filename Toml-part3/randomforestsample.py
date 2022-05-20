@@ -37,6 +37,7 @@ for feature in features:
     rfRegr=rf.RandForestRegression(data,0.7,predLabel,alpha=1)
     rfRegr.noRegularization()
     model=rfRegr.makeModel(numEst,labels=feature)
+    model.tune()
     res=model.predict()
     res.printRes()
     model.plot()

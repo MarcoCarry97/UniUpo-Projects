@@ -35,7 +35,7 @@ for feature in features:
     data=data.drop(["date"],axis=1) 
     kernelRegr=KernelRegression(data,0.7,predLabel)
     model=kernelRegr.makeModel(kernel,features=feature)
-    print(model.trainingSet)
+    model.tune()
     res=model.predict()
     res.printRes()
     model.plot()

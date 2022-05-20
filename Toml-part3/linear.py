@@ -46,3 +46,8 @@ class LinearModel(Model):
         for i in range(0,len(labels)):
             dictio[labels[i]]=arrays[i]
         return pd.DataFrame(dictio)
+
+    def params(self):
+        return {
+                "alpha": [0.5,1,2,5,10,25,50,100,250,500,1000]
+            }

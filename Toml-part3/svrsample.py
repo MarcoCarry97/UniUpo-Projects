@@ -37,6 +37,7 @@ for feature in features:
     svRegr=svr.SupportVectorRegression(data,0.7,predLabel,alpha=1)
     svRegr.noRegularization()
     model=svRegr.makeModel(kernel,labels=feature)
+    model.tune()
     res=model.predict()
     res.printRes()
     model.plot()

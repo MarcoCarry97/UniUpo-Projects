@@ -36,6 +36,14 @@ class KernelModel(Model):
         
         
         self.model.fit(self.trainingSet,self.trainingLabels)
-        
+    
+    def params(self):
+        return {
+                "alpha":[1,2,5,10,25,50,100,250,500,1000],
+                "kernel":["rbf","linear","poly"],
+                "degree":[1,2,3,4,5,6,7,8,9,10]
+ 
+            }
         #self.features=self.model.transform(self.trainingSet)
 
+    

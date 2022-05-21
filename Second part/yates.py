@@ -27,7 +27,6 @@ class YatesAlgorithm:
             step=out
         e=2**(n-1)
         effects=[0]*len(response)
-        print(effects)
         for i in range(0,len(effects)):
             effects[i]=step[i]/e
         effects[0]/=2

@@ -8,10 +8,10 @@ Created on Tue May 24 17:37:23 2022
 import covidmodel as covid
 
 data={
-      "infectivity":0.42,
-      "contactsPerDay":15,
-      "containedPercent":0.35,
-      "recommandation":True
+      "infectivity":0.42, #first factor
+      "contactsPerDay":15, #second factor
+      "containedPercent":0.35, #third factor
+      "recommandation":True #fourth factor
       }
 
 dt=1

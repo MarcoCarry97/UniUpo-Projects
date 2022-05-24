@@ -11,7 +11,7 @@ data={
       "infectivity":0.42,
       "contactsPerDay":15,
       "containedPercent":0.35,
-      "recommandation":False
+      "recommandation":True
       }
 
 dt=1
@@ -21,9 +21,9 @@ alpha=5.0
 #gamma=5
 gamma=0.128866
 mu=0.2
-#omicron=fatigue
+omicron=0.65
 
 N=7653845
 
 model=covid.Model(data)
-model.execute(numIt, alpha, gamma, mu, N)
+model.execute(numIt, alpha, gamma, mu,omicron, N)

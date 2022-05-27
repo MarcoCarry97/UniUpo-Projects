@@ -10,8 +10,7 @@ import pandas as pd
 
 class Model:
     def __init__(self,factors):
-        self.infectivity=factors["infectivity"]
-        self.contactPerDay=factors["contactsPerDay"]
+        self.beta=factors["beta"]
         self.recommendation=factors["recommandation"]
         self.containedPercent=factors["containedPercent"]
         
@@ -28,7 +27,7 @@ class Model:
     def execute(self,steps,alpha,gamma,mu,omicron,M):
         if(self.recommendation):
             omicron/=4
-        beta=self.infectivity*self.contactPerDay
+        beta=self.beta
         N=self.containedPercent*M
         S=N-1
         E=0
@@ -86,9 +85,9 @@ class Model:
         data.plot(x="time",y=["S","E","I","R","D","L","C"],kind="line")
         #data.plot(x="time",y="E",kind="line")
 
-        for label in data.columns:
-            if(label!="time"):
-                data.plot(x="time",y=label,kind="line")
+        #for label in data.columns:
+        #    if(label!="time"):
+        #        data.plot(x="time",y=label,kind="line")
 
         data.to_excel("./covidsim.xlsx")
         data.to_csv("./covidsim.csv")

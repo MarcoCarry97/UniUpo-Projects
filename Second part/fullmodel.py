@@ -6,15 +6,28 @@ Created on Wed May 25 00:23:14 2022
 """
 import covidmodel as covid
 
-class FullModel:
+class FullFractionalDesign:
     def __init__(self):
         pass
         
     def getCombinations(self):
-        pass
+        betas=[0.42*15,0.02*40]
+        recommends=[False,True]
+        containedPercents=[0.35,0.83]
+        res=[]
+        for beta in betas:
+            for recommend in recommends:
+                for containedPercent in containedPercents:
+                    res+=[{"beta":beta,
+                           "recommandation":recommend,
+                           "containedPercent":containedPercent
+                           }]
+        return res
+               
     
-    def execute(self,alpha,gamma,mu,omicron,N):
+    def execute(self,alpha,gamma,mu,omicron,N,steps):
         for comb in self.getCombinations():
             model=covid.Model(comb)
-            model.execute(alpha,gamma,mu,omicron,N)
+            model.execute(steps,alpha,gamma,mu,omicron,N)
             
+                

@@ -11,9 +11,11 @@ class FullFractionalDesign:
         pass
         
     def getCombinations(self):
-        betas=[0.42*15,0.02*40]
+        #betas=[0.42*15,0.02*40]
+        betas=[1.3,0.3]
+        #betas=[0.42*15*0.1]
         recommends=[False,True]
-        containedPercents=[0.35,0.83]
+        containedPercents=[0.48,0.12]
         res=[]
         for beta in betas:
             for recommend in recommends:
@@ -26,8 +28,10 @@ class FullFractionalDesign:
                
     
     def execute(self,alpha,gamma,mu,omicron,N,steps):
-        for comb in self.getCombinations():
+        combs=self.getCombinations()
+        for i in range(0,len(combs)):
+            comb=combs[i]
             model=covid.Model(comb)
-            model.execute(steps,alpha,gamma,mu,omicron,N)
+            model.execute(steps,alpha,gamma,mu,omicron,N,i)
             
                 

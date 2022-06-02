@@ -7,6 +7,7 @@ Created on Tue May 24 17:19:04 2022
 
 import numpy as np
 import pandas as pd
+import random as rand
 
 class Model:
     def __init__(self,factors):
@@ -24,7 +25,7 @@ class Model:
         nD=N*D/Nt
         return nS,nE,nI,nR,nD
     
-    def execute(self,steps,alpha,gamma,mu,omicron,M):
+    def execute(self,steps,alpha,gamma,mu,omicron,M,num):
         if(self.recommendation):
             omicron/=4
         beta=self.beta
@@ -52,13 +53,16 @@ class Model:
             dR=gamma*(1-mu)*I
             dD=gamma*mu*I
             dL=omicron*R
-            C=N-S
+            #C=N-S
+            dC=(N-S)*self.containedPercent
             S=max(S+dS,0)
             E=max(E+dE,0)
             I=max(I+dI,0)
             R=max(R+dR,0)
             D=max(D+dD,0)
             L=dL
+            C=max(C+dC,0)
+            C=N*C/(S+E+I+R+D)
             S,E,I,R,D=self.normalize(S, E, I, R, D,N)
             Sa+=[S]
             Ea+=[E]
@@ -67,9 +71,12 @@ class Model:
             Da+=[D]
             La+=[L]
             Ca+=[C]
-        self.plotAndSave(steps,Sa,Ea,Ia,Ra,Da,La,Ca)
+            C=min(N,C)
+            #omicron*=(C/Nt)
+            
+        self.plotAndSave(steps,Sa,Ea,Ia,Ra,Da,La,Ca,num)
     
-    def plotAndSave(self,steps,Sa,Ea,Ia,Ra,Da,La,Ca):
+    def plotAndSave(self,steps,Sa,Ea,Ia,Ra,Da,La,Ca,num):
         data=pd.DataFrame()
 
         data.insert(0,"time",np.arange(0,steps+1,1))
@@ -89,6 +96,6 @@ class Model:
         #    if(label!="time"):
         #        data.plot(x="time",y=label,kind="line")
 
-        data.to_excel("./covidsim.xlsx")
-        data.to_csv("./covidsim.csv")
+        data.to_excel("./covidsim-"+str(num)+".xlsx")
+        data.to_csv("./covidsim-"+str(num)+".csv")
         

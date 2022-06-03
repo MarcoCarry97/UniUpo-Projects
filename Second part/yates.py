@@ -24,6 +24,7 @@ class YatesAlgorithm:
                 y=couple[1]
                 out[i]=x+y
                 out[j]=y-x
+            print(step)
             step=out
         e=2**(n-1)
         effects=[0]*len(response)

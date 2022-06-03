@@ -29,7 +29,7 @@ class Model:
         if(self.recommendation):
             omicron/=4
         beta=self.beta
-        N=self.containedPercent*M
+        N=(1-self.containedPercent)*M
         S=N-1
         E=0
         I=1

@@ -15,7 +15,7 @@ class FullFractionalDesign:
         betas=[1.3,0.3]
         #betas=[0.42*15*0.1]
         recommends=[False,True]
-        containedPercents=[0.48,0.12]
+        containedPercents=[0.5,0.0]
         res=[]
         for beta in betas:
             for recommend in recommends:

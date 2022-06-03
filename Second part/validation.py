@@ -42,7 +42,8 @@ for label in reversed(labels):
         val=0
         for data in dataList:
             val+=data[label][i]
-        values+=[val/len(dataList)]
+        values+=[val]
+        
     avgData.insert(0,label,np.array(values))   
 
 avgData.plot(x="time",y=["S","E","I","R","D","L","C"])

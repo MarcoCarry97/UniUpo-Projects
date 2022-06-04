@@ -6,6 +6,24 @@ Created on Sat May 21 19:47:50 2022
 """
 from yates import YatesAlgorithm
 
+list1=[2723104,
+       886941,
+       952996,
+       310431,
+       2723104,
+       886941,
+       952996,
+       310431]
+
+list2=[6450261,
+       5560859,
+       2257591,
+       1946307,
+       607083,
+       523375,
+       212479,
+       183182]
+
 ya=YatesAlgorithm()
-effects=ya.conputeEffects([71,61,90,82,68,61,87,80,61,50,89,83,59,51,85,78], 4)
-print(effects)
+effects=ya.conputeEffects(list2, 3)
+print("effects: ",effects)

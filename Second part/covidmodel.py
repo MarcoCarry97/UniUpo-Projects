@@ -27,7 +27,8 @@ class Model:
     
     def execute(self,steps,alpha,gamma,mu,omicron,M,num):
         if(self.recommendation):
-            omicron/=4
+            #omicron/=4
+            omicron=0.08
         beta=self.beta
         N=(1-self.containedPercent)*M
         S=N-1
@@ -51,15 +52,18 @@ class Model:
             dE=beta*S*I/N -alpha*E
             dI=alpha*E-gamma*I
             dR=gamma*(1-mu)*I
+            #dR=(I/gamma)*((100-gamma)/100)
             dD=gamma*mu*I
+            #dD=(I/gamma)*(gamma/100)
             dL=omicron*R
             #C=N-S
-            dC=(N-S)*self.containedPercent
+            dC=(Nt-S)*self.containedPercent
             S=max(S+dS,0)
             E=max(E+dE,0)
             I=max(I+dI,0)
             R=max(R+dR,0)
             D=max(D+dD,0)
+            #dL=omicron*R
             L=dL
             C=max(C+dC,0)
             C=N*C/(S+E+I+R+D)

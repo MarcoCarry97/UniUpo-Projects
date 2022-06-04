@@ -16,16 +16,16 @@ data={
 
 dt=1
 #numIt=10000
-alpha=5
+alpha=5.5
 #beta=infectivity*contactDay
 #gamma=5
-gamma=0.13
+gamma=1/7.76
 #gamma=5
 mu=0.2
-omicron=0.65
+omicron=0.85
 
 N=7653845
 
-numIter=1000
+numIter=100
 design=fm.FullFractionalDesign()
 design.execute(alpha, gamma, mu, omicron, N, numIter)

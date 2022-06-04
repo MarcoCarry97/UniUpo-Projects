@@ -29,7 +29,7 @@ for i in range(0,8): #read csv files
     
 avgData=pd.DataFrame()
 
-labels=list(dataList[0].columns)
+labels=["I","L"]
 
 #labels.remove("time")
 #labels.remove("Unnamed: 0")

@@ -6,7 +6,7 @@ Created on Wed May 25 00:23:14 2022
 """
 import covidmodel as covid
 
-class FullFractionalDesign:
+class FullFactorialDesign:
     def __init__(self):
         pass
         
@@ -17,9 +17,9 @@ class FullFractionalDesign:
         recommends=[False,True]
         containedPercents=[0.5,0.0]
         res=[]
-        for beta in betas:
-            for recommend in recommends:
-                for containedPercent in containedPercents:
+        for containedPercent in containedPercents:
+            for recommend in recommends:    
+                for beta in betas:
                     res+=[{"beta":beta,
                            "recommandation":recommend,
                            "containedPercent":containedPercent

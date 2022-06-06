@@ -13,8 +13,7 @@ class Model:
     def __init__(self,factors):
         self.beta=factors["beta"]
         self.recommendation=factors["recommandation"]
-        self.containedPercent=factors["containedPercent"]
-        
+        self.containedPercent=factors["containedPercent"]       
         
     def normalize(self,S,E,I,R,D,N):
         Nt=S+E+I+R+D
@@ -25,64 +24,54 @@ class Model:
         nD=N*D/Nt
         return nS,nE,nI,nR,nD
     
-    def execute(self,steps,alpha,gamma,mu,omicron,M,num):
+    def update(self,S,E,I,R,D,L,C,N,M,alpha,beta,gamma,mu,omega):
+        Nt=S+E+I+R+D
+        print(S,E,I,R,D,Nt)
+        dS=-beta*S*I/N
+        dE=beta*S*I/N -alpha*E
+        dI=alpha*E-gamma*I
+        dR=gamma*(1-mu)*I
+        dD=gamma*mu*I
+        dL=omega*R
+        dC=M-S
+        S=max(S+dS,0)
+        E=max(E+dE,0)
+        I=max(I+dI,0)
+        R=max(R+dR,0)
+        D=max(D+dD,0)
+        L=dL
+        #C=max(C+dC,0)
+        C=dC
+        S,E,I,R,D=self.normalize(S, E, I, R, D, N)
+        #C=N*C/Nt
+        #C=min(C,N)     
+        return S,E,I,R,D,L,C
+    
+    def execute(self,steps,alpha,gamma,mu,omega,M,num):
         if(self.recommendation):
-            #omicron/=4
-            omicron=0.08
+            omega=0.08
         beta=self.beta
-        N=(1-self.containedPercent)*M
-        S=N-1
-        E=0
-        I=1
-        R=0
-        D=0
-        C=0
-        L=0
-        Sa=[S]
-        Ea=[E]
-        Ia=[I]
-        Ra=[R]
-        Da=[D]
-        Ca=[C]
-        La=[L]
+        N=(1-self.containedPercent)*M     
+        Sa=[N-1]
+        Ea=[0]
+        Ia=[1]
+        Ra=[0]
+        Da=[0]
+        Ca=[M-(N-1)]
+        La=[0]
         for i in range(0,steps):
-            Nt=S+E+I+R+D
-            print(S,E,I,R,D,Nt)
-            dS=-beta*S*I/N
-            dE=beta*S*I/N -alpha*E
-            dI=alpha*E-gamma*I
-            dR=gamma*(1-mu)*I
-            #dR=(I/gamma)*((100-gamma)/100)
-            dD=gamma*mu*I
-            #dD=(I/gamma)*(gamma/100)
-            dL=omicron*R
-            #C=N-S
-            dC=(Nt-S)*self.containedPercent
-            S=max(S+dS,0)
-            E=max(E+dE,0)
-            I=max(I+dI,0)
-            R=max(R+dR,0)
-            D=max(D+dD,0)
-            #dL=omicron*R
-            L=dL
-            C=max(C+dC,0)
-            C=N*C/(S+E+I+R+D)
-            S,E,I,R,D=self.normalize(S, E, I, R, D,N)
+            S,E,I,R,D,L,C=self.update(Sa[i],Ea[i],Ia[i],Ra[i],Da[i],La[i],Ca[i],N,M,alpha,beta,gamma,mu,omega)   
             Sa+=[S]
             Ea+=[E]
             Ia+=[I]
             Ra+=[R]
             Da+=[D]
             La+=[L]
-            Ca+=[C]
-            C=min(N,C)
-            #omicron*=(C/Nt)
-            
+            Ca+=[C]        
         self.plotAndSave(steps,Sa,Ea,Ia,Ra,Da,La,Ca,num)
     
     def plotAndSave(self,steps,Sa,Ea,Ia,Ra,Da,La,Ca,num):
         data=pd.DataFrame()
-
         data.insert(0,"time",np.arange(0,steps+1,1))
         data.insert(0,"L",np.array(La))
         data.insert(0,"C",np.array(Ca))
@@ -91,15 +80,7 @@ class Model:
         data.insert(0,"I",np.array(Ia))
         data.insert(0,"E",np.array(Ea))
         data.insert(0,"S",np.array(Sa)) 
-
-
         data.plot(x="time",y=["S","E","I","R","D","L","C"],kind="line")
-        #data.plot(x="time",y="E",kind="line")
-
-        #for label in data.columns:
-        #    if(label!="time"):
-        #        data.plot(x="time",y=label,kind="line")
-
         data.to_excel("./covidsim-"+str(num)+".xlsx")
         data.to_csv("./covidsim-"+str(num)+".csv")
         

@@ -22,9 +22,12 @@ class YatesAlgorithm:
                 j=i+len(couples)
                 x=couple[0]
                 y=couple[1]
+                #print("len",len(couples))
+                print("i j",i,j)
+                print("x y",x,y)
                 out[i]=x+y
                 out[j]=y-x
-            print(step)
+            print(out)
             step=out
         e=2**(n-1)
         effects=[0]*len(response)

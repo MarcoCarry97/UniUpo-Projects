@@ -15,7 +15,7 @@ def sigmoid(xx):
 def safe_log(xx):
     yy=np.zeros(shape=(len(xx),1))
     for ii in range(len(xx)):
-        if xx[ii] < 1e-10 :
+        if(xx[ii] < 1e-10):
             yy[ii]=np.log(1e-10)
         else:
             yy[ii]=np.log(xx[ii])
@@ -61,22 +61,27 @@ def backpropagation(self,trueValue,prediction,aa,za):
         gradW=aa[i-1].dot(weights[i])
         gradWeights+=[gradW]
     return gradWeights   
-    
+
+def module(xx):
+    return(np.sqrt(xx.dot(xx)))
 
 class NeuralNetwork:
-    def __init__(self,inputs=1,hiddens=20,outputs=3,batchSize=640,learningRate=1e-4):
+    def __init__(self,inputs=3,hiddens=20,outputs=1,batchSize=640,learningRate=1e-4):
         self.numInput=inputs
         self.numHidden=hiddens
         self.numOutput=outputs
         self.batchSize=batchSize
         self.weights=[randomNum(inputs,hiddens)]
-        for i in range(0,hiddens):
-            self.weights+=[randomNum(hiddens,hiddens)]
+        #for i in range(0,hiddens):
+           # self.weights+=[randomNum(hiddens,hiddens)]
+        self.weights+=[randomNum(hiddens,hiddens)]
         self.weights=[randomNum(inputs,outputs)]
         self.learningRate=learningRate
+        self.trainingSet=None
+        self.testSet=None
         
     
-    def forward(x,weights):
+    def forward(self,x,weights):
         a=x
         z=ReLU(a)
         aa=[a]
@@ -99,18 +104,18 @@ class NeuralNetwork:
                 self.weights[i]-=value*self.learningRate
             
         
-    def compute(self,trainingSet,testSet,numIterations=2000):
+    def compute(self,numIterations=2000):
         losses=np.zeros(shape=(numIterations,2))
         prediction=0
         for t in range(0,numIterations):
             #training
-            prediction,aa,za=self.forward(self.weights)
-            trueValue=0
+            prediction,aa,za=self.forward(self.trainingSet[0],self.weights)
+            trueValue=self.trainingSet[1]
             loss=computeLoss(trueValue, prediction)
             losses[t,0]=loss.mean()
             #testing
-            testPrediction=self.forward(self.weights)
-            testValue=0
+            testPrediction=self.forward(self.testSet[0],self.weights)
+            testValue=self.testSet[1]
             loss=computeLoss(testValue, testPrediction)
             losses[t,1]=loss.mean()
             #updating
@@ -118,5 +123,25 @@ class NeuralNetwork:
             self.updateWeights(0.7,gradWeights, t)
         return prediction 
             
-            
+    def generateDataSet(self,radius,noise=0):
+        self.trainingSet=self.generateSet(radius,noise)
+        self.testSet=self.generateSet(radius,noise)
+        
+    def generateSet(self,radius,noise):
+        x=np.zeros(shape=(self.batchSize,self.numInput))
+        y=np.zeros(shape=(self.batchSize,1))
+        print(len(x))
+        for i in range(0,self.numOutput):
+            print(i)
+            x[:,i]=np.random.randn(self.batchSize)
+        x[:,self.numOutput-1]=1
+        for i in range(0,self.batchSize):
+            mod=module(x[i,0:(self.numOutput-1)])
+            randNoise=noise*np.random.randn()
+            if((mod+randNoise<radius[0])):
+                y[i]=0
+            else:
+                y[i]=1
+        return (x,y)
+        
     

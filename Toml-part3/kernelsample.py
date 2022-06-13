@@ -23,19 +23,12 @@ predLabel="RefSt"
 
 kernel="rbf"
 
-first=["Sensor_O3","Temp","Sensor_SO2"] #best positives
-second=["RelHum","Sensor_NO2","Sensor_NO"] #best negatives
-third=["Sensor_O3","Temp","RelHum"] #best squares
-
-features=[first,second,third]
-
-for feature in features:
-    print("\n\n\n"+kernel+" KERNEL RIDGE REGRESSION\n\n\n")
-    data=sensorData()
-    data=data.drop(["date"],axis=1) 
-    kernelRegr=KernelRegression(data,0.7,predLabel)
-    model=kernelRegr.makeModel(kernel,features=feature)
-    model.tune()
-    res=model.predict()
-    res.printRes()
-    model.plot()
+print("\n\n\n"+kernel+" KERNEL RIDGE REGRESSION\n\n\n")
+data=sensorData()
+data=data.drop(["date"],axis=1) 
+kernelRegr=KernelRegression(data,0.8,predLabel,kernel=kernel)
+model=kernelRegr.makeModel()
+model.tune()
+res=model.predict()
+res.printRes()
+model.plot()

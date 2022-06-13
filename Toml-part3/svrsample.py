@@ -22,22 +22,16 @@ def sensorData():
 predLabel="RefSt"
 otherLabel="Sensor_O3"
 
-first=["Sensor_O3","Temp","Sensor_SO2"] #best positives
-second=["RelHum","Sensor_NO2","Sensor_NO"] #best negatives
-third=["Sensor_O3","Temp","RelHum"] #best squares
-
-features=[first,second,third]
-
 kernel="rbf"
 
-for feature in features:
-    print("\n\n\nSUPPORT VECTOR REGRESSION WITH RBF KERNEL\n\n\n")
-    data=sensorData()
-    data=data.drop(["date"],axis=1)
-    svRegr=svr.SupportVectorRegression(data,0.7,predLabel,alpha=1)
-    svRegr.noRegularization()
-    model=svRegr.makeModel(kernel,labels=feature)
-    model.tune()
-    res=model.predict()
-    res.printRes()
-    model.plot()
+print("\n\n\nSUPPORT VECTOR REGRESSION WITH RBF KERNEL\n\n\n")
+data=sensorData()
+data=data.drop(["date"],axis=1)
+svRegr=svr.SupportVectorRegression(data,0.7,predLabel,alpha=1,kernel=kernel)
+svRegr.noRegularization()
+model=svRegr.makeModel()
+model.tune()
+res=model.predict()
+res.printRes()
+model.plot()
+  

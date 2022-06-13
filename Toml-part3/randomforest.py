@@ -10,11 +10,12 @@ import sklearn.ensemble as ens
 from base import Algorithm, Model
 
 class RandForestRegression(Algorithm):
-    def __init__(self,data,percentual,predictLabel,alpha=1,gamma=None,scale=False):
+    def __init__(self,data,percentual,predictLabel,alpha=1,gamma=None,scale=False,numEst=1):
         super().__init__(data, percentual,predictLabel,alpha=alpha,scale=scale)
+        self.numEst=1
         
-    def makeModel(self,numEst,labels=[]):
-        return RandForestModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha,numEst=numEst,selectedLabels=labels)
+    def makeModel(self,labels=[]):
+        return RandForestModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha,numEst=self.numEst,selectedLabels=labels)
       
 class RandForestModel(Model):
     def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1,numEst=1,selectedLabels=[]):
@@ -38,14 +39,14 @@ class RandForestModel(Model):
         #self.features=self.model.transform(self.trainingSet)
     def params(self):
         return {
-            "n_estimators":[1,2,5,10],
-            "criterion":["squared_error","absolute_error","poisson"],
-            "max_depth":[None,1,2,5,10],
-            "min_samples_split":[1,2,5,10],
-            "min_samples_leaf":[1,2,3,4,5,6,7,8,9,10],
-            "max_features":["sqrt","log2",None,1,2,3,0.7],
-            "max_leaf_nodes":[None,1,2,3,4,5],
-            "max_samples":[None,1,2,3,4,5,0.7,0.3]
+            "n_estimators":[1,10,100],
+            "criterion":["squared_error"],
+            "max_depth":[None,1,10,100],
+            "min_samples_split":[1,2,5],
+            "min_samples_leaf":[2,5,10],
+            "max_features":["auto"],
+            "max_leaf_nodes":[None,1,2,5],
+            "max_samples":[None,1,5,0.7,0.3]
             }
     
     

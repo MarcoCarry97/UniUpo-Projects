@@ -24,21 +24,14 @@ otherLabel="Sensor_O3"
 
 k=5
 
-first=["Sensor_O3","Temp","Sensor_SO2"] #best positives
-second=["RelHum","Sensor_NO2","Sensor_NO"] #best negatives
-third=["Sensor_O3","Temp","RelHum"] #best squares
+print("\n\n\nKNN REGRESSION WITH K="+str(k)+"\n\n\n")
+data=sensorData()
+data=data.drop(["date"],axis=1)
+knnRegr=knn.KnnRegression(data,0.8,predLabel,alpha=1)
+knnRegr.noRegularization()
+model=knnRegr.makeModel()
+model.tune()
+res=model.predict()
 
-features=[first,second,third]
-
-for feature in features:
-    print("\n\n\nKNN REGRESSION WITH K="+str(k)+"\n\n\n")
-    data=sensorData()
-    data=data.drop(["date"],axis=1)
-    knnRegr=knn.KnnRegression(data,0.7,predLabel,alpha=1)
-    knnRegr.noRegularization()
-    model=knnRegr.makeModel(k,labels=feature)
-    model.tune()
-    res=model.predict()
-
-    res.printRes()
-    model.plot()
+res.printRes()
+model.plot()

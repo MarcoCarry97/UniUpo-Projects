@@ -18,11 +18,12 @@ import sklearn.neighbors as knn
 from base import Algorithm, Model
 
 class KnnRegression(Algorithm):
-    def __init__(self,data,percentual,predictLabel,alpha=1,gamma=None,scale=False):
+    def __init__(self,data,percentual,predictLabel,alpha=1,gamma=None,scale=False,k=1):
         super().__init__(data, percentual,predictLabel,alpha=alpha,scale=scale)
+        self.k=k
         
-    def makeModel(self,k,labels=[]):
-        return KnnModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha,k=k,labels=labels)
+    def makeModel(self,labels=[]):
+        return KnnModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha,k=self.k,labels=labels)
       
 class KnnModel(Model):
     def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1,k=1,labels=[]):

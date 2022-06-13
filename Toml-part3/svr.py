@@ -11,11 +11,12 @@ import sklearn.svm as skv
 from base import Algorithm, Model
 
 class SupportVectorRegression(Algorithm):
-    def __init__(self,data,percentual,predictLabel,alpha=1,gamma=None,scale=False):
+    def __init__(self,data,percentual,predictLabel,alpha=1,gamma=None,scale=False,kernel="rbf"):
         super().__init__(data, percentual,predictLabel,alpha=alpha,scale=scale)
+        self.kernel=kernel
         
-    def makeModel(self,kernel,labels=[]):
-        return SvrModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha,kernelType=kernel,labels=labels)
+    def makeModel(self,labels=[]):
+        return SvrModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha,kernelType=self.kernel,labels=labels)
       
 class SvrModel(Model):
     def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1,kernelType="rbf",labels=[]):
@@ -40,6 +41,6 @@ class SvrModel(Model):
     def params(self):
         return {
             "gamma":["scale","auto",1,2,3,4,5],
-            "C":[1,2,5,10,25,50,100,250,500,1000],
+            "C":[1,10,100,200,300,400,500,600,700,800,900,1000],
             "kernel":["rbf"]
             }

@@ -87,7 +87,8 @@ class Algorithm:
     def noRegularization(self):
         self.modelType="Normal"
 
-
+    
+                    
 
 class Model:
     def __init__(self,trainingSet,trainingLabels,testSet,testLabels,modelType="Normal",alpha=1,selectedLabels=[]):
@@ -154,6 +155,12 @@ class Model:
         grid.fit(self.trainingSet, self.trainingLabels)
         self.model=grid.best_estimator_
         print(grid.best_params_)
+        
+        
+    
+    
+        
+        
     
 class Results:
     def __init__(self,prediction,score,rsquare,rmse,mae):

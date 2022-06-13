@@ -10,12 +10,13 @@ import sklearn.kernel_ridge as kr
 from base import Algorithm, Model
 
 class KernelRegression(Algorithm):
-    def __init__(self,data,percentual,predictLabel,alpha=1,gamma=None,scale=False):
+    def __init__(self,data,percentual,predictLabel,alpha=1,gamma=None,scale=False,kernel="rbf"):
         super().__init__(data, percentual,predictLabel,alpha=alpha,scale=scale)
         self.gamma=gamma
+        self.kernel=kernel
         
-    def makeModel(self,kernelType,features=[]):
-        return KernelModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,kernelType=kernelType,modelType=self.modelType,alpha=self.alpha,selectedLabels=features)
+    def makeModel(self,features=[]):
+        return KernelModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,kernelType=self.kernel,modelType=self.modelType,alpha=self.alpha,selectedLabels=features)
       
 class KernelModel(Model):
     def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1,kernelType="linear",selectedLabels=[]):
@@ -39,9 +40,9 @@ class KernelModel(Model):
     
     def params(self):
         return {
-                "alpha":[1,2,5,10,25,50,100,250,500,1000],
-                "kernel":["rbf","linear","poly"],
-                "degree":[1,2,3,4,5,6,7,8,9,10]
+                "alpha":[1]+list(range(100,1100,100)),
+                "gamma":[1]+list(range(100,1100,100)),
+                "kernel":["rbf"],
  
             }
         #self.features=self.model.transform(self.trainingSet)

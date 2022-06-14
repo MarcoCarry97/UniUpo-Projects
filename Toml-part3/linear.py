@@ -19,7 +19,7 @@ class LinearRegression(Algorithm):
     def __init__(self,data,percentual,predictLabel,alpha=1,scale=False):
         super().__init__(data, percentual,predictLabel,alpha=alpha,scale=scale)
         
-    def makeModel(self):
+    def makeModel(self,features=[]):
         return LinearModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha)
         
 class LinearModel(Model):

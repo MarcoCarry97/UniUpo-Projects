@@ -15,8 +15,8 @@ class SupportVectorRegression(Algorithm):
         super().__init__(data, percentual,predictLabel,alpha=alpha,scale=scale)
         self.kernel=kernel
         
-    def makeModel(self,labels=[]):
-        return SvrModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha,kernelType=self.kernel,labels=labels)
+    def makeModel(self,features=[]):
+        return SvrModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha,kernelType=self.kernel,labels=features)
       
 class SvrModel(Model):
     def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1,kernelType="rbf",labels=[]):

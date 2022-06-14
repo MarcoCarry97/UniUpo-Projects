@@ -22,8 +22,8 @@ class KnnRegression(Algorithm):
         super().__init__(data, percentual,predictLabel,alpha=alpha,scale=scale)
         self.k=k
         
-    def makeModel(self,labels=[]):
-        return KnnModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha,k=self.k,labels=labels)
+    def makeModel(self,features=[]):
+        return KnnModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha,k=self.k,labels=features)
       
 class KnnModel(Model):
     def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1,k=1,labels=[]):

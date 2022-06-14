@@ -87,8 +87,48 @@ class Algorithm:
     def noRegularization(self):
         self.modelType="Normal"
 
-    
-                    
+    def forwardSelection(self):
+        best=[]
+        bestR2=0
+        for i in range(0,len(self.trainingSet.columns)):
+            labels=list(self.trainingSet.columns)
+            for b in best:
+                if b in labels:
+                    labels.remove(b)
+            r2={}
+            for feature in labels:
+                subset=best+[feature]
+                model=self.makeModel(features=subset)
+                res=model.predict()
+                r2[feature]=res.rsquare
+            bestFeature=max(r2,key=r2.get)
+            if(bestR2<r2[bestFeature]):
+                best+=[bestFeature]
+                bestR2=r2[bestFeature]
+            else:
+                break;
+        return best
+        
+    def backwardSelection(self):
+        best=list(self.trainingSet.columns)
+        worst=[]
+        bestR2=0
+        r2={}
+        for i in range(0,len(self.trainingSet.columns)):
+            for b in best:
+                labels=list(self.trainingSet.column)
+                for w in worst:
+                    labels.remove(w)
+                labels.remove(b)
+                model=self.makeModel(fea)
+                res=model.predict()
+                r2[b]=model.rsquare
+            worstFeature=max(r2,key=r2.get)
+            if(bestR2>r2[worstFeature]):
+                best.remove(worstFeature)
+                worstR2=r2[worstFeature]
+                worst+=[b]
+        return best
 
 class Model:
     def __init__(self,trainingSet,trainingLabels,testSet,testLabels,modelType="Normal",alpha=1,selectedLabels=[]):

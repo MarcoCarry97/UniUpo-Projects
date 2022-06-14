@@ -14,8 +14,8 @@ class RandForestRegression(Algorithm):
         super().__init__(data, percentual,predictLabel,alpha=alpha,scale=scale)
         self.numEst=1
         
-    def makeModel(self,labels=[]):
-        return RandForestModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha,numEst=self.numEst,selectedLabels=labels)
+    def makeModel(self,features=[]):
+        return RandForestModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha,numEst=self.numEst,selectedLabels=features)
       
 class RandForestModel(Model):
     def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1,numEst=1,selectedLabels=[]):
@@ -39,9 +39,9 @@ class RandForestModel(Model):
         #self.features=self.model.transform(self.trainingSet)
     def params(self):
         return {
-            "n_estimators":[1,10,100],
+            "n_estimators":[1,10,20,30,40,50,60,70,80,90,100],
             "criterion":["squared_error"],
-            "max_depth":[None,1,10,100],
+            "max_depth":[None,1,10,20,30,40,50,60,70,80,90100],
             "min_samples_split":[1,2,5],
             "min_samples_leaf":[2,5,10],
             "max_features":["auto"],

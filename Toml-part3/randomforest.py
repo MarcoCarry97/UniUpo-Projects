@@ -23,7 +23,7 @@ class RandForestModel(Model):
         
         self.model=None
         self.numEst=numEst
-        self.model=ens.RandomForestRegressor(n_estimators=self.numEst)
+        self.model=ens.RandomForestRegressor(n_estimators=self.numEst,random_state=None)
         self.redefineSets()
         #self.model.fit(self.trainingSet,self.trainingLabels)
         #select=forwardSelection(self.model)
@@ -39,14 +39,14 @@ class RandForestModel(Model):
         #self.features=self.model.transform(self.trainingSet)
     def params(self):
         return {
-            "n_estimators":[1,10,20,30,40,50,60,70,80,90,100],
+            "n_estimators":[50,100],
             "criterion":["squared_error"],
-            "max_depth":[None,1,10,20,30,40,50,60,70,80,90100],
-            "min_samples_split":[1,2,5],
-            "min_samples_leaf":[2,5,10],
+            "max_depth":[None,10,100],
+            "min_samples_split":[2,5],
+            "min_samples_leaf":[2,5],
             "max_features":["auto"],
-            "max_leaf_nodes":[None,1,2,5],
-            "max_samples":[None,1,5,0.7,0.3]
+            #"max_leaf_nodes":[None,1,2,5],
+            #"max_samples":[None,1,5,0.7,0.3]
             }
     
     

@@ -78,7 +78,5 @@ def heatmap(data,title,delete,save):
     sb.heatmap(corMatrix,annot=True)
     
 def qqplot(data,x,y,title,delete,save):
-    p=Plotter()
-    p.labels(x, y)
-    p.title(title)
-    p.show(data,delete=delete,save=save)
+    data.remove("time")
+    pplot(np.array(data[[x,y]]),x=x,y=y,kind="qq")

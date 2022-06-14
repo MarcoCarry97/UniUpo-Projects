@@ -40,8 +40,8 @@ class KernelModel(Model):
     
     def params(self):
         return {
-                "alpha":[1]+list(range(100,1100,100)),
-                "gamma":[1]+list(range(100,1100,100)),
+                "alpha":[1,2,5,0.1,0.2,0.5]+list(range(100,1100,100)),
+                "gamma":[1,2,5,0.1,0.2,0.5]+list(range(100,1100,100)),
                 "kernel":["rbf"],
  
             }

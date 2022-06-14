@@ -20,10 +20,10 @@ class LinearRegression(Algorithm):
         super().__init__(data, percentual,predictLabel,alpha=alpha,scale=scale)
         
     def makeModel(self,features=[]):
-        return LinearModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha)
+        return LinearModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha, features=features)
         
 class LinearModel(Model):
-    def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1):
+    def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1,features=[]):
         super().__init__(trainingSet, trainingLabels, testSet, testLabels,modelType=modelType, alpha=alpha)
         self.model=None
         if(modelType=="Normal"):
@@ -36,8 +36,7 @@ class LinearModel(Model):
         elif(modelType=="Lasso"):
             self.model=lm.Lasso(alpha=alpha)
         else:
-            self.model=lm.Ridge(alpha=alpha)
-        
+            self.model=lm.Ridge(alpha=alpha)      
         self.model.fit(self.trainingSet,self.trainingLabels)
         
         #self.features=self.model.transform(self.trainingSet)
@@ -49,5 +48,5 @@ class LinearModel(Model):
 
     def params(self):
         return {
-                "alpha": [0.5,1,2,5,10,25,50,100,250,500,1000]
+                "alpha": [0.000001,0.00001,0.0001,0.001,0.01,0.1,0.5,1,2,5,10]+list(range(20,110,10))+list(range(100,1100,100))
             }

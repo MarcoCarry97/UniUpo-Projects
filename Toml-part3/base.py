@@ -178,14 +178,15 @@ class Model:
         return acc
             
     
-    def plot(self):
+    def plot(self,a,b):
         data=self.predict().prediction
         #data=pd.DataFrame({"prediction":preds,label:self.trainingLabels})
         #label=self.trainingLabels.name
         addTime(data)
         #data.insert(0, other, self.testSet[other].values)
         label=self.testLabels.name
-        dp.lineplot(data, "time",["prediction",label], "predictions - "+label+" on time",False,True)
+        dp.lineplot(data.iloc[a:b], "time",["prediction",label], "predictions - "+label+" on time",False,True)
+        #dp.qqplot(data,"prediction","RefSt","qqplot-prediction-RefSt",False,True)
         
     def params(self):
         pass

@@ -35,5 +35,5 @@ model=svRegr.makeModel(features=subset)
 model.tune()
 res=model.predict()
 res.printRes()
-model.plot()
+model.plot(0,50)
   

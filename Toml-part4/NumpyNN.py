@@ -84,7 +84,19 @@ def plot_grid(ww1,ww2,ww3, xtest, ytest):
 #####################################################
 # T is batch size;
 # H is hidden dimension
-T, H = 640, 20
+T, H = 640, 1 #underfitting (2)
+#T,H=640,2
+#T,H=640,5
+#T,H=20,20 #overfitting (3)
+#T,H=640,10 #right values (4)
+#T,H=640,5 #problems (5)
+#T,H=640,15
+T,H=640,20
+#T,H=640,50
+#T,H=640,100
+#T,H=640,320
+#T,H=640,640
+
 
 D_in=3  # Input dimension (includes BIAS!)
 D_out=1 #output dimension, class (1,0) or (0,1)

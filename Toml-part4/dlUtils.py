@@ -15,10 +15,12 @@ def sigmoid(xx):
 def safe_log(xx):
     yy=np.zeros(shape=(len(xx),1))
     for ii in range(len(xx)):
+        print(xx[ii])
         if(xx[ii] < 1e-10):
             yy[ii]=np.log(1e-10)
         else:
             yy[ii]=np.log(xx[ii])
+    print(xx,yy)
     return(yy)
 
 def safe_inv(xx):
@@ -130,9 +132,7 @@ class NeuralNetwork:
     def generateSet(self,radius,noise):
         x=np.zeros(shape=(self.batchSize,self.numInput))
         y=np.zeros(shape=(self.batchSize,1))
-        print(len(x))
-        for i in range(0,self.numOutput):
-            print(i)
+        for i in range(0,self.numOutput-1):
             x[:,i]=np.random.randn(self.batchSize)
         x[:,self.numOutput-1]=1
         for i in range(0,self.batchSize):

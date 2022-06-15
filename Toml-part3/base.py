@@ -109,7 +109,7 @@ class Algorithm:
                 break;
         return best
         
-    def backwardSelection(self):
+   def backwardSelection(self):
         best=list(self.trainingSet.columns)
         worst=[]
         bestR2=0
@@ -129,6 +129,7 @@ class Algorithm:
                 worstR2=r2[worstFeature]
                 worst+=[b]
         return best
+
 
 class Model:
     def __init__(self,trainingSet,trainingLabels,testSet,testLabels,modelType="Normal",alpha=1,selectedLabels=[]):
@@ -186,7 +187,7 @@ class Model:
         #data.insert(0, other, self.testSet[other].values)
         label=self.testLabels.name
         dp.lineplot(data.iloc[a:b], "time",["prediction",label], "predictions - "+label+" on time",False,True)
-        #dp.qqplot(data,"prediction","RefSt","qqplot-prediction-RefSt",False,True)
+       # dp.qqplot(data,"prediction","RefSt","qqplot-prediction-RefSt",False,True)
         
     def params(self):
         pass

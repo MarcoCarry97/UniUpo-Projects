@@ -12,6 +12,8 @@ import shutil as sh
 import pandas as pd
 import seaborn as sb
 from seaborn_qqplot import pplot
+import statmodels.api as sm
+import matplotlib.pyplot as plt
 
 #useful plots:
     #lineplot
@@ -78,5 +80,5 @@ def heatmap(data,title,delete,save):
     sb.heatmap(corMatrix,annot=True)
     
 def qqplot(data,x,y,title,delete,save):
-    data.remove("time")
-    pplot(np.array(data[[x,y]]),x=x,y=y,kind="qq")
+    fig=sm.qqplot(data)
+    plt.show()

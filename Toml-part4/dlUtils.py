@@ -7,6 +7,7 @@ Created on Wed Jun  8 21:27:13 2022
 
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
 
 def sigmoid(xx):
@@ -133,6 +134,15 @@ class NeuralNetwork:
         self.v3=v3
         
         
+    def plotLogLoss(self,losses,numIter):
+        time=np.arange(1,numIter+1,1)
+        lossFrame=pd.DataFrame({
+                "training loss":np.log(losses[:,0]),
+                "test loss":np.log(losses[:,1]),
+                "time":time
+            })
+        lossFrame.plot(x="time",y=["training loss","test loss"])
+        
     def compute(self,numIter=2000,alpha=0.7):
         losses=np.zeros(shape=(numIter,2))
         for t in range(0,numIter):
@@ -140,17 +150,17 @@ class NeuralNetwork:
             a3,z3,a2,z2,a1,z1=forward(self.trainingSet[0],self.weights)
             prediction=a3
             trueValue=self.trainingSet[1]
-            loss=computeLoss(trueValue, prediction)
-            losses[t,0]=loss
+            trainLoss=computeLoss(trueValue, prediction)
+            losses[t,0]=trainLoss
             #test
-            predTest,_,_,_,_,_=forward(self.trainingSet[0],self.weights)
-            testValue=self.trainingSet[1]
-            loss=computeLoss(testValue, predTest)
-            losses[t,1]=loss
+            predTest,_,_,_,_,_=forward(self.testSet[0],self.weights)
+            testValue=self.testSet[1]
+            testLoss=computeLoss(testValue, predTest)
+            losses[t,1]=testLoss
             #backpropagation
             gradW=backpropagation(self.weights, trueValue, a3, z3, a2, z2, a1, z1, self.trainingSet[0])
-            print("t",t)
             self.updateWeights(gradW,alpha,t)
+        self.plotLogLoss(losses,numIter)
             
         
         

@@ -8,7 +8,7 @@ Created on Wed Jun  8 21:27:13 2022
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
+from sklearn.metrics import r2_score
 
 def sigmoid(xx):
     return(1/(1+np.exp(-xx)))
@@ -145,6 +145,8 @@ class NeuralNetwork:
         
     def compute(self,numIter=2000,alpha=0.7):
         losses=np.zeros(shape=(numIter,2))
+        predSample=0
+        trueSample=0
         for t in range(0,numIter):
             #training
             a3,z3,a2,z2,a1,z1=forward(self.trainingSet[0],self.weights)
@@ -154,14 +156,18 @@ class NeuralNetwork:
             losses[t,0]=trainLoss
             #test
             predTest,_,_,_,_,_=forward(self.testSet[0],self.weights)
+            predSample=predTest
             testValue=self.testSet[1]
+            trueSample=testValue
             testLoss=computeLoss(testValue, predTest)
             losses[t,1]=testLoss
             #backpropagation
             gradW=backpropagation(self.weights, trueValue, a3, z3, a2, z2, a1, z1, self.trainingSet[0])
             self.updateWeights(gradW,alpha,t)
-        self.plotLogLoss(losses,numIter)
-            
+        #self.plotLogLoss(losses,numIter)
+        r2=r2_score(trueSample,predSample)
+        return r2
+        
         
         
 

@@ -15,12 +15,10 @@ def sigmoid(xx):
 def safe_log(xx):
     yy=np.zeros(shape=(len(xx),1))
     for ii in range(len(xx)):
-        print(xx[ii])
         if(xx[ii] < 1e-10):
             yy[ii]=np.log(1e-10)
         else:
             yy[ii]=np.log(xx[ii])
-    print(xx,yy)
     return(yy)
 
 def safe_inv(xx):
@@ -35,113 +33,127 @@ def safe_inv(xx):
 def ReLU(num):
     return np.maximum(num,0)
 
-def randomNum(a,b):
+def randomNum(size):
+    return np.random.randn(size)
+
+def randomNum2(a,b):
     return np.random.randn(a,b)
 
 def computeLoss(trueValue,prediction):
     a=trueValue*safe_log(prediction)
     b=(1-trueValue)*safe_log(1-prediction)
-    return -a-b
+    return (-a-b).mean()
 
 def computeInvert(trueValue,prediction):
     a=trueValue*safe_inv(prediction)
     b=(1-trueValue)*safe_inv(1-prediction)
     return -a+b
 
-def backpropagation(self,trueValue,prediction,aa,za):
-    weights=self.weights
-    i=len(za)-1
-    gradPred=computeInvert(trueValue,prediction)
-    sig=sigmoid(za[i])
-    gradZ=gradPred*sig*(1-sig)
-    gradW=aa[i-1].T.dot(gradZ)
-    gradWeights=[gradW]
-    for i in range(len(aa)-2,-1,-1):
-        gradA=gradZ.dot(weights[i])
-        gradZ=gradA.copy()
-        gradZ[za[i]<0]=0
-        gradW=aa[i-1].dot(weights[i])
-        gradWeights+=[gradW]
-    return gradWeights   
+def backpropagation(w,trueValue,a3,z3,a2,z2,a1,z1,x):
+    gradA3=computeInvert(trueValue,a3)
+    sig=sigmoid(z3)
+    gradZ3=gradA3*sig*(1-sig)
+    gradW3=a2.T.dot(gradZ3)
+    gradA2=gradZ3.dot(w[2].T)
+    gradZ2=gradA2.copy()
+    gradZ2[z2<0]=0
+    gradW2=a1.T.dot(gradZ2)
+    gradA1=gradZ2.dot(w[1].T)
+    gradZ1=gradA1.copy()
+    gradZ1[z1<0]=0
+    gradW1=x.T.dot(gradZ1)
+    return [gradW1,gradW2,gradW3]
 
 def module(xx):
     return(np.sqrt(xx.dot(xx)))
 
+def generateSet(shape,noise,radius):
+    size=shape[0]
+    x=np.zeros(shape=shape)
+    y=np.zeros(shape=(size,1))
+    x[:,0]=randomNum(size)
+    x[:,1]=randomNum(size)
+    x[:,2]=1
+    for i in range(0,size):
+        mod=module(x[i,0:2])
+        n1=randomNum(1)
+        n2=randomNum(1)
+        if((mod+noise*n1)<radius[0] or (mod+noise*n2)>radius[1]):
+            y[i]=0
+        else:
+            y[i]=1
+    return [x,y]
+          
+
+def generateDataSet(x,y,noise,radius):
+    trainingSet=generateSet((x,y),noise,radius)
+    testSet=generateSet((x,y),noise,radius)
+    return trainingSet,testSet
+
+def forward(x,w):
+    z1=x.dot(w[0])
+    a1=ReLU(z1)
+    z2=a1.dot(w[1])
+    a2=ReLU(z2)
+    z3=a2.dot(w[2])
+    a3=sigmoid(z3)
+    return a3,z3,a2,z2,a1,z1
+
 class NeuralNetwork:
-    def __init__(self,inputs=3,hiddens=20,outputs=1,batchSize=640,learningRate=1e-4):
-        self.numInput=inputs
-        self.numHidden=hiddens
-        self.numOutput=outputs
-        self.batchSize=batchSize
-        self.weights=[randomNum(inputs,hiddens)]
-        #for i in range(0,hiddens):
-           # self.weights+=[randomNum(hiddens,hiddens)]
-        self.weights+=[randomNum(hiddens,hiddens)]
-        self.weights=[randomNum(inputs,outputs)]
+    def __init__(self,inputs,hiddens,outputs,batchSize,radius,learningRate=1e-4,noise=0):
+        self.inputs=inputs
+        self.hiddens=hiddens
+        self.outputs=outputs
+        self.weights=[randomNum2(inputs,hiddens),
+                      randomNum2(hiddens,hiddens),
+                      randomNum2(hiddens,outputs)]
         self.learningRate=learningRate
-        self.trainingSet=None
-        self.testSet=None
+        self.batchSize=batchSize
+        self.trainingSet,self.testSet=generateDataSet(batchSize,inputs, noise, radius)
+        self.noise=noise
+        self.radius=radius
+        self.v1,self.v2,self.v3=0,0,0
         
-    
-    def forward(self,x,weights):
-        a=x
-        z=ReLU(a)
-        aa=[a]
-        za=[z]
-        for i in range(1,len(weights)):
-            aa+=[a]
-            w=weights[i]
-            z=a.dot(w)
-            a=ReLU(z)
-            za=[z]
-        return sigmoid(z),aa,za
-    
-    def updateWeights(self,alpha,gradWeights,t):
-        for i in range(0,len(self.weights)):
-            value=0
-            if(t==0):
-                value=self.gradWeights[i]
-            else:
-                value=alpha*value+(1-alpha)*self.gradWeights[i]
-                self.weights[i]-=value*self.learningRate
-            
+    def updateWeights(self,gradW,alpha,t):
+        v1=self.v1
+        v2=self.v2
+        v3=self.v3
+        if(t==0):
+            v1=gradW[0]
+            v2=gradW[1]
+            v3=gradW[2]
+        v1=alpha*v1+(1-alpha)*gradW[0]
+        v2=alpha*v2+(1-alpha)*gradW[1]
+        v3=alpha*v3+(1-alpha)*gradW[2]
+        self.weights[0]-=self.learningRate*v1
+        self.weights[1]-=self.learningRate*v2
+        self.weights[2]-=self.learningRate*v3
+        self.v1=v1
+        self.v2=v2
+        self.v3=v3
         
-    def compute(self,numIterations=2000):
-        losses=np.zeros(shape=(numIterations,2))
-        prediction=0
-        for t in range(0,numIterations):
+        
+    def compute(self,numIter=2000,alpha=0.7):
+        losses=np.zeros(shape=(numIter,2))
+        for t in range(0,numIter):
             #training
-            prediction,aa,za=self.forward(self.trainingSet[0],self.weights)
+            a3,z3,a2,z2,a1,z1=forward(self.trainingSet[0],self.weights)
+            prediction=a3
             trueValue=self.trainingSet[1]
             loss=computeLoss(trueValue, prediction)
-            losses[t,0]=loss.mean()
-            #testing
-            testPrediction=self.forward(self.testSet[0],self.weights)
-            testValue=self.testSet[1]
-            loss=computeLoss(testValue, testPrediction)
-            losses[t,1]=loss.mean()
-            #updating
-            gradWeights=backpropagation(trueValue, prediction, aa, za)
-            self.updateWeights(0.7,gradWeights, t)
-        return prediction 
+            losses[t,0]=loss
+            #test
+            predTest,_,_,_,_,_=forward(self.trainingSet[0],self.weights)
+            testValue=self.trainingSet[1]
+            loss=computeLoss(testValue, predTest)
+            losses[t,1]=loss
+            #backpropagation
+            gradW=backpropagation(self.weights, trueValue, a3, z3, a2, z2, a1, z1, self.trainingSet[0])
+            print("t",t)
+            self.updateWeights(gradW,alpha,t)
             
-    def generateDataSet(self,radius,noise=0):
-        self.trainingSet=self.generateSet(radius,noise)
-        self.testSet=self.generateSet(radius,noise)
         
-    def generateSet(self,radius,noise):
-        x=np.zeros(shape=(self.batchSize,self.numInput))
-        y=np.zeros(shape=(self.batchSize,1))
-        for i in range(0,self.numOutput-1):
-            x[:,i]=np.random.randn(self.batchSize)
-        x[:,self.numOutput-1]=1
-        for i in range(0,self.batchSize):
-            mod=module(x[i,0:(self.numOutput-1)])
-            randNoise=noise*np.random.randn()
-            if((mod+randNoise<radius[0])):
-                y[i]=0
-            else:
-                y[i]=1
-        return (x,y)
+        
+
         
     

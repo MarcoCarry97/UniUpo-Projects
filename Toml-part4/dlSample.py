@@ -7,7 +7,6 @@ Created on Sat Jun 11 01:01:14 2022
 
 import dlUtils as dl
 import numpy as np
-from threading import Thread, Lock
 
 inputs=3
 outputs=1
@@ -17,7 +16,7 @@ def perform(H,T):
     noise=1
     data=dl.generateDataSet(H,inputs, noise, radius)
     nn=dl.NeuralNetwork(data,inputs,H,outputs,T,[1,1.5])
-    r2,rmse=nn.compute(plot=True)
+    r2,rmse,loss=nn.compute(plot=True)
     print(r2,rmse)
     
 def tune(data,H,T,learningRate,alpha,plot=False):
@@ -53,11 +52,10 @@ def rightValue(): #exercise 4
     print("RIGHT VALUES")
     batchSize=640
     alphas=np.array([0.1,0.25,0.5,0.75,0.9])
-    Hs=np.array([10,12,14,16,18,20])
+    Hs=np.array([4,5,6,7,8,9,10,11,12])
     learningRates=np.array([1e-6,1e-5,1e-4,1e-3,1e-2])
     bestCombination=None
-    bestR2=0
-    bestRmse=0
+    best=0
     first=True
     radius=[1.5,1]
     noise=1
@@ -66,19 +64,18 @@ def rightValue(): #exercise 4
         data=dl.generateDataSet(H,inputs, noise, radius)
         for alpha in alphas:
             for lr in learningRates:
-                R2, rmse=tune(data,H,batchSize,lr,alpha)
+                accuracy=tune(data,H,batchSize,lr,alpha)
                 if(first):
-                    bestR2=R2
-                    bestRmse=rmse
+                    best=accuracy
                     bestCombination=(H,lr,alpha)
-                    bestData=data
+                    bestData=data          
                     first=False
-                if(bestR2<R2 and bestRmse>rmse):
-                    bestR2=R2
-                    bestRmse=rmse
+                if(best<accuracy):
+                    best=accuracy
                     bestCombination=(H,lr,alpha)
                     bestData=data
-                print(H,lr,alpha,R2,rmse)
+
+                #print(H,lr,alpha,R2,rmse)
     print("bestCombination",bestCombination)
     print("result for (H, alpha, lr)",bestCombination,":",tune(bestData,bestCombination[0],batchSize,bestCombination[1],bestCombination[2],plot=True))
                 
@@ -87,9 +84,7 @@ def rightValue(): #exercise 4
     
 def problems(): #exercise 5
     print("PROBLEMS")
-    hiddens=20
     batchSize=640
-    perform(hiddens,batchSize)
     hiddens=100
     perform(hiddens,batchSize)
     hiddens=320
@@ -99,7 +94,7 @@ def problems(): #exercise 5
     hiddens=1280
     perform(hiddens,batchSize)
 
-underfitting()
-overfitting()
+#underfitting()
+#overfitting()
 rightValue()
-problems()
+#problems()

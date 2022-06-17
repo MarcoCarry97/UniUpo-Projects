@@ -169,9 +169,25 @@ class NeuralNetwork:
             self.updateWeights(gradW,alpha,t)
         if(plot):
             self.plotLogLoss(losses)
-        r2=r2_score(trueSample,predSample)
-        rmse=np.sqrt(mean_squared_error(trueSample, predSample))/len(trueSample)
-        return r2, rmse
+        
+        return self.computeAccuracy(testValue,predTest)
+    
+    def computeAccuracy(self,trueValues,predTest):
+        tp,tn,fp,fn=0,0,0,0
+        for i in range(0,len(trueValues)):
+            if(predTest[i]<0.5):
+                predTest[i]=0
+            else:
+                predTest[i]=1
+            if(trueValues[i]==1 and predTest[i]==1):
+                tp+=1
+            elif(trueValues[i]==0 and predTest[i]==0):
+                tn+=1
+            elif(trueValues[i]==0 and predTest[i]==1):
+                fp+=1
+            else:
+                fn+=1
+        return (tp+tn)/(tp+tn+fp+fn)
         
         
         

@@ -169,8 +169,8 @@ class NeuralNetwork:
             self.updateWeights(gradW,alpha,t)
         if(plot):
             self.plotLogLoss(losses)
-        
-        return self.computeAccuracy(testValue,predTest)
+        diff=((losses[numIter-1,0]-losses[numIter-1,1])**2)**(1/2)
+        return self.computeAccuracy(testValue,predTest),diff
     
     def computeAccuracy(self,trueValues,predTest):
         tp,tn,fp,fn=0,0,0,0

@@ -115,6 +115,7 @@ class NeuralNetwork:
         self.noise=noise
         self.radius=radius
         self.v1,self.v2,self.v3=0,0,0
+        self.losses=None
         
     def updateWeights(self,gradW,alpha,t):
         v1=self.v1
@@ -133,10 +134,11 @@ class NeuralNetwork:
         self.v1=v1
         self.v2=v2
         self.v3=v3
+        #self.losses=0
         
         
-    def plotLogLoss(self,losses,numIter):
-        time=np.arange(1,numIter+1,1)
+    def plotLogLoss(self,losses):
+        time=np.arange(1,len(losses)+1,1)
         lossFrame=pd.DataFrame({
                 "training loss":np.log(losses[:,0]),
                 "test loss":np.log(losses[:,1]),
@@ -144,7 +146,7 @@ class NeuralNetwork:
             })
         lossFrame.plot(x="time",y=["training loss","test loss"])
         
-    def compute(self,numIter=2000,alpha=0.7):
+    def compute(self,numIter=2000,alpha=0.7,plot=False):
         losses=np.zeros(shape=(numIter,2))
         predSample=0
         trueSample=0
@@ -165,7 +167,8 @@ class NeuralNetwork:
             #backpropagation
             gradW=backpropagation(self.weights, trueValue, a3, z3, a2, z2, a1, z1, self.trainingSet[0])
             self.updateWeights(gradW,alpha,t)
-        #self.plotLogLoss(losses,numIter)
+        if(plot):
+            self.plotLogLoss(losses)
         r2=r2_score(trueSample,predSample)
         rmse=np.sqrt(mean_squared_error(trueSample, predSample))/len(trueSample)
         return r2, rmse

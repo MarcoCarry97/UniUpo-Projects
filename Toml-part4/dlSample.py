@@ -17,15 +17,18 @@ def perform(H,T):
     noise=1
     data=dl.generateDataSet(H,inputs, noise, radius)
     nn=dl.NeuralNetwork(data,inputs,H,outputs,T,[1,1.5])
-    nn.compute()
+    r2,rmse=nn.compute(plot=True)
+    print(r2,rmse)
     
-def tune(data,H,T,learningRate,alpha):
+def tune(data,H,T,learningRate,alpha,plot=False):
     radius=[1.5,1]
     noise=1
     nn=dl.NeuralNetwork(data,inputs,H,outputs,T,[1,1.5],learningRate=learningRate)
-    return nn.compute(numIter=2000,alpha=alpha)
+    res=nn.compute(numIter=2000,alpha=alpha,plot=plot)
+    return res
 
 def underfitting(): #exercise 2
+    print("UNDERFITTING")
     hiddens=1
     batchSize=640
     perform(hiddens,batchSize)
@@ -35,6 +38,7 @@ def underfitting(): #exercise 2
     perform(hiddens,batchSize)
 
 def overfitting(): #exercise 3
+    print("OVERFITTING")
     hiddens=20
     batchSize=1
     perform(hiddens,batchSize)
@@ -46,6 +50,7 @@ def overfitting(): #exercise 3
     perform(hiddens,batchSize)
     
 def rightValue(): #exercise 4
+    print("RIGHT VALUES")
     batchSize=640
     alphas=np.array([0.1,0.25,0.5,0.75,0.9])
     Hs=np.array([10,12,14,16,18,20])
@@ -54,10 +59,9 @@ def rightValue(): #exercise 4
     bestR2=0
     bestRmse=0
     first=True
-    mutex=Lock()
-    threads=[]
     radius=[1.5,1]
     noise=1
+    bestData=None
     for H in Hs:
         data=dl.generateDataSet(H,inputs, noise, radius)
         for alpha in alphas:
@@ -67,18 +71,22 @@ def rightValue(): #exercise 4
                     bestR2=R2
                     bestRmse=rmse
                     bestCombination=(H,lr,alpha)
+                    bestData=data
                     first=False
                 if(bestR2<R2 and bestRmse>rmse):
                     bestR2=R2
                     bestRmse=rmse
                     bestCombination=(H,lr,alpha)
+                    bestData=data
                 print(H,lr,alpha,R2,rmse)
     print("bestCombination",bestCombination)
+    print("result for (H, alpha, lr)",bestCombination,":",tune(bestData,bestCombination[0],batchSize,bestCombination[1],bestCombination[2],plot=True))
                 
     
     
     
 def problems(): #exercise 5
+    print("PROBLEMS")
     hiddens=20
     batchSize=640
     perform(hiddens,batchSize)
@@ -91,8 +99,7 @@ def problems(): #exercise 5
     hiddens=1280
     perform(hiddens,batchSize)
 
-
-#underfitting()
-#overfitting()
+underfitting()
+overfitting()
 rightValue()
-#problems()
+problems()

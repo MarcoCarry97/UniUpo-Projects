@@ -16,7 +16,7 @@ def perform(H,T):
     noise=1
     data=dl.generateDataSet(H,inputs, noise, radius)
     nn=dl.NeuralNetwork(data,inputs,H,outputs,T,[1,1.5])
-    r2,rmse,loss=nn.compute(plot=True)
+    r2,rmse,loss=nn.computeStohastic(nn.batchSize//4,plot=True)
     print(r2,rmse)
     
 def tune(data,H,T,learningRate,alpha,plot=False):
@@ -102,7 +102,7 @@ def problems(): #exercise 5
     hiddens=1280
     perform(hiddens,batchSize)
 
-#underfitting()
+underfitting()
 #overfitting()
-rightValue()
+#rightValue()
 #problems()

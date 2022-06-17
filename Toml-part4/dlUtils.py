@@ -10,6 +10,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics import r2_score
 from sklearn.metrics import mean_squared_error
+import random as rnd
 
 def sigmoid(xx):
     return(1/(1+np.exp(-xx)))
@@ -150,6 +151,48 @@ class NeuralNetwork:
         losses=np.zeros(shape=(numIter,2))
         predSample=0
         trueSample=0
+        for t in range(0,numIter):
+            #training
+            a3,z3,a2,z2,a1,z1=forward(self.trainingSet[0],self.weights)
+            prediction=a3
+            trueValue=self.trainingSet[1]
+            trainLoss=computeLoss(trueValue, prediction)
+            losses[t,0]=trainLoss
+            #test
+            predTest,_,_,_,_,_=forward(self.testSet[0],self.weights)
+            predSample=predTest
+            testValue=self.testSet[1]
+            trueSample=testValue
+            testLoss=computeLoss(testValue, predTest)
+            losses[t,1]=testLoss
+            #backpropagation
+            gradW=backpropagation(self.weights, trueValue, a3, z3, a2, z2, a1, z1, self.trainingSet[0])
+            self.updateWeights(gradW,alpha,t)
+        if(plot):
+            self.plotLogLoss(losses)
+        diff=((losses[numIter-1,0]-losses[numIter-1,1])**2)**(1/2)
+        return self.computeAccuracy(testValue,predTest),diff
+    
+    def chooseRandomly(self,size):
+        trSet=np.zeros(shape=(self.hiddens,self.inputs))
+        trLabels=np.zeros(shape=(self.hiddens,1))
+        teSet=np.zeros(shape=(self.hiddens,self.inputs))
+        teLabels=np.zeros(shape=(self.hiddens,1))
+        for i in range(0,size):
+            j=rnd.randrange(0,len(self.trainingSet),1)
+            print(j)
+            trSet[i]=self.trainingSet[0][j]
+            trLabels[i]=self.trainingSet[1][j]
+            teSet[i]=self.testSet[0][j]
+            teLabels[i]=self.testSet[1][j]
+        return (trSet,trLabels),(teSet,teLabels)
+        
+    
+    def computeStohastic(self,size,numIter=2000,alpha=0.7,plot=False):
+        losses=np.zeros(shape=(numIter,2))
+        predSample=0
+        trueSample=0
+        trainingSet,testSet=self.chooseRandomly(size)
         for t in range(0,numIter):
             #training
             a3,z3,a2,z2,a1,z1=forward(self.trainingSet[0],self.weights)

@@ -9,6 +9,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from sklearn.metrics import r2_score
+from sklearn.metrics import mean_squared_error
 
 def sigmoid(xx):
     return(1/(1+np.exp(-xx)))
@@ -101,7 +102,7 @@ def forward(x,w):
     return a3,z3,a2,z2,a1,z1
 
 class NeuralNetwork:
-    def __init__(self,inputs,hiddens,outputs,batchSize,radius,learningRate=1e-4,noise=0):
+    def __init__(self,data,inputs,hiddens,outputs,batchSize,radius,learningRate=1e-4,noise=0):
         self.inputs=inputs
         self.hiddens=hiddens
         self.outputs=outputs
@@ -110,7 +111,7 @@ class NeuralNetwork:
                       randomNum2(hiddens,outputs)]
         self.learningRate=learningRate
         self.batchSize=batchSize
-        self.trainingSet,self.testSet=generateDataSet(batchSize,inputs, noise, radius)
+        self.trainingSet,self.testSet=data[0],data[1]
         self.noise=noise
         self.radius=radius
         self.v1,self.v2,self.v3=0,0,0
@@ -166,7 +167,8 @@ class NeuralNetwork:
             self.updateWeights(gradW,alpha,t)
         #self.plotLogLoss(losses,numIter)
         r2=r2_score(trueSample,predSample)
-        return r2
+        rmse=np.sqrt(mean_squared_error(trueSample, predSample))/len(trueSample)
+        return r2, rmse
         
         
         

@@ -13,11 +13,16 @@ inputs=3
 outputs=1
 
 def perform(H,T):
-    nn=dl.NeuralNetwork(inputs,H,outputs,T,[1,1.5])
+    radius=[1.5,1]
+    noise=1
+    data=dl.generateDataSet(H,inputs, noise, radius)
+    nn=dl.NeuralNetwork(data,inputs,H,outputs,T,[1,1.5])
     nn.compute()
     
-def tune(H,T,learningRate,alpha):
-    nn=dl.NeuralNetwork(inputs,H,outputs,T,[1,1.5],learningRate=learningRate)
+def tune(data,H,T,learningRate,alpha):
+    radius=[1.5,1]
+    noise=1
+    nn=dl.NeuralNetwork(data,inputs,H,outputs,T,[1,1.5],learningRate=learningRate)
     return nn.compute(numIter=2000,alpha=alpha)
 
 def underfitting(): #exercise 2
@@ -42,33 +47,32 @@ def overfitting(): #exercise 3
     
 def rightValue(): #exercise 4
     batchSize=640
-    alphas=np.array([0.35,0.7])
-    Hs=np.array([10,20,50,100])
-    learningRates=np.array([1e-6,1e-2])
+    alphas=np.array([0.1,0.25,0.5,0.75,0.9])
+    Hs=np.array([10,12,14,16,18,20])
+    learningRates=np.array([1e-6,1e-5,1e-4,1e-3,1e-2])
     bestCombination=None
     bestR2=0
-    i=0
+    bestRmse=0
+    first=True
     mutex=Lock()
     threads=[]
-    for alpha in alphas:
-        for H in Hs:
+    radius=[1.5,1]
+    noise=1
+    for H in Hs:
+        data=dl.generateDataSet(H,inputs, noise, radius)
+        for alpha in alphas:
             for lr in learningRates:
-                def fun():
-                    R2=tune(H,batchSize,lr,alpha)
-                    mutex.acquire()
-                    if(bestR2<R2):
-                        bestR2=R2
-                        bestCombination=(H,lr,alpha)
-                    mutex.release()
-                t=Thread(target=fun)
-                t.start()
-                threads+=[t]
-                #fun()
-    print(len(threads))
-    for t in threads:
-     #   print(t)
-       t.join()
-      #  print("finished")
+                R2, rmse=tune(data,H,batchSize,lr,alpha)
+                if(first):
+                    bestR2=R2
+                    bestRmse=rmse
+                    bestCombination=(H,lr,alpha)
+                    first=False
+                if(bestR2<R2 and bestRmse>rmse):
+                    bestR2=R2
+                    bestRmse=rmse
+                    bestCombination=(H,lr,alpha)
+                print(H,lr,alpha,R2,rmse)
     print("bestCombination",bestCombination)
                 
     
@@ -86,7 +90,8 @@ def problems(): #exercise 5
     perform(hiddens,batchSize)
     hiddens=1280
     perform(hiddens,batchSize)
-    
+
+
 #underfitting()
 #overfitting()
 rightValue()

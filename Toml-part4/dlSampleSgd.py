@@ -11,43 +11,38 @@ import numpy as np
 inputs=3
 outputs=1
 
-def perform(H,T):
+def perform(H,T,B):
     radius=[1.5,1]
     noise=1
     data=dl.generateDataSet(T,inputs, noise, radius)
     nn=dl.NeuralNetwork(data,inputs,H,outputs,T,[1,1.5])
-    nn.compute(plot=True)
+    nn.computeStohastic(size=B,plot=True)
     #r2,rmse,loss=nn.computeStohastic(nn.batchSize//4,plot=True)
     
     
-def tune(data,H,T,learningRate,alpha,plot=False):
+def tune(data,H,T,B,learningRate,alpha,plot=False):
     radius=[1.5,1]
     noise=1
     nn=dl.NeuralNetwork(data,inputs,H,outputs,T,[1,1.5],learningRate=learningRate)
-    accuracy,diff=nn.compute(numIter=2000,alpha=alpha,plot=plot)
+    accuracy,diff=nn.computeStohastic(size=B,numIter=2000,alpha=alpha,plot=plot)
     return accuracy,diff,nn
 
 def underfitting(): #exercise 2
     print("UNDERFITTING")
-    hiddens=1
+    hiddens=[1,2,5]
     batchSize=640
-    perform(hiddens,batchSize)
-    hiddens=2
-    perform(hiddens,batchSize)
-    hiddens=5
-    perform(hiddens,batchSize)
+    B=batchSize//4
+    for H in hiddens:
+        perform(H,batchSize,B)
+    
 
 def overfitting(): #exercise 3
     print("OVERFITTING")
     hiddens=20
-    batchSize=1
-    perform(hiddens,batchSize)
-    batchSize=5
-    perform(hiddens,batchSize)
-    batchSize=10
-    perform(hiddens,batchSize)
-    batchSize=20
-    perform(hiddens,batchSize)
+    batchSizes=[10,20,100,200]
+    for T in batchSizes:
+        perform(hiddens,T,T//4)
+    
     
 def rightValue(): #exercise 4
     print("RIGHT VALUES")
@@ -55,6 +50,7 @@ def rightValue(): #exercise 4
     alphas=np.array([0.2,0.3,0.4])
     Hs=np.array([5,6,7,8,9,10,11])
     learningRates=np.array([1e-6,1e-5,1e-4])
+    dividers=[4,8,16,32]
     bestCombination=None
     best=0
     first=True
@@ -63,29 +59,37 @@ def rightValue(): #exercise 4
     bestData=None
     bestModel=None
     bestDiff=0
+    d=8
     data=dl.generateDataSet(batchSize,inputs, noise, radius)
     for H in Hs:
         for alpha in alphas:
             for lr in learningRates:
-                accuracy,diff,model=tune(data,H,batchSize,lr,alpha)
-                print(accuracy,best,bestCombination)
+                accuracy,diff,model=tune(data,H,batchSize,batchSize//d,lr,alpha)
+                
                 if(first):
                     best=accuracy
                     bestCombination=(H,lr,alpha)
                     bestData=data
                     bestModel=model
+                    bestDiff=diff
                     first=False
-                if(best<accuracy):
+               # if(best==accuracy and bestDiff>diff):
+               #     best=accuracy
+               #     bestCombination=(H,lr,alpha)
+               #     bestModel=model
+               #     bestDiff=diff
+                elif(best<accuracy):
                     best=accuracy
                     bestCombination=(H,lr,alpha)
                     bestData=data
                     bestModel=model
                     bestDiff=diff
+                print(accuracy,best,bestCombination)
 
                 #print(H,lr,alpha,R2,rmse)
     print("bestCombination",bestCombination)
     H,lr,alpha=bestCombination
-    res=bestModel.compute(alpha=alpha,plot=True)
+    res=bestModel.computeStohastic(batchSize//d,alpha=alpha,plot=True)
     print("result for (H, lr, alpha)",bestCombination,":",res)
                 
     

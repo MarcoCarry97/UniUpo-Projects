@@ -178,8 +178,12 @@ class NeuralNetwork:
         trLabels=np.zeros(shape=(size,1))
         teSet=np.zeros(shape=(size,self.inputs))
         teLabels=np.zeros(shape=(size,1))
+        takens=[]
         for i in range(0,size):
             j=rnd.randrange(0,self.batchSize,1)
+           # while j not in takens:
+           #     j=rnd.randrange(0,self.batchSize,1)
+            takens+=[j]
             trSet[i]=self.trainingSet[0][j]
             trLabels[i]=self.trainingSet[1][j]
             teSet[i]=self.testSet[0][j]

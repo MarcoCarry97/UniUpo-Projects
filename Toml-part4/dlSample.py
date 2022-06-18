@@ -14,16 +14,17 @@ outputs=1
 def perform(H,T):
     radius=[1.5,1]
     noise=1
-    data=dl.generateDataSet(H,inputs, noise, radius)
+    data=dl.generateDataSet(T,inputs, noise, radius)
     nn=dl.NeuralNetwork(data,inputs,H,outputs,T,[1,1.5])
-    r2,rmse,loss=nn.computeStohastic(nn.batchSize//4,plot=True)
-    print(r2,rmse)
+    nn.computeStohastic(T//4,plot=True)
+    #r2,rmse,loss=nn.computeStohastic(nn.batchSize//4,plot=True)
+    
     
 def tune(data,H,T,learningRate,alpha,plot=False):
     radius=[1.5,1]
     noise=1
     nn=dl.NeuralNetwork(data,inputs,H,outputs,T,[1,1.5],learningRate=learningRate)
-    accuracy,diff=nn.compute(numIter=2000,alpha=alpha,plot=plot)
+    accuracy,diff=nn.computeStohastic(T//4,numIter=2000,alpha=alpha,plot=plot)
     return accuracy,diff,nn
 
 def underfitting(): #exercise 2
@@ -51,9 +52,9 @@ def overfitting(): #exercise 3
 def rightValue(): #exercise 4
     print("RIGHT VALUES")
     batchSize=640
-    alphas=np.array([0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1])
-    Hs=np.array([5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20])
-    learningRates=np.array([1e-6,1e-5,1e-4,1e-3,1e-2,1e-1,1])
+    alphas=np.array([0.2,0.3,0.4])
+    Hs=np.array([8,9,10,11])
+    learningRates=np.array([1e-6,1e-5,1e-4])
     bestCombination=None
     best=0
     first=True
@@ -62,12 +63,12 @@ def rightValue(): #exercise 4
     bestData=None
     bestModel=None
     bestDiff=0
+    data=dl.generateDataSet(batchSize,inputs, noise, radius)
     for H in Hs:
-        data=dl.generateDataSet(H,inputs, noise, radius)
         for alpha in alphas:
             for lr in learningRates:
                 accuracy,diff,model=tune(data,H,batchSize,lr,alpha)
-                #print(accuracy,best,bestCombination)
+                print(accuracy,best,bestCombination)
                 if(first):
                     best=accuracy
                     bestCombination=(H,lr,alpha)
@@ -102,7 +103,7 @@ def problems(): #exercise 5
     hiddens=1280
     perform(hiddens,batchSize)
 
-underfitting()
+#underfitting()
 #overfitting()
-#rightValue()
+rightValue()
 #problems()

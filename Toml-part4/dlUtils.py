@@ -174,13 +174,12 @@ class NeuralNetwork:
         return self.computeAccuracy(testValue,predTest),diff
     
     def chooseRandomly(self,size):
-        trSet=np.zeros(shape=(self.hiddens,self.inputs))
-        trLabels=np.zeros(shape=(self.hiddens,1))
-        teSet=np.zeros(shape=(self.hiddens,self.inputs))
-        teLabels=np.zeros(shape=(self.hiddens,1))
+        trSet=np.zeros(shape=(size,self.inputs))
+        trLabels=np.zeros(shape=(size,1))
+        teSet=np.zeros(shape=(size,self.inputs))
+        teLabels=np.zeros(shape=(size,1))
         for i in range(0,size):
-            j=rnd.randrange(0,len(self.trainingSet),1)
-            print(j)
+            j=rnd.randrange(0,self.batchSize,1)
             trSet[i]=self.trainingSet[0][j]
             trLabels[i]=self.trainingSet[1][j]
             teSet[i]=self.testSet[0][j]
@@ -192,23 +191,24 @@ class NeuralNetwork:
         losses=np.zeros(shape=(numIter,2))
         predSample=0
         trueSample=0
-        trainingSet,testSet=self.chooseRandomly(size)
+        
         for t in range(0,numIter):
+            trainingSet,testSet=self.chooseRandomly(size)
             #training
-            a3,z3,a2,z2,a1,z1=forward(self.trainingSet[0],self.weights)
+            a3,z3,a2,z2,a1,z1=forward(trainingSet[0],self.weights)
             prediction=a3
-            trueValue=self.trainingSet[1]
+            trueValue=trainingSet[1]
             trainLoss=computeLoss(trueValue, prediction)
             losses[t,0]=trainLoss
             #test
-            predTest,_,_,_,_,_=forward(self.testSet[0],self.weights)
+            predTest,_,_,_,_,_=forward(testSet[0],self.weights)
             predSample=predTest
-            testValue=self.testSet[1]
+            testValue=testSet[1]
             trueSample=testValue
             testLoss=computeLoss(testValue, predTest)
             losses[t,1]=testLoss
             #backpropagation
-            gradW=backpropagation(self.weights, trueValue, a3, z3, a2, z2, a1, z1, self.trainingSet[0])
+            gradW=backpropagation(self.weights, trueValue, a3, z3, a2, z2, a1, z1, trainingSet[0])
             self.updateWeights(gradW,alpha,t)
         if(plot):
             self.plotLogLoss(losses)

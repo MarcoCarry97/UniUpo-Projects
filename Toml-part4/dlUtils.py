@@ -70,18 +70,37 @@ def backpropagation(w,trueValue,a3,z3,a2,z2,a1,z1,x):
 def module(xx):
     return(np.sqrt(xx.dot(xx)))
 
-def generateSet(shape,noise,radius):
+def generateTrainingSet(shape,noise,radius):
     size=shape[0]
     x=np.zeros(shape=shape)
     y=np.zeros(shape=(size,1))
-    x[:,0]=randomNum(size)
-    x[:,1]=randomNum(size)
+    x[:,0]=np.random.randn(size)
+    x[:,1]=np.random.randn(size)
     x[:,2]=1
+    print("radius",radius)
     for i in range(0,size):
         mod=module(x[i,0:2])
-        n1=randomNum(1)
-        n2=randomNum(1)
-        if((mod+noise*n1)<radius[0] or (mod+noise*n2)>radius[1]):
+        n1=np.random.randn()
+        n2=np.random.randn()
+        if(mod+noise*np.random.randn()<radius[0]) or (mod+noise*np.random.randn()>radius[1]):
+            y[i]=0
+        else:
+            y[i]=1
+    return [x,y]
+          
+def generateTestSet(shape,noise,radius):
+    size=shape[0]
+    x=np.ones(shape=shape)
+    y=np.zeros(shape=(size,1))
+    x[:,0]=np.random.randn(size)
+    x[:,1]=np.random.randn(size)
+    x[:,2]=1
+    print("radius",radius)
+    for i in range(0,size):
+        mod=module(x[i,0:2])
+        n1=np.random.randn()
+        n2=np.random.randn()
+        if(mod+noise*np.random.randn()<radius[0]) or (mod+noise*np.random.randn()>radius[1]):
             y[i]=0
         else:
             y[i]=1
@@ -89,8 +108,8 @@ def generateSet(shape,noise,radius):
           
 
 def generateDataSet(x,y,noise,radius):
-    trainingSet=generateSet((x,y),noise,radius)
-    testSet=generateSet((x,y),noise,radius)
+    trainingSet=generateTrainingSet((x,y),noise,radius)
+    testSet=generateTestSet((x,y),noise,radius)
     return trainingSet,testSet
 
 def forward(x,w):
@@ -186,6 +205,8 @@ class NeuralNetwork:
         losses=np.zeros(shape=(numIter,2))
         predSample=0
         trueSample=0
+        if(plot):
+            self.pointPlot(self.trainingSet)
         for t in range(0,numIter):
             #training
             a3,z3,a2,z2,a1,z1=forward(self.trainingSet[0],self.weights)
@@ -203,7 +224,10 @@ class NeuralNetwork:
             #backpropagation
             gradW=backpropagation(self.weights, trueValue, a3, z3, a2, z2, a1, z1, self.trainingSet[0])
             self.updateWeights(gradW,alpha,t)
+            if(plot and t%200==0):
+                self.gridPlot(self.testSet)
         if(plot):
+            self.gridPlot(self.testSet)
             self.plotLogLoss(losses)
         diff=((losses[numIter-1,0]-losses[numIter-1,1])**2)**(1/2)
         return self.computeAccuracy(testValue,predTest),diff
@@ -230,7 +254,8 @@ class NeuralNetwork:
         losses=np.zeros(shape=(numIter,2))
         predSample=0
         trueSample=0
-        
+        if(plot):
+            self.pointPlot(self.trainingSet)
         for t in range(0,numIter):
             trainingSet,testSet=self.chooseRandomly(size)
             #training
@@ -240,16 +265,19 @@ class NeuralNetwork:
             trainLoss=computeLoss(trueValue, prediction)
             losses[t,0]=trainLoss
             #test
-            predTest,_,_,_,_,_=forward(testSet[0],self.weights)
+            predTest,_,_,_,_,_=forward(self.testSet[0],self.weights)
             predSample=predTest
-            testValue=testSet[1]
+            testValue=self.testSet[1]
             trueSample=testValue
             testLoss=computeLoss(testValue, predTest)
             losses[t,1]=testLoss
             #backpropagation
             gradW=backpropagation(self.weights, trueValue, a3, z3, a2, z2, a1, z1, trainingSet[0])
             self.updateWeights(gradW,alpha,t)
+            if(plot and t%20==0):
+                self.gridPlot(self.testSet)
         if(plot):
+            self.gridPlot(self.testSet)
             self.plotLogLoss(losses)
         diff=((losses[numIter-1,0]-losses[numIter-1,1])**2)**(1/2)
         return self.computeAccuracy(testValue,predTest),diff
@@ -257,7 +285,7 @@ class NeuralNetwork:
     def computeAccuracy(self,trueValues,predTest):
         tp,tn,fp,fn=0,0,0,0
         for i in range(0,len(trueValues)):
-            if(predTest[i]<0.5):
+            if(predTest[i]<=0.5):
                 predTest[i]=0
             else:
                 predTest[i]=1
@@ -271,8 +299,57 @@ class NeuralNetwork:
                 fn+=1
         return (tp+tn)/(tp+tn+fp+fn)
         
-        
-        
+    def gridPlot(self,testSet):
+        plt.figure(figsize=(10,10))
+        plt.xlim(-2,2) 
+        plt.ylim(-2,2) 
 
+        plt.title("Classification areas, orange: class 0, green: class 1. Also shows testing set")
+        plt.xlabel("x0")
+        plt.ylabel("x1")
+
+        GRID=100
+        grid=np.zeros(shape=(2*GRID,3))
+        for height in range(-GRID,GRID):  
+            for i in range(0,2*GRID):
+                grid[i,0]= 2*(i-GRID)/GRID
+                grid[i,1]= 2*height/GRID
+                grid[i,2]=1
+
+            pred_grid,_,_,_,_,_=forward(grid,self.weights)
+            #print("pred grid",pred_grid)
+            idgrid_1 = np.where(pred_grid > 0.5)[0]
+            idgrid_0 = np.where(pred_grid <= 0.5)[0]
         
-    
+            if len(idgrid_0)>0:
+                plt.plot(grid[idgrid_0,0],grid[idgrid_0,1],"+",c="orange")
+            if len(idgrid_1)>0:
+                plt.plot(grid[idgrid_1,0],grid[idgrid_1,1],"+",c="green")
+        ytest=testSet[1]
+        idtest_1 = np.where(ytest > 0.5)[0]
+        idtest_0 = np.where(ytest <= 0.5)[0]
+
+        xtest=testSet[0]
+        plt.plot(xtest[idtest_0,0],xtest[idtest_0,1],"d",c="red")
+        plt.plot(xtest[idtest_1,0],xtest[idtest_1,1],"d",c="blue")
+        plt.show()
+        return()
+        
+    def pointPlot(self,trainingSet):
+        y=trainingSet[1]
+        x=trainingSet[0]
+        
+        id_1 = np.where(y == 1)[0]
+        id_0 = np.where(y == 0)[0]
+
+
+        plt.figure(figsize=(10,10))
+        plt.xlim(-2,2) 
+        plt.ylim(-2,2) 
+
+        plt.title("Training set, red: class 0, blue: class 1")
+        plt.xlabel("x0")
+        plt.ylabel("x1")
+
+        plt.plot(x[id_0,0],x[id_0,1],"d",c="red")
+        plt.plot(x[id_1,0],x[id_1,1],"d",c="blue")

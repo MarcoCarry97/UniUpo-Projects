@@ -65,6 +65,7 @@ def plot_grid(ww1,ww2,ww3, xtest, ytest):
             grid[i,2]=1
 
         pred_grid=forward(grid,ww1,ww2,ww3)
+        print("plot grid",pred_grid)
         idgrid_1 = np.where(pred_grid > 0.5)[0]
         idgrid_0 = np.where(pred_grid <= 0.5)[0]
     

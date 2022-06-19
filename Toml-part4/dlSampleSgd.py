@@ -11,21 +11,24 @@ import numpy as np
 inputs=3
 outputs=1
 
-def perform(H,T,B):
-    radius=[1.5,1]
-    noise=1
+def perform(H,T,B,alpha=0.7,lr=1e-4):
+    radius=[1,1.5]
+    noise=0
     data=dl.generateDataSet(T,inputs, noise, radius)
-    nn=dl.NeuralNetwork(data,inputs,H,outputs,T,[1,1.5])
-    nn.computeStohastic(size=B,plot=True)
+    nn=dl.NeuralNetwork(data,inputs,H,outputs,T,[1,1.5],learningRate=lr)
+    nn.computeStohastic(size=B,alpha=alpha,plot=True)
     #r2,rmse,loss=nn.computeStohastic(nn.batchSize//4,plot=True)
     
     
 def tune(data,H,T,B,learningRate,alpha,plot=False):
-    radius=[1.5,1]
-    noise=1
+    radius=[1,1.5]
+    noise=0
     nn=dl.NeuralNetwork(data,inputs,H,outputs,T,[1,1.5],learningRate=learningRate)
-    accuracy,diff=nn.computeStohastic(size=B,numIter=100,alpha=alpha,plot=plot)
+    accuracy,diff=nn.computeStohastic(size=B,numIter=2000,alpha=alpha,plot=plot)
     return accuracy,diff,nn
+
+def sample():
+    perform(13,640,640//8,0.3,1e-6)
 
 def underfitting(): #exercise 2
     print("UNDERFITTING")
@@ -47,19 +50,19 @@ def overfitting(): #exercise 3
 def rightValue(): #exercise 4
     print("RIGHT VALUES")
     batchSize=640
-    alphas=np.array([0.3,0.5,0.7])
-    Hs=np.array([15,20,25,30,40,50,60])
-    learningRates=np.array([1e-6,1e-4,1e-2])
+    alphas=np.array([0.5,0.6,0.7])
+    Hs=np.array([18,19,20,23,25,30,40,50])
+    learningRates=np.array([1e-4])
     dividers=[4,8,16,32]
     bestCombination=None
     best=0
     first=True
-    radius=[1.5,1]
-    noise=1
+    radius=[1,1.5]
+    noise=0
     bestData=None
     bestModel=None
     bestDiff=0
-    d=8
+    d=4
     data=dl.generateDataSet(batchSize,inputs, noise, radius)
     for H in Hs:
         for alpha in alphas:
@@ -78,7 +81,7 @@ def rightValue(): #exercise 4
                #     bestCombination=(H,lr,alpha)
                #     bestModel=model
                #     bestDiff=diff
-                elif(best<=accuracy):
+                elif(best<accuracy):
                     best=accuracy
                     bestCombination=(H,lr,alpha)
                     bestData=data
@@ -107,6 +110,7 @@ def problems(): #exercise 5
     hiddens=1280
     perform(hiddens,batchSize)
 
+#sample()
 #underfitting()
 #overfitting()
 rightValue()

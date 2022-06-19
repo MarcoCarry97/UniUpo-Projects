@@ -24,7 +24,7 @@ def tune(data,H,T,B,learningRate,alpha,plot=False):
     radius=[1.5,1]
     noise=1
     nn=dl.NeuralNetwork(data,inputs,H,outputs,T,[1,1.5],learningRate=learningRate)
-    accuracy,diff=nn.computeStohastic(size=B,numIter=2000,alpha=alpha,plot=plot)
+    accuracy,diff=nn.computeStohastic(size=B,numIter=100,alpha=alpha,plot=plot)
     return accuracy,diff,nn
 
 def underfitting(): #exercise 2
@@ -47,9 +47,9 @@ def overfitting(): #exercise 3
 def rightValue(): #exercise 4
     print("RIGHT VALUES")
     batchSize=640
-    alphas=np.array([0.2,0.3,0.4])
-    Hs=np.array([5,6,7,8,9,10,11])
-    learningRates=np.array([1e-6,1e-5,1e-4])
+    alphas=np.array([0.3,0.5,0.7])
+    Hs=np.array([15,20,25,30,40,50,60])
+    learningRates=np.array([1e-6,1e-4,1e-2])
     dividers=[4,8,16,32]
     bestCombination=None
     best=0
@@ -78,7 +78,7 @@ def rightValue(): #exercise 4
                #     bestCombination=(H,lr,alpha)
                #     bestModel=model
                #     bestDiff=diff
-                elif(best<accuracy):
+                elif(best<=accuracy):
                     best=accuracy
                     bestCombination=(H,lr,alpha)
                     bestData=data
@@ -89,7 +89,7 @@ def rightValue(): #exercise 4
                 #print(H,lr,alpha,R2,rmse)
     print("bestCombination",bestCombination)
     H,lr,alpha=bestCombination
-    res=bestModel.computeStohastic(batchSize//d,alpha=alpha,plot=True)
+    res=tune(data,H,batchSize,batchSize//d,lr,alpha,plot=True)
     print("result for (H, lr, alpha)",bestCombination,":",res)
                 
     

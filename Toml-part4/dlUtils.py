@@ -117,6 +117,8 @@ class NeuralNetwork:
         self.radius=radius
         self.v1,self.v2,self.v3=0,0,0
         self.losses=None
+        self.trainingLoss=None
+        self.testLoss=None
         
     def updateWeights(self,gradW,alpha,t):
         v1=self.v1
@@ -146,6 +148,39 @@ class NeuralNetwork:
                 "time":time
             })
         lossFrame.plot(x="time",y=["training loss","test loss"])
+        
+    def fit(self,trainingSet,numIter=2000,alpha=0.7):
+        self.trainingLoss=np.zeros(shape=(numIter,2))
+        prediction=0
+        truevalue=0
+        for t in range(0,numIter):
+            a3,z3,a2,z2,a1,z1=forward(trainingSet[0],self.weights)
+            trueValue=trainingSet[1]
+            prediction=a3
+            self.trainingLoss[t]=computeLoss(trueValue,prediction)
+            gradW=backpropagation(self.weights, trueValue, a3, z3, a2, z2, a1, z1, self.trainingSet[0])
+            self.updateWeights(gradW, alpha, t)
+        return self.testSet
+            
+    def randomFit(self,trainingSet,size,numIter=2000,alpha=0.7):
+        self.trainingLoss=np.zeros(shape=(numIter,2))
+        prediction=0
+        truevalue=0
+        trainingSet,testSet=self.chooseRandomly(size)
+        for t in range(0,numIter):
+            a3,z3,a2,z2,a1,z1=forward(trainingSet[0],self.weights)
+            trueValue=trainingSet[1]
+            prediction=a3
+            self.trainingLoss[t]=computeLoss(trueValue,prediction)
+            gradW=backpropagation(self.weights, trueValue, a3, z3, a2, z2, a1, z1,trainingSet[0])
+            self.updateWeights(gradW, alpha, t)
+        return testSet
+    
+    def predict(self, testSet):
+        trueValue=testSet[0]
+        prediction,_,_,_,_,_=forward(testSet[0],self.weights)
+        self.testLoss=computeLoss(trueValue, prediction)
+        return self.computeAccuracy(trueValue, prediction)
         
     def compute(self,numIter=2000,alpha=0.7,plot=False):
         losses=np.zeros(shape=(numIter,2))

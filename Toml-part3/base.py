@@ -55,8 +55,29 @@ def prepareData(listFileNames,separator):
     for i in range(1,len(listdata)): #Merging
         data=mergeData(data,listdata[i],"inner","date","date")
         data.head()
-    return data
-    
+    return data      
+
+def removeEquals(features,subsets):
+    for i in (1,len(features)):
+        sub=[s for s in subsets if len(s)==i]
+        for s1 in sub:
+            for s2 in sub:
+                i
+
+def subsets(features):
+    subsets=list()
+    for feature in features:
+        subsets+=[[feature]]
+    for feature in features:
+        for subset in subsets:
+            if feature not in subset:
+                other=subset+[feature]
+                if(subset+[feature] not in subsets and
+                   [feature]+subset not in subsets and
+                   reversed(other) not in subsets):
+                    subsets+=[other]
+    return subsets
+            
 
 class Algorithm:
     def __init__(self,data,percentual,predictLabel,alpha=1,scale=False):
@@ -88,6 +109,27 @@ class Algorithm:
         self.modelType="Normal"
 
     def forwardSelection(self):
+        subs=subsets(list(self.trainingSet.columns))
+        best=[]
+        bestR2=0
+        bestRmse=0
+        first=True
+        for s in subs:
+            model=self.makeModel(features=s)
+            res=model.predict()
+            if(first):
+                best=s
+                bestR2=res.rsquare
+                bestRmse=res.rmse
+                first=False
+            if(bestR2<res.rsquare and bestRmse>res.rmse):
+                best=s
+                bestR2=res.rsquare
+                bestRmse=res.rmse
+        print("best:",best,bestR2,bestRmse)
+        return best
+
+    def forwardSelectionPrototype(self):
         best=[]
         bestR2=0
         for i in range(0,len(self.trainingSet.columns)):
@@ -101,6 +143,7 @@ class Algorithm:
                 model=self.makeModel(features=subset)
                 res=model.predict()
                 r2[feature]=res.rsquare
+                print(subset,res.rsquare)
             bestFeature=max(r2,key=r2.get)
             if(bestR2<r2[bestFeature]):
                 best+=[bestFeature]
@@ -167,7 +210,10 @@ class Model:
         addTime(data)
         #data.insert(0, other, self.testSet[other].values)
         label=self.testLabels.name
-        dp.lineplot(data.iloc[a:b], "time",["prediction",label], "predictions - "+label+" on time",False,True)
+        x="time"
+        y=["prediction",label]
+        title="predictions - "+label+" on time"
+        dp.lineplot(data.iloc[a:b], x,y,title ,False,True)
        # dp.qqplot(data,"prediction","RefSt","qqplot-prediction-RefSt",False,True)
         
     def params(self):

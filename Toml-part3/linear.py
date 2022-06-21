@@ -19,6 +19,7 @@ class LinearRegression(Algorithm):
     def __init__(self,data,percentual,predictLabel,alpha=1,scale=False):
         super().__init__(data, percentual,predictLabel,alpha=alpha,scale=scale)
         
+        
     def makeModel(self,features=[]):
         return LinearModel(self.trainingSet,self.trainingLabels,self.testSet,self.testLabels,modelType=self.modelType,alpha=self.alpha, features=features)
         
@@ -30,9 +31,11 @@ class LinearModel(Model):
             self.model=lm.LinearRegression()
             select=forwardSelection(self.model)
             select.fit(trainingSet,trainingLabels)
-            self.featuresSelected=np.array(self.trainingSet.columns[select.get_support()])
-            self.trainingSet=self.makeDataset(self.featuresSelected,select.transform(self.trainingSet).T)
-            self.testSet=self.makeDataset(self.featuresSelected,select.transform(self.testSet).T)
+            self.redefineSets()
+            #self.featuresSelected=np.array(self.trainingSet.columns[select.get_support()])
+            #self.trainingSet=self.makeDataset(self.featuresSelected,select.transform(self.trainingSet).T)
+            #self.testSet=self.makeDataset(self.featuresSelected,select.transform(self.testSet).T)
+            
         elif(modelType=="Lasso"):
             self.model=lm.Lasso(alpha=alpha)
         else:

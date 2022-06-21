@@ -12,7 +12,7 @@ import shutil as sh
 import pandas as pd
 import seaborn as sb
 from seaborn_qqplot import pplot
-import statmodels.api as sm
+
 import matplotlib.pyplot as plt
 
 #useful plots:

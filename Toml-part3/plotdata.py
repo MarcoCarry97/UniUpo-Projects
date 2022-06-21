@@ -43,13 +43,14 @@ b.addTime(data)
 b.addNormalizedData(data)
 
 for label in labels:
-    dp.scatterplot(data,label,refSt,label+" - SensorO3",delete,save)
-    dp.scatterplot(data,label,o3,label+" - RefSt",delete,save)  
+    #dp.scatterplot(data,label,[refSt,o3],label+" - SensorO3",delete,save)
+    dp.scatterplot(data,label,refSt,label+" - "+refSt,delete,save)
+    dp.scatterplot(data,label,o3,label+" - "+o3,delete,save)  
 
 dp.scatterplot(data,o3,refSt, o3+" - "+refSt, delete, save)
 dp.scatterplot(data,"normalizedO3","normalizedRefSt", "normalizedO3 - normalizedRefSt", delete, save)
    
 dp.lineplot(data,time,o3,o3+" on "+time,delete,save)
 dp.lineplot(data,time,refSt,refSt+" on "+time,delete,save)
-dp.lineplot(data,time,[o3,refSt],o3+", "+refSt+" on "+time,delete,save)
+dp.lineplot(data.iloc[0:500],time,[o3,refSt],o3+", "+refSt+" on "+time,delete,save)
 

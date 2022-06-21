@@ -34,7 +34,7 @@ def readData(filename,separator):
         for n in data["Sensor_O3"]:
             if n.count(".")>1:
                 n=n.replace(".","",1)
-            nums+=[np.float64(n)]
+            nums+=[np.float64(n)*0.09]
         data["Sensor_O3"]=np.array(nums)
    # elif("RelHum" in data.keys()):
     #    data["RelHum"]=changeDirection(data["RelHum"])
@@ -109,26 +109,7 @@ class Algorithm:
                 break;
         return best
         
-   def backwardSelection(self):
-        best=list(self.trainingSet.columns)
-        worst=[]
-        bestR2=0
-        r2={}
-        for i in range(0,len(self.trainingSet.columns)):
-            for b in best:
-                labels=list(self.trainingSet.column)
-                for w in worst:
-                    labels.remove(w)
-                labels.remove(b)
-                model=self.makeModel(fea)
-                res=model.predict()
-                r2[b]=model.rsquare
-            worstFeature=max(r2,key=r2.get)
-            if(bestR2>r2[worstFeature]):
-                best.remove(worstFeature)
-                worstR2=r2[worstFeature]
-                worst+=[b]
-        return best
+    
 
 
 class Model:

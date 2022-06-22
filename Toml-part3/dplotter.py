@@ -40,7 +40,6 @@ class Plotter:
         self.ptitle=t
     
     def show(self,data,delete=False,save=False,hue=None,kind="line",vmin=-1,vmax=1):
-
         if(kind=="heatmap"):
             data.style.background_gradient(cmap ='viridis').set_properties(**{'font-size': '20px'})
         else:

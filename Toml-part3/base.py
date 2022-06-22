@@ -108,7 +108,7 @@ class Algorithm:
     def noRegularization(self):
         self.modelType="Normal"
 
-    def forwardSelection(self):
+    def forwardSelection2(self):
         subs=subsets(list(self.trainingSet.columns))
         best=[]
         bestR2=0
@@ -116,41 +116,47 @@ class Algorithm:
         first=True
         for s in subs:
             model=self.makeModel(features=s)
+            #model.tune()
             res=model.predict()
             if(first):
                 best=s
                 bestR2=res.rsquare
                 bestRmse=res.rmse
                 first=False
-            if(bestR2<res.rsquare and bestRmse>res.rmse):
+            if(bestR2<res.rsquare):
                 best=s
                 bestR2=res.rsquare
                 bestRmse=res.rmse
+            print(s,res.rsquare,res.rmse)
         print("best:",best,bestR2,bestRmse)
         return best
 
-    def forwardSelectionPrototype(self):
-        best=[]
-        bestR2=0
-        for i in range(0,len(self.trainingSet.columns)):
-            labels=list(self.trainingSet.columns)
-            for b in best:
-                if b in labels:
-                    labels.remove(b)
-            r2={}
-            for feature in labels:
-                subset=best+[feature]
-                model=self.makeModel(features=subset)
+    def forwardSelection(self):
+        availableFeatures=list(self.trainingSet.columns)
+        numColumns=len(self.trainingSet)
+        numAvailableFeatures=numColumns
+        basePerf=-9999
+        bestSubSet=[]
+        while numAvailableFeatures>0:
+            bestPerf=-9999
+            bestFeature=None
+            for i in range(0, len(availableFeatures)):
+                feature=availableFeatures[i]
+                s=bestSubSet+[feature]
+                model=self.makeModel(features=s)
                 res=model.predict()
-                r2[feature]=res.rsquare
-                print(subset,res.rsquare)
-            bestFeature=max(r2,key=r2.get)
-            if(bestR2<r2[bestFeature]):
-                best+=[bestFeature]
-                bestR2=r2[bestFeature]
+                curPerf=res.rsquare
+                if(curPerf>bestPerf):
+                    bestPerf=curPerf
+                    bestFeature=feature   
+            if(bestPerf>basePerf):
+                basePerf=bestPerf
+                bestSubSet+=[bestFeature]
+                availableFeatures.remove(bestFeature)
+                numAvailableFeatures-=1
             else:
                 break;
-        return best
+        return bestSubSet
         
     
 

@@ -25,12 +25,12 @@ class LinearRegression(Algorithm):
         
 class LinearModel(Model):
     def __init__(self, trainingSet, trainingLabels, testSet, testLabels,modelType="Normal", alpha=1,features=[]):
-        super().__init__(trainingSet, trainingLabels, testSet, testLabels,modelType=modelType, alpha=alpha)
+        super().__init__(trainingSet, trainingLabels, testSet, testLabels,modelType=modelType, alpha=alpha,selectedLabels=features)
         self.model=None
         if(modelType=="Normal"):
             self.model=lm.LinearRegression()
-            select=forwardSelection(self.model)
-            select.fit(trainingSet,trainingLabels)
+            #select=forwardSelection(self.model)
+            #select.fit(trainingSet,trainingLabels)
             self.redefineSets()
             #self.featuresSelected=np.array(self.trainingSet.columns[select.get_support()])
             #self.trainingSet=self.makeDataset(self.featuresSelected,select.transform(self.trainingSet).T)
@@ -51,5 +51,7 @@ class LinearModel(Model):
 
     def params(self):
         return {
-                "alpha": [0.000001,0.00001,0.0001,0.001,0.01,0.1,0.5,1,2,5,10]+list(range(20,110,10))+list(range(100,1100,100))
+                "alpha": [0.000001,0.00001,0.0001,0.001,0.01,0.1,0.5,1,2,5,10]
+                +list(range(20,110,10))
+                +list(range(100,1100,100))
             }

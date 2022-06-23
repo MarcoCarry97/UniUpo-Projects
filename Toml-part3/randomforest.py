@@ -39,8 +39,10 @@ class RandForestModel(Model):
         #self.features=self.model.transform(self.trainingSet)
     def params(self):
         return {
-            "n_estimators":[50,100],
-            "criterion":["squared_error"],
+            "n_estimators":[50,100,200],
+            "criterion":["squared_error",
+                         "absolute_error",
+                         "poisson"],
             "max_depth":[None,10,100],
             "min_samples_split":[2,5],
             "min_samples_leaf":[2,5],

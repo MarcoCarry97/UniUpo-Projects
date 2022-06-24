@@ -40,6 +40,7 @@ def randomNum(size):
     return np.random.randn(size)
 
 def randomNum2(a,b):
+    #return np.ones(shape=(a,b))
     return np.random.randn(a,b)
 
 def computeLoss(trueValue,prediction):

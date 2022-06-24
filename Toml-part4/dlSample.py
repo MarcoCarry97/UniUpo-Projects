@@ -16,7 +16,8 @@ def perform(H,T,alpha=0.7,lr=1e-4):
     noise=0
     data=dl.generateDataSet(T,inputs, noise, radius)
     nn=dl.NeuralNetwork(data,inputs,H,outputs,T,[1,1.5],learningRate=lr)
-    nn.compute(alpha=alpha,plot=True)
+    accuracy,_=nn.compute(alpha=alpha,plot=True)
+    print("accuracy",H,T,accuracy)
     #r2,rmse,loss=nn.computeStohastic(nn.batchSize//4,plot=True)
     
     
@@ -35,28 +36,34 @@ def underfitting(): #exercise 2
     hiddens=1
     batchSize=640
     perform(hiddens,batchSize)
-    hiddens=2
+    hiddens=3
     perform(hiddens,batchSize)
     hiddens=5
+    perform(hiddens,batchSize)
+    hiddens=7
+    perform(hiddens,batchSize)
+    hiddens=9
     perform(hiddens,batchSize)
 
 def overfitting(): #exercise 3
     print("OVERFITTING")
     hiddens=20
-    batchSize=1
-    perform(hiddens,batchSize)
-    batchSize=5
-    perform(hiddens,batchSize)
     batchSize=10
     perform(hiddens,batchSize)
     batchSize=20
+    perform(hiddens,batchSize)
+    batchSize=50
+    perform(hiddens,batchSize)
+    batchSize=100
+    perform(hiddens,batchSize)
+    batchSize=200
     perform(hiddens,batchSize)
     
 def rightValue(): #exercise 4
     print("RIGHT VALUES")
     batchSize=640
     alphas=np.array([0.5,0.6,0.7])
-    Hs=np.array([18,19,20,23,25,30,40,50])
+    Hs=np.array([13,15,17,19,21,23,25])
     learningRates=np.array([1e-4])
     bestCombination=None
     best=0
@@ -107,7 +114,7 @@ def problems(): #exercise 5
     perform(hiddens,batchSize)
 
 #sample()
-#underfitting()
+underfitting()
 #overfitting()
-rightValue()
+#rightValue()
 #problems()

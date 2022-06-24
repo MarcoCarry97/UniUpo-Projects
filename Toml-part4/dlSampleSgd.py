@@ -16,7 +16,8 @@ def perform(H,T,B,alpha=0.7,lr=1e-4):
     noise=0
     data=dl.generateDataSet(T,inputs, noise, radius)
     nn=dl.NeuralNetwork(data,inputs,H,outputs,T,[1,1.5],learningRate=lr)
-    nn.computeStohastic(size=B,alpha=alpha,plot=True)
+    accuracy,_=nn.computeStohastic(size=B,alpha=alpha,plot=True)
+    print("accuracy ",H,T,accuracy)
     #r2,rmse,loss=nn.computeStohastic(nn.batchSize//4,plot=True)
     
     
@@ -25,14 +26,15 @@ def tune(data,H,T,B,learningRate,alpha,plot=False):
     noise=0
     nn=dl.NeuralNetwork(data,inputs,H,outputs,T,[1,1.5],learningRate=learningRate)
     accuracy,diff=nn.computeStohastic(size=B,numIter=2000,alpha=alpha,plot=plot)
+    
     return accuracy,diff,nn
 
 def sample():
-    perform(13,640,640//8,0.3,1e-6)
+    perform(13,640,640//6,0.3,1e-6)
 
 def underfitting(): #exercise 2
     print("UNDERFITTING")
-    hiddens=[1,2,5]
+    hiddens=[1,3,5,7,9]
     batchSize=640
     B=batchSize//4
     for H in hiddens:
@@ -111,7 +113,7 @@ def problems(): #exercise 5
     perform(hiddens,batchSize)
 
 #sample()
-#underfitting()
+underfitting()
 #overfitting()
-rightValue()
+#rightValue()
 #problems()

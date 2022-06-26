@@ -220,6 +220,7 @@ class Model:
         y=["prediction",label]
         title="predictions - "+label+" on time"
         dp.lineplot(data.iloc[a:b], x,y,title ,False,True)
+        dp.scatterplot(data, label,y[0], "Comparison between predictions and expectations", False,True)
        # dp.qqplot(data,"prediction","RefSt","qqplot-prediction-RefSt",False,True)
         
     def params(self):

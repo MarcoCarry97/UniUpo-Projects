@@ -66,6 +66,8 @@ def backpropagation(w,trueValue,a3,z3,a2,z2,a1,z1,x):
     gradZ1=gradA1.copy()
     gradZ1[z1<0]=0
     gradW1=x.T.dot(gradZ1)
+    print([gradW1,gradW2,gradW3])
+    #print([gradA3,gradA2,gradA1],[gradZ3,gradZ2,gradZ1],[gradW1,gradW2,gradW3])
     return [gradW1,gradW2,gradW3]
 
 def module(xx):
@@ -223,7 +225,8 @@ class NeuralNetwork:
             testLoss=computeLoss(testValue, predTest)
             losses[t,1]=testLoss
             #backpropagation
-            gradW=backpropagation(self.weights, trueValue, a3, z3, a2, z2, a1, z1, self.trainingSet[0])
+            gradW=backpropagation(self.weights, trueValue, a3, z3, a2, z2, a1, z1,
+                                  self.trainingSet[0])
             self.updateWeights(gradW,alpha,t)
             if(plot and t%200==0):
                 self.gridPlot(self.testSet)

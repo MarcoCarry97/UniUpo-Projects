@@ -44,17 +44,17 @@ def underfitting(): #exercise 2
 def overfitting(): #exercise 3
     print("OVERFITTING")
     hiddens=20
-    batchSizes=[10,20,100,200]
+    batchSizes=[10,20,50,100,200]
     for T in batchSizes:
-        perform(hiddens,T,T//4)
+        perform(hiddens,T,T//2)
     
     
 def rightValue(): #exercise 4
     print("RIGHT VALUES")
     batchSize=640
     alphas=np.array([0.5,0.6,0.7])
-    Hs=np.array([18,19,20,23,25,30,40,50])
-    learningRates=np.array([1e-4])
+    Hs=np.array([18,19,21,23,25])
+    learningRates=np.array([1e-4,1e-3])
     dividers=[4,8,16,32]
     bestCombination=None
     best=0
@@ -104,16 +104,16 @@ def problems(): #exercise 5
     print("PROBLEMS")
     batchSize=640
     hiddens=100
-    perform(hiddens,batchSize)
+    perform(hiddens,batchSize,batchSize//6)
     hiddens=320
-    perform(hiddens,batchSize)
+    perform(hiddens,batchSize,batchSize//6)
     hiddens=640
-    perform(hiddens,batchSize)
+    perform(hiddens,batchSize,batchSize//6)
     hiddens=1280
-    perform(hiddens,batchSize)
+    perform(hiddens,batchSize,batchSize//6)
 
 #sample()
-underfitting()
+#underfitting()
 #overfitting()
 #rightValue()
-#problems()
+problems()

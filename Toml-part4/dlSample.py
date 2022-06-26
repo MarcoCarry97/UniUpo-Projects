@@ -64,7 +64,7 @@ def rightValue(): #exercise 4
     batchSize=640
     alphas=np.array([0.5,0.6,0.7])
     Hs=np.array([13,15,17,19,21,23,25])
-    learningRates=np.array([1e-4])
+    learningRates=np.array([1e-4,1e-3])
     bestCombination=None
     best=0
     first=True
@@ -114,7 +114,7 @@ def problems(): #exercise 5
     perform(hiddens,batchSize)
 
 #sample()
-underfitting()
+#underfitting()
 #overfitting()
 #rightValue()
-#problems()
+problems()

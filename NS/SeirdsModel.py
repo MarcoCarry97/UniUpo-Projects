@@ -13,11 +13,15 @@ class SeirdsModel(sm.SpreadingModel):
     
     def __init__(self,alpha,beta,gamma,delta):
         super(self)
-        self.alpha=alpha
-        self.beta=beta
-        self.gamma=gamma
-        self.delta=delta
+        self.alpha=alpha #S-->I probability
+        self.beta=beta #I-->R probability
+        self.gamma=gamma #R-->S probability
+        self.delta=delta #E-->I probability
         
+    
+    #NOTA: per gli esposti(E) ho riutilizzato il ragionamento
+    # di S (vedi codice), un comportamento più realistico si potrebbe ottenere
+    # togliendo il ciclo for nel caso E, "simulando" una sorta di quarantena
     def transition(self):
         def trans(G,current):
             nextState={}

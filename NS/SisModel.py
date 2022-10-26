@@ -13,10 +13,10 @@ class SisModel(sm.SpreadingModel):
     
     def __init__(self,alpha,beta):
         super(self)
-        self.alpha=alpha
-        self.beta=beta
+        self.alpha=alpha #S-->I probability
+        self.beta=beta #I-->S probability
         
-    def transition(self):
+    def transition(self): 
         def trans(G,current):
             nextState={}
             for node in self.G.nodes:

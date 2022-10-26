@@ -13,9 +13,9 @@ class SirsModel(sm.SpreadingModel):
     
     def __init__(self,alpha,beta,gamma):
         super(self)
-        self.alpha=alpha
-        self.beta=beta
-        self.gamma=gamma
+        self.alpha=alpha #S-->I probability
+        self.beta=beta #I-->R probability
+        self.gamma=gamma #R-->S probability
         
     def transition(self):
         def trans(G,current):

@@ -12,7 +12,7 @@ import spreadingModel as sm
 class SisModel(sm.SpreadingModel):
     
     def __init__(self,alpha,beta):
-        super(self)
+        super().__init__(self)
         self.alpha=alpha #S-->I probability
         self.beta=beta #I-->S probability
         

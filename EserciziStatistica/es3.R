@@ -34,18 +34,18 @@ getDataHalf=function(i,type)
   data=getDataOfDay(i,type);
   d=1;
   n=1;
-  for(i in 1:1440)
+  for(h in 1:1440)
   {
-    if(!is.na(data[i]))
+    if(!is.na(data[h]))
     {
-      if(i<720)
+      if(h>360 && h<=1080)
       {
-        mat[1,d]=data[i]
+        mat[1,d]=data[h]
         d=d+1
       }
       else
       {
-        mat[2,n]=data[i]
+        mat[2,n]=data[h]
         n=n+1
       }
     }
@@ -55,15 +55,24 @@ getDataHalf=function(i,type)
 
 dataDay=getDataOfDay(1,"V7")
 dataMonth=getDataOfMonth("V7")
-dataHalf=getDataHalf(1,"V7")
+
 
 densityDay=density(fluctuations(dataDay))
 densityMonth=density(fluctuations(dataMonth))
-densityHalfDay=density(fluctuations(dataHalf[1,]))
-densityHalfNight=density(fluctuations(dataHalf[2,]))
 
-par(mfrow=c(2,2))
-plot(densityDay)
-plot(densityMonth)
-plot(densityHalfDay)
-plot(densityHalfNight)
+ylabel="Values"
+par(mfrow=c(2,1))
+plot(densityDay,xlab="Fluctuations of Wind - One Day (m/s)",ylab = ylabel,main="")
+plot(densityMonth,xlab="Fluctuations of Wind - One Month (m/s)",ylab = ylabel,main="")
+
+
+for(i in 1:10)
+{
+  dataHalf=getDataHalf(i,"V7")
+  densityHalfDay=density(fluctuations(dataHalf[1,]))
+  densityHalfNight=density(fluctuations(dataHalf[2,]))
+  xlabelDay=paste("Fluctuations half day",i,"(m/s)")
+  xlabelNight=paste("Fluctuations half night",i,"(m/s)")
+  plot(densityHalfDay,xlab=xlabelDay,ylab = ylabel,main="")
+  plot(densityHalfNight,xlab=xlabelNight,ylab=ylabel,main="")
+}

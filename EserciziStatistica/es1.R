@@ -60,3 +60,11 @@ print("Normal to central:")
 print(normalToCentral(temp,0))
 print(normalToCentral(temp,1))
 print(normalToCentral(temp,2))
+print("Stats:");
+print(paste("Mean: ",mean(temp)))
+print(paste("Var: ",var(temp)))
+partNormal=3*moment(temp,1)*centralMoment(temp,2);
+partCentral=3*moment(temp,1)*moment(temp,2);
+part2=moment(temp,1)^3
+print(paste("m3 =u3 + 3*m1*u2 + m1^3 ==>",moment(temp,3),centralMoment(temp,3) + partNormal + part2));
+print(paste("u3 = m3 - 3*m1*m2 + 2*m1^3 ==>",centralMoment(temp,3),moment(temp,3) - partCentral + 2*part2));

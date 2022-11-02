@@ -11,8 +11,8 @@ import spreadingModel as sm
 
 class SisModel(sm.SpreadingModel):
     
-    def __init__(self,alpha,beta):
-        super().__init__(self)
+    def __init__(self,G,alpha,beta):
+        super().__init__(G)
         self.alpha=alpha #S-->I probability
         self.beta=beta #I-->S probability
         
@@ -28,5 +28,6 @@ class SisModel(sm.SpreadingModel):
                 else:
                     if random.random()<self.alpha:
                         nextState[node]="S"
+                return (G,self.state)
         return trans
                         

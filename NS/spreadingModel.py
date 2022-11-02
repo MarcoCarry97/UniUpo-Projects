@@ -11,7 +11,7 @@ import random
 class SpreadingModel: #abstract class implementing principal functions
     
     def __init__(self,graph):
-        self.graph=graph
+        self.G=graph
         self.state={}
         self.sim=None
         
@@ -22,7 +22,7 @@ class SpreadingModel: #abstract class implementing principal functions
                 self.state[node]="S"
             patientZero=random.choice(list(self.G.nodes))
             self.state[patientZero]="I"
-            return self.state
+            return (self.G,self.state)
         return init
     
     def transition(self): #method defining the transition function

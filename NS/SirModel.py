@@ -11,8 +11,8 @@ import spreadingModel as sm
 
 class SirModel(sm.SpreadingModel):
     
-    def __init__(self,alpha,beta):
-        super(self)
+    def __init__(self,G,alpha,beta):
+        super().__init__(G)
         self.alpha=alpha #S-->I probability
         self.beta=beta #I-->R probability
         
@@ -24,8 +24,9 @@ class SirModel(sm.SpreadingModel):
                     for neighbor in G.neighbors(node):
                         if current[neighbor]=="I":
                             if random.random()<self.beta:
-                                nextState="I"
+                                nextState[node]="I"
                 elif current[node]=="I":
                     if random.random()<self.alpha:
-                        nextState[node]=="R"
+                        nextState[node]="R"
+            return (G,self.state)
         return trans

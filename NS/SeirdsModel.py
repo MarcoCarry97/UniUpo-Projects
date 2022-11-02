@@ -11,8 +11,8 @@ import spreadingModel as sm
 
 class SeirdsModel(sm.SpreadingModel):
     
-    def __init__(self,alpha,beta,gamma,delta):
-        super(self)
+    def __init__(self,G,alpha,beta,gamma,delta):
+        super().__init__(G)
         self.alpha=alpha #S-->I probability
         self.beta=beta #I-->R probability
         self.gamma=gamma #R-->S probability
@@ -30,18 +30,19 @@ class SeirdsModel(sm.SpreadingModel):
                     for neighbor in G.neighbors(node):
                         if current[neighbor]=="I":
                             if random.random()<self.beta:
-                                nextState="E"
+                                nextState[node]="E"
                 elif current[node]=="E":
                     for neighbor in G.neighbors(node):
                         if current[neighbor]=="I":
                             if random.random()<self.delta:
-                                nextState="E"
+                                nextState[node]="E"
                 elif current[node]=="I":
                     if random.random()<self.alpha:
-                        nextState[node]=="R"
+                        nextState[node]="R"
                     else:
-                        nextState[node]=="D"
+                        nextState[node]="D"
                 elif current[node]=="R":
                     if random.random()<self.gamma:
-                        nextState[node]=="S"
+                        nextState[node]="S"
+            return (G,self.state)
         return trans

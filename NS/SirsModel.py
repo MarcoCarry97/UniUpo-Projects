@@ -21,6 +21,7 @@ class SirsModel(sm.SpreadingModel):
         def trans(G,current):
             nextState={}
             for node in self.G.nodes:
+                nextState[node]=current[node]
                 if current[node]=="S":
                     for neighbor in G.neighbors(node):
                         if current[neighbor]=="I":
@@ -32,5 +33,5 @@ class SirsModel(sm.SpreadingModel):
                 else:
                     if random.random()<self.gamma:
                         nextState[node]="S"
-            return (G,self.state)
+            return (G,nextState)
         return trans

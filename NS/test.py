@@ -12,13 +12,37 @@ import SirsModel as sirs
 import SeirdsModel as seirds
 import matplotlib.pyplot as plt
 
-alpha=0.5
-beta=0.5
-gamma=0.5
-delta=0.5
+alpha=0.99
+beta=0.99
+gamma=0.99
+delta=0.99
+
+def color(num,state):
+    ret=None
+    if(state=="S"):
+        ret=["lightblue"]
+    if(state=="E"):
+        ret=["yellow"]
+    if(state=="I"):
+        ret=["red"]
+    if(state=="R"):
+        ret=["green"]
+    if(state=="D"):
+        ret=["gray"]
+    return ret
+    
+def colors(states):
+    ret=list()
+    for s in states:
+        ret+=color(*s)
+    return ret
+    
+    
 
 def onShow(G,state):
-    nx.draw(G)
+    colorList=colors(G.nodes(data="state"))
+    nx.draw(G,with_labels=True,
+            node_color=colorList)
     plt.show()
 
 G=nx.gnp_random_graph(25, 0.23)
@@ -27,7 +51,7 @@ model=sir.SirModel(G,alpha,beta)
 sim=simx.Simulator(model.initialState(),
                    model.transition(),
                    onShow)
-sim.run(25,3)
+sim.run(100,5)
 
 
 

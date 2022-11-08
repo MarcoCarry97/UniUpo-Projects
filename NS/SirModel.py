@@ -20,13 +20,14 @@ class SirModel(sm.SpreadingModel):
         def trans(G,current):
             nextState={}
             for node in self.G.nodes:
+                nextState[node]=current[node]
                 if current[node]=="S":
                     for neighbor in G.neighbors(node):
                         if current[neighbor]=="I":
-                            if random.random()<self.beta:
+                            if random.random()<1-self.beta:
                                 nextState[node]="I"
                 elif current[node]=="I":
-                    if random.random()<self.alpha:
+                    if random.random()<1-self.alpha:
                         nextState[node]="R"
-            return (G,self.state)
+            return (G,nextState)
         return trans

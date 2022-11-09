@@ -14,36 +14,40 @@ class Simulator:
         self.onStart=onStart
         self.onStep=onStep
         self.onShow=onShow
-        self.snapshots=[]
+        self.snapshots=dict()
         self.steps=0
       
     def assign(self,G,state):
         nx.set_node_attributes(G, state,"state")
       
+    def count(self,state,key):
+        c=0
+        for k in state.values():
+            if k==key:
+                c+=1
+        return c
+      
     def keep(self,G,state):
-        snapshot={}
-        for s in state.values():
-            if s in snapshot:
-                snapshot[s]+=1
+        keys=set(state.values())
+        for key in keys:
+            num=self.count(state,key)
+            if( key in self.snapshots):
+                self.snapshots[key]+=[num]
             else:
-                snapshot[s]=1
-        self.snapshots+=[snapshot]
-    
+                self.snapshots[key]=[num]
+           
     def plot(self): #IDEA: creare un dataframe con Pandas e plottare con la sua funzione
-        dictio=dict()
-        s=self.snapshots[0]
-        for key in s:
-            dictio[key]=np.zeros(self.steps)
-        for snap in self.snapshots:
-            for key in snap.keys():
-                if key in dictio:
-                    dictio[key]+=[snap[key]]
-                else:
-                    dictio[key]=[snap[key]]
-        for key in dictio.keys():
-            print(len(dictio[key]))
-        df=pd.DataFrame(dictio)
-        df["time"]=np.array(1,self.steps+1)
+        end=False
+        while(not end):
+            done=True
+            for key in self.snapshots.keys():
+                if len(self.snapshots[key]) < self.steps:
+                    self.snapshots[key]+=[self.snapshots[key][-1]] 
+                    done=False
+            if done:
+                end=True
+        df=pd.DataFrame(self.snapshots)
+        #df["time"]=np.array(range(1,self.steps+1))
         df.plot.line()
         
         
@@ -60,4 +64,4 @@ class Simulator:
             if(step%x==0):
                 self.onShow(*state)
         self.onShow(*state)
-        #self.plot()
+        self.plot()

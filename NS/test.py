@@ -12,10 +12,10 @@ import SirsModel as sirs
 import SeirdsModel as seirds
 import matplotlib.pyplot as plt
 
-alpha=0.99
-beta=0.99
-gamma=0.99
-delta=0.99
+alpha=0.999
+beta=0.999
+gamma=0.999
+delta=0.999
 
 def color(num,state):
     ret=None
@@ -36,8 +36,6 @@ def colors(states):
     for s in states:
         ret+=color(*s)
     return ret
-    
-    
 
 def onShow(G,state):
     colorList=colors(G.nodes(data="state"))
@@ -45,13 +43,13 @@ def onShow(G,state):
             node_color=colorList)
     plt.show()
 
-G=nx.gnp_random_graph(25, 0.23)
+G=nx.gnp_random_graph(100, 0.23)
 
 model=sir.SirModel(G,alpha,beta)
 sim=simx.Simulator(model.initialState(),
                    model.transition(),
                    onShow)
-sim.run(100,5)
+sim.run(1000,5)
 
 
 

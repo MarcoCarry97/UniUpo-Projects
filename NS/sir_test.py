@@ -15,7 +15,7 @@ beta=0.999
 gamma=0.999
 delta=0.999
 
-G=nx.gnp_random_graph(100, 0.1)
+G=nx.gnp_random_graph(20, 0.1)
 
 model=sir.SirModel(G,alpha,beta)
 sim=simx.Simulator(model.initialState(),

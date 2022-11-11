@@ -15,10 +15,10 @@ beta = 0.999
 gamma = 0.999
 delta = 0.999
 
-G = nx.gnp_random_graph(100, 0.1)
+G = nx.gnp_random_graph(10, 0.1)
 
 model = sis.SisModel(G, alpha, beta)
 sim = simx.Simulator(model.initialState(),
                      model.transition(),
                      onShow)
-sim.run(1000, 5)
+sim.run(5,3)

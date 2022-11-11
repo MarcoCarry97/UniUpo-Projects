@@ -30,22 +30,22 @@ class SeirdsModel(sm.SpreadingModel):
                 if current[node]=="S":
                     for neighbor in G.neighbors(node):
                         if current[neighbor]=="I":
-                            if random.random()<1-self.alpha:
+                            if random.random()<self.alpha:
                                 nextState[node]="E"
                 elif current[node]=="E":
                     #for neighbor in G.neighbors(node):
                     #if current[neighbor]=="I":
-                    if random.random()<1-self.beta:
+                    if random.random()<self.beta:
                         nextState[node]="I"
                     else:
                         nextState[node]="S"
                 elif current[node]=="I":
-                    if random.random()<1-self.gamma:
+                    if random.random()<self.gamma:
                         nextState[node]="R"
                     else:
                         nextState[node]="D"
                 elif current[node]=="R":
-                    if random.random()<1-self.delta:
+                    if random.random()<self.delta:
                         nextState[node]="S"
             return (G,nextState)
         return trans

@@ -12,8 +12,6 @@ from utils import onShow
 
 alpha=0.999
 beta=0.999
-gamma=0.999
-delta=0.999
 
 G=nx.gnp_random_graph(20, 0.1)
 

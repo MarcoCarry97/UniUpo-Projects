@@ -6,17 +6,18 @@ Created on Wed Nov  2 15:44:05 2022
 """
 import networkx as nx
 import simulation as simx
-import SisModel as sis
+import SirsModel as sirs
 
 from utils import onShow
 
 alpha = 0.999
 beta = 0.999
+gamma = 0.999
 
-G = nx.gnp_random_graph(10, 0.1)
+G = nx.gnp_random_graph(50, 0.1)
 
-model = sis.SisModel(G, alpha, beta)
+model = sirs.SirsModel(G, alpha, beta, gamma)
 sim = simx.Simulator(model.initialState(),
                      model.transition(),
                      onShow)
-sim.run(5,3)
+sim.run(15, 5)

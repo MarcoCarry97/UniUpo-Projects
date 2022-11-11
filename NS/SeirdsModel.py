@@ -13,10 +13,10 @@ class SeirdsModel(sm.SpreadingModel):
     
     def __init__(self,G,alpha,beta,gamma,delta):
         super().__init__(G)
-        self.alpha=alpha #I-->R probability
-        self.beta=beta #S-->E probability
-        self.gamma=gamma #R-->S probability
-        self.delta=delta #E-->I probability
+        self.alpha=alpha #S-->E probability
+        self.beta=beta #E-->I probability
+        self.gamma=gamma #I-->R probability
+        self.delta=delta #R-->S probability
         
     
     #NOTA: per gli esposti(E) ho riutilizzato il ragionamento
@@ -30,20 +30,22 @@ class SeirdsModel(sm.SpreadingModel):
                 if current[node]=="S":
                     for neighbor in G.neighbors(node):
                         if current[neighbor]=="I":
-                            if random.random()<self.beta:
+                            if random.random()<1-self.alpha:
                                 nextState[node]="E"
                 elif current[node]=="E":
-                    for neighbor in G.neighbors(node):
-                        if current[neighbor]=="I":
-                            if random.random()<self.delta:
-                                nextState[node]="E"
+                    #for neighbor in G.neighbors(node):
+                    #if current[neighbor]=="I":
+                    if random.random()<1-self.beta:
+                        nextState[node]="I"
+                    else:
+                        nextState[node]="S"
                 elif current[node]=="I":
-                    if random.random()<self.alpha:
+                    if random.random()<1-self.gamma:
                         nextState[node]="R"
                     else:
                         nextState[node]="D"
                 elif current[node]=="R":
-                    if random.random()<self.gamma:
+                    if random.random()<1-self.delta:
                         nextState[node]="S"
             return (G,nextState)
         return trans

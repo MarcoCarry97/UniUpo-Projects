@@ -19,6 +19,7 @@ class SisModel(sm.SpreadingModel):
     def transition(self): 
         def trans(G,current):
             nextState={}
+            print(current)
             for node in self.G.nodes:
                 nextState[node]=current[node]
                 if current[node]=="S":

@@ -13,8 +13,8 @@ class SeirdsModel(sm.SpreadingModel):
     
     def __init__(self,G,alpha,beta,gamma,delta):
         super().__init__(G)
-        self.alpha=alpha #S-->I probability
-        self.beta=beta #I-->R probability
+        self.alpha=alpha #I-->R probability
+        self.beta=beta #S-->E probability
         self.gamma=gamma #R-->S probability
         self.delta=delta #E-->I probability
         

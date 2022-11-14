@@ -10,13 +10,13 @@ import SisModel as sis
 
 from utils import onShow
 
-alpha = 0.999
-beta = 0.999
+alpha = 0.1
+beta = 0.1
 
-G = nx.gnp_random_graph(10, 0.1)
+G = nx.gnp_random_graph(100, 0.1)
 
 model = sis.SisModel(G, alpha, beta)
 sim = simx.Simulator(model.initialState(),
                      model.transition(),
                      onShow)
-sim.run(5,3)
+sim.run(100,100)

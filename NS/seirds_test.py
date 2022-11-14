@@ -10,15 +10,14 @@ import SeirdsModel as seirds
 
 from utils import onShow
 
-alpha = 0.5
+alpha = 0.75
 beta = 0.5
-gamma = 0.5
-delta = 0.5
-
-G = nx.gnp_random_graph(50, 0.1)
+gamma = 0.9
+delta = 0
+G = nx.gnp_random_graph(100, 0.1)
 
 model = seirds.SeirdsModel(G, alpha, beta, gamma, delta)
 sim = simx.Simulator(model.initialState(),
                      model.transition(),
                      onShow)
-sim.run(15, 7)
+sim.run(25,25)

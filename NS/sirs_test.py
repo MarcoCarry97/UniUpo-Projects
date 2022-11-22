@@ -14,10 +14,10 @@ alpha = 0.1
 beta = 0.1
 gamma = 0.1
 
-G = nx.gnp_random_graph(100, 0.1)
+G = nx.gnp_random_graph(50, 0.1)
 
 model = sirs.SirsModel(G, alpha, beta, gamma)
 sim = simx.Simulator(model.initialState(),
                      model.transition(),
                      onShow)
-sim.run(100,100)
+sim.run(50,25)

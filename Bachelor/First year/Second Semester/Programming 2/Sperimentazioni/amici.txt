@@ -1,0 +1,3 @@
+0 mario neri 22 corso_roma 43 15121 alessandria 2 1 2 
+1 marco bianchi 61 via_garibaldi 43 15121 alessandria 2 0 2 
+4 andrea neri 30 corso_roma 43 15121 alessandria 2 1 2 

@@ -1,0 +1,6 @@
+undici
+ventidue
+sessantatre
+ventordici
+trentordici
+qualcosa

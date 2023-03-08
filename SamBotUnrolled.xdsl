@@ -1,0 +1,992 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This network was created in GeNIe Academic, which can be used for academic teaching and research purposes only -->
+<smile version="1.0" id="Network1" numsamples="10000" discsamples="10000">
+	<nodes>
+		<cpt id="Position">
+			<state id="Lab" />
+			<state id="Office" />
+			<state id="Shop" />
+			<probabilities>1 0 0</probabilities>
+		</cpt>
+		<cpt id="Coffee">
+			<state id="Yes" />
+			<state id="No" />
+			<probabilities>0 1</probabilities>
+		</cpt>
+		<cpt id="Order">
+			<state id="Yes" />
+			<state id="No" />
+			<state id="Satisfied" />
+			<probabilities>0.5 0.5 0</probabilities>
+		</cpt>
+		<cpt id="Shop">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Position</parents>
+			<probabilities>0 1 0 1 1 0</probabilities>
+		</cpt>
+		<cpt id="Office">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Position</parents>
+			<probabilities>0 1 1 0 0 1</probabilities>
+		</cpt>
+		<decision id="Action">
+			<state id="MAR" />
+			<state id="MO" />
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+		</decision>
+		<cpt id="MoveEffect">
+			<state id="MAR" />
+			<state id="MO" />
+			<state id="NONE" />
+			<parents>Action</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="StateEffect">
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>Action</parents>
+			<probabilities>0 0 1 0 0 1 0.99 0 0.01 0 0.99 0.01 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Take">
+			<state id="PC" />
+			<state id="NONE" />
+			<parents>StateEffect Shop</parents>
+			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Deliver">
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>StateEffect Office</parents>
+			<probabilities>0 1 0 1 1 0 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="CoffeeRequest">
+			<state id="HasCoffee" />
+			<state id="HasNotCoffee" />
+			<state id="NotRequired" />
+			<parents>Order Coffee</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="TrueTake">
+			<state id="PC" />
+			<state id="NONE" />
+			<parents>Take CoffeeRequest</parents>
+			<probabilities>0 1 1 0 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="TrueDeliver">
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>Deliver CoffeeRequest</parents>
+			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="TakeDeliver">
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>TrueTake TrueDeliver</parents>
+			<probabilities>1 0 0 1 0 0 0 1 0 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Order_1">
+			<state id="Yes" />
+			<state id="No" />
+			<state id="Satisfied" />
+			<parents>Order TrueDeliver</parents>
+			<probabilities>0 0 1 1 0 0 0 1 0 0 1 0 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<decision id="Action_1">
+			<state id="MAR" />
+			<state id="MO" />
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>Action</parents>
+		</decision>
+		<cpt id="StateEffect_1">
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>Action_1</parents>
+			<probabilities>0 0 1 0 0 1 0.99 0 0.01 0 0.99 0.01 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Position_1">
+			<state id="Lab" />
+			<state id="Office" />
+			<state id="Shop" />
+			<parents>Position MoveEffect</parents>
+			<probabilities>0 0 1 1 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Office_1">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Position_1</parents>
+			<probabilities>0 1 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Deliver_1">
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>StateEffect_1 Office_1</parents>
+			<probabilities>0 1 0 1 1 0 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Coffee_1">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Coffee TakeDeliver</parents>
+			<probabilities>1 0 0 1 1 0 1 0 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="CoffeeRequest_1">
+			<state id="HasCoffee" />
+			<state id="HasNotCoffee" />
+			<state id="NotRequired" />
+			<parents>Order_1 Coffee_1</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="TrueDeliver_1">
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>Deliver_1 CoffeeRequest_1</parents>
+			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Order_2">
+			<state id="Yes" />
+			<state id="No" />
+			<state id="Satisfied" />
+			<parents>Order_1 TrueDeliver_1</parents>
+			<probabilities>0 0 1 1 0 0 0 1 0 0 1 0 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<decision id="Action_2">
+			<state id="MAR" />
+			<state id="MO" />
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>Action_1</parents>
+		</decision>
+		<cpt id="StateEffect_2">
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>Action_2</parents>
+			<probabilities>0 0 1 0 0 1 0.99 0 0.01 0 0.99 0.01 0 0 1</probabilities>
+		</cpt>
+		<cpt id="MoveEffect_1">
+			<state id="MAR" />
+			<state id="MO" />
+			<state id="NONE" />
+			<parents>Action_1</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Position_2">
+			<state id="Lab" />
+			<state id="Office" />
+			<state id="Shop" />
+			<parents>Position_1 MoveEffect_1</parents>
+			<probabilities>0 0 1 1 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Office_2">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Position_2</parents>
+			<probabilities>0 1 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Deliver_2">
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>StateEffect_2 Office_2</parents>
+			<probabilities>0 1 0 1 1 0 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Shop_1">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Position_1</parents>
+			<probabilities>0 1 0 1 1 0</probabilities>
+		</cpt>
+		<cpt id="Take_1">
+			<state id="PC" />
+			<state id="NONE" />
+			<parents>StateEffect_1 Shop_1</parents>
+			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="TrueTake_1">
+			<state id="PC" />
+			<state id="NONE" />
+			<parents>Take_1 CoffeeRequest_1</parents>
+			<probabilities>0 1 1 0 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="TakeDeliver_1">
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>TrueTake_1 TrueDeliver_1</parents>
+			<probabilities>1 0 0 1 0 0 0 1 0 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Coffee_2">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Coffee_1 TakeDeliver_1</parents>
+			<probabilities>1 0 0 1 1 0 1 0 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="CoffeeRequest_2">
+			<state id="HasCoffee" />
+			<state id="HasNotCoffee" />
+			<state id="NotRequired" />
+			<parents>Order_2 Coffee_2</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="TrueDeliver_2">
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>Deliver_2 CoffeeRequest_2</parents>
+			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Order_3">
+			<state id="Yes" />
+			<state id="No" />
+			<state id="Satisfied" />
+			<parents>Order_2 TrueDeliver_2</parents>
+			<probabilities>0 0 1 1 0 0 0 1 0 0 1 0 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<decision id="Action_3">
+			<state id="MAR" />
+			<state id="MO" />
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>Action_2</parents>
+		</decision>
+		<cpt id="StateEffect_3">
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>Action_3</parents>
+			<probabilities>0 0 1 0 0 1 0.99 0 0.01 0 0.99 0.01 0 0 1</probabilities>
+		</cpt>
+		<cpt id="MoveEffect_2">
+			<state id="MAR" />
+			<state id="MO" />
+			<state id="NONE" />
+			<parents>Action_2</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Position_3">
+			<state id="Lab" />
+			<state id="Office" />
+			<state id="Shop" />
+			<parents>Position_2 MoveEffect_2</parents>
+			<probabilities>0 0 1 1 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Office_3">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Position_3</parents>
+			<probabilities>0 1 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Deliver_3">
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>StateEffect_3 Office_3</parents>
+			<probabilities>0 1 0 1 1 0 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Shop_2">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Position_2</parents>
+			<probabilities>0 1 0 1 1 0</probabilities>
+		</cpt>
+		<cpt id="Take_2">
+			<state id="PC" />
+			<state id="NONE" />
+			<parents>StateEffect_2 Shop_2</parents>
+			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="TrueTake_2">
+			<state id="PC" />
+			<state id="NONE" />
+			<parents>Take_2 CoffeeRequest_2</parents>
+			<probabilities>0 1 1 0 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="TakeDeliver_2">
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>TrueTake_2 TrueDeliver_2</parents>
+			<probabilities>1 0 0 1 0 0 0 1 0 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Coffee_3">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Coffee_2 TakeDeliver_2</parents>
+			<probabilities>1 0 0 1 1 0 1 0 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="CoffeeRequest_3">
+			<state id="HasCoffee" />
+			<state id="HasNotCoffee" />
+			<state id="NotRequired" />
+			<parents>Order_3 Coffee_3</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="TrueDeliver_3">
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>Deliver_3 CoffeeRequest_3</parents>
+			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Order_4">
+			<state id="Yes" />
+			<state id="No" />
+			<state id="Satisfied" />
+			<parents>Order_3 TrueDeliver_3</parents>
+			<probabilities>0 0 1 1 0 0 0 1 0 0 1 0 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<utility id="Total">
+			<parents>Order_4</parents>
+			<utilities>0 0 1</utilities>
+		</utility>
+		<cpt id="Shop_3">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Position_3</parents>
+			<probabilities>0 1 0 1 1 0</probabilities>
+		</cpt>
+		<cpt id="MoveEffect_3">
+			<state id="MAR" />
+			<state id="MO" />
+			<state id="NONE" />
+			<parents>Action_3</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Take_3">
+			<state id="PC" />
+			<state id="NONE" />
+			<parents>StateEffect_3 Shop_3</parents>
+			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="TrueTake_3">
+			<state id="PC" />
+			<state id="NONE" />
+			<parents>Take_3 CoffeeRequest_3</parents>
+			<probabilities>0 1 1 0 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="TakeDeliver_3">
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>TrueTake_3 TrueDeliver_3</parents>
+			<probabilities>1 0 0 1 0 0 0 1 0 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Position_4">
+			<state id="Lab" />
+			<state id="Office" />
+			<state id="Shop" />
+			<parents>Position_3 MoveEffect_3</parents>
+			<probabilities>0 0 1 1 0 0 1 0 0 0 1 0 0 0 1 0 1 0 0 1 0 1 0 0 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Coffee_4">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Coffee_3 TakeDeliver_3</parents>
+			<probabilities>1 0 0 1 1 0 1 0 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Shop_4">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Position_4</parents>
+			<probabilities>0 1 0 1 1 0</probabilities>
+		</cpt>
+		<cpt id="Office_4">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>Position_4</parents>
+			<probabilities>0 1 1 0 0 1</probabilities>
+		</cpt>
+		<decision id="Action_4">
+			<state id="MAR" />
+			<state id="MO" />
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>Action_3</parents>
+		</decision>
+		<cpt id="MoveEffect_4">
+			<state id="MAR" />
+			<state id="MO" />
+			<state id="NONE" />
+			<parents>Action_4</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="StateEffect_4">
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>Action_4</parents>
+			<probabilities>0 0 1 0 0 1 0.99 0 0.01 0 0.99 0.01 0 0 1</probabilities>
+		</cpt>
+		<cpt id="Take_4">
+			<state id="PC" />
+			<state id="NONE" />
+			<parents>StateEffect_4 Shop_4</parents>
+			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="Deliver_4">
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>StateEffect_4 Office_4</parents>
+			<probabilities>0 1 0 1 1 0 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="CoffeeRequest_4">
+			<state id="HasCoffee" />
+			<state id="HasNotCoffee" />
+			<state id="NotRequired" />
+			<parents>Order_4 Coffee_4</parents>
+			<probabilities>1 0 0 0 1 0 0 0 1 0 0 1 0 0 1 0 0 1</probabilities>
+		</cpt>
+		<cpt id="TrueTake_4">
+			<state id="PC" />
+			<state id="NONE" />
+			<parents>Take_4 CoffeeRequest_4</parents>
+			<probabilities>0 1 1 0 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="TrueDeliver_4">
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>Deliver_4 CoffeeRequest_4</parents>
+			<probabilities>1 0 0 1 0 1 0 1 0 1 0 1</probabilities>
+		</cpt>
+		<cpt id="TakeDeliver_4">
+			<state id="PC" />
+			<state id="CC" />
+			<state id="NONE" />
+			<parents>TrueTake_4 TrueDeliver_4</parents>
+			<probabilities>1 0 0 1 0 0 0 1 0 0 0 1</probabilities>
+		</cpt>
+	</nodes>
+	<extensions>
+		<genie version="1.0" app="GeNIe 3.0.5905.0 ACADEMIC" name="Network1 unrolled">
+			<node id="Position">
+				<name>Position</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>222 66 318 130</position>
+			</node>
+			<node id="Coffee">
+				<name>Coffee</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>250 362 343 432</position>
+			</node>
+			<node id="Order">
+				<name>Order</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>160 513 255 577</position>
+			</node>
+			<node id="Shop">
+				<name>Shop</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>408 159 480 209</position>
+			</node>
+			<node id="Office">
+				<name>Office</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>388 264 463 314</position>
+			</node>
+			<node id="Action">
+				<name>Action</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>877 78 966 131</position>
+			</node>
+			<node id="MoveEffect">
+				<name>MoveEffect</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>566 64 654 126</position>
+			</node>
+			<node id="StateEffect">
+				<name>StateEffect</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>857 202 945 267</position>
+			</node>
+			<node id="Take">
+				<name>Take</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>611 182 677 228</position>
+			</node>
+			<node id="Deliver">
+				<name>Deliver</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>848 346 915 396</position>
+			</node>
+			<node id="CoffeeRequest">
+				<name>CoffeeRequest</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>419 605 510 669</position>
+			</node>
+			<node id="TrueTake">
+				<name>TrueTake</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>533 359 618 420</position>
+			</node>
+			<node id="TrueDeliver">
+				<name>TrueDeliver</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>620 488 708 542</position>
+			</node>
+			<node id="TakeDeliver">
+				<name>TakeDeliver</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>392 365 485 424</position>
+			</node>
+			<node id="Total">
+				<name>Total</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>4684 545 4767 609</position>
+			</node>
+			<textbox>
+				<caption>Step0</caption>
+				<font color="696969" name="Arial" size="7" />
+				<position>462 694 486 706</position>
+			</textbox>
+			<textbox>
+				<caption>Step1</caption>
+				<font color="696969" name="Arial" size="7" />
+				<position>1367 694 1391 706</position>
+			</textbox>
+			<textbox>
+				<caption>Step2</caption>
+				<font color="696969" name="Arial" size="7" />
+				<position>2272 694 2296 706</position>
+			</textbox>
+			<textbox>
+				<caption>Step3</caption>
+				<font color="696969" name="Arial" size="7" />
+				<position>3177 694 3201 706</position>
+			</textbox>
+			<textbox>
+				<caption>Step4</caption>
+				<font color="696969" name="Arial" size="7" />
+				<position>4082 694 4106 706</position>
+			</textbox>
+			<node id="Position_1">
+				<name>Position (t=1)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1127 86 1223 150</position>
+			</node>
+			<node id="Coffee_1">
+				<name>Coffee (t=1)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1155 382 1248 452</position>
+			</node>
+			<node id="Order_1">
+				<name>Order (t=1)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1065 533 1160 597</position>
+			</node>
+			<node id="Shop_1">
+				<name>Shop (t=1)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1313 179 1385 229</position>
+			</node>
+			<node id="Office_1">
+				<name>Office (t=1)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1293 284 1368 334</position>
+			</node>
+			<node id="Action_1">
+				<name>Action (t=1)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1782 98 1871 151</position>
+			</node>
+			<node id="MoveEffect_1">
+				<name>MoveEffect (t=1)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1471 84 1559 146</position>
+			</node>
+			<node id="StateEffect_1">
+				<name>StateEffect (t=1)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1762 222 1850 287</position>
+			</node>
+			<node id="Take_1">
+				<name>Take (t=1)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1516 202 1582 248</position>
+			</node>
+			<node id="Deliver_1">
+				<name>Deliver (t=1)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1753 366 1820 416</position>
+			</node>
+			<node id="CoffeeRequest_1">
+				<name>CoffeeRequest (t=1)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1324 625 1415 689</position>
+			</node>
+			<node id="TrueTake_1">
+				<name>TrueTake (t=1)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1438 379 1523 440</position>
+			</node>
+			<node id="TrueDeliver_1">
+				<name>TrueDeliver (t=1)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1525 508 1613 562</position>
+			</node>
+			<node id="TakeDeliver_1">
+				<name>TakeDeliver (t=1)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1297 385 1390 444</position>
+			</node>
+			<node id="Position_2">
+				<name>Position (t=2)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>2032 66 2128 130</position>
+			</node>
+			<node id="Coffee_2">
+				<name>Coffee (t=2)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>2060 362 2153 432</position>
+			</node>
+			<node id="Order_2">
+				<name>Order (t=2)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1970 513 2065 577</position>
+			</node>
+			<node id="Shop_2">
+				<name>Shop (t=2)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>2218 159 2290 209</position>
+			</node>
+			<node id="Office_2">
+				<name>Office (t=2)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>2198 264 2273 314</position>
+			</node>
+			<node id="Action_2">
+				<name>Action (t=2)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>2687 78 2776 131</position>
+			</node>
+			<node id="MoveEffect_2">
+				<name>MoveEffect (t=2)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>2376 64 2464 126</position>
+			</node>
+			<node id="StateEffect_2">
+				<name>StateEffect (t=2)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>2667 202 2755 267</position>
+			</node>
+			<node id="Take_2">
+				<name>Take (t=2)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>2421 182 2487 228</position>
+			</node>
+			<node id="Deliver_2">
+				<name>Deliver (t=2)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>2658 346 2725 396</position>
+			</node>
+			<node id="CoffeeRequest_2">
+				<name>CoffeeRequest (t=2)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>2229 605 2320 669</position>
+			</node>
+			<node id="TrueTake_2">
+				<name>TrueTake (t=2)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>2343 359 2428 420</position>
+			</node>
+			<node id="TrueDeliver_2">
+				<name>TrueDeliver (t=2)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>2430 488 2518 542</position>
+			</node>
+			<node id="TakeDeliver_2">
+				<name>TakeDeliver (t=2)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>2202 365 2295 424</position>
+			</node>
+			<node id="Position_3">
+				<name>Position (t=3)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>2937 86 3033 150</position>
+			</node>
+			<node id="Coffee_3">
+				<name>Coffee (t=3)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>2965 382 3058 452</position>
+			</node>
+			<node id="Order_3">
+				<name>Order (t=3)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>2875 533 2970 597</position>
+			</node>
+			<node id="Shop_3">
+				<name>Shop (t=3)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>3123 179 3195 229</position>
+			</node>
+			<node id="Office_3">
+				<name>Office (t=3)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>3103 284 3178 334</position>
+			</node>
+			<node id="Action_3">
+				<name>Action (t=3)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>3592 98 3681 151</position>
+			</node>
+			<node id="MoveEffect_3">
+				<name>MoveEffect (t=3)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>3281 84 3369 146</position>
+			</node>
+			<node id="StateEffect_3">
+				<name>StateEffect (t=3)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>3572 222 3660 287</position>
+			</node>
+			<node id="Take_3">
+				<name>Take (t=3)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>3326 202 3392 248</position>
+			</node>
+			<node id="Deliver_3">
+				<name>Deliver (t=3)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>3563 366 3630 416</position>
+			</node>
+			<node id="CoffeeRequest_3">
+				<name>CoffeeRequest (t=3)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>3134 625 3225 689</position>
+			</node>
+			<node id="TrueTake_3">
+				<name>TrueTake (t=3)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>3248 379 3333 440</position>
+			</node>
+			<node id="TrueDeliver_3">
+				<name>TrueDeliver (t=3)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>3335 508 3423 562</position>
+			</node>
+			<node id="TakeDeliver_3">
+				<name>TakeDeliver (t=3)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>3107 385 3200 444</position>
+			</node>
+			<node id="Position_4">
+				<name>Position (t=4)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>3842 66 3938 130</position>
+			</node>
+			<node id="Coffee_4">
+				<name>Coffee (t=4)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>3870 362 3963 432</position>
+			</node>
+			<node id="Order_4">
+				<name>Order (t=4)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>3780 513 3875 577</position>
+			</node>
+			<node id="Shop_4">
+				<name>Shop (t=4)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>4028 159 4100 209</position>
+			</node>
+			<node id="Office_4">
+				<name>Office (t=4)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>4008 264 4083 314</position>
+			</node>
+			<node id="Action_4">
+				<name>Action (t=4)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>4497 78 4586 131</position>
+			</node>
+			<node id="MoveEffect_4">
+				<name>MoveEffect (t=4)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>4186 64 4274 126</position>
+			</node>
+			<node id="StateEffect_4">
+				<name>StateEffect (t=4)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>4477 202 4565 267</position>
+			</node>
+			<node id="Take_4">
+				<name>Take (t=4)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>4231 182 4297 228</position>
+			</node>
+			<node id="Deliver_4">
+				<name>Deliver (t=4)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>4468 346 4535 396</position>
+			</node>
+			<node id="CoffeeRequest_4">
+				<name>CoffeeRequest (t=4)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>4039 605 4130 669</position>
+			</node>
+			<node id="TrueTake_4">
+				<name>TrueTake (t=4)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>4153 359 4238 420</position>
+			</node>
+			<node id="TrueDeliver_4">
+				<name>TrueDeliver (t=4)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>4240 488 4328 542</position>
+			</node>
+			<node id="TakeDeliver_4">
+				<name>TakeDeliver (t=4)</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>4012 365 4105 424</position>
+			</node>
+		</genie>
+	</extensions>
+</smile>

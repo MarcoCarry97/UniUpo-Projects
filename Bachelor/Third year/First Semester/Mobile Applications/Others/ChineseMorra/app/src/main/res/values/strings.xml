@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Chinese Morra</string>
+    <string name="choose">Choose between Rock, Paper or Scissors</string>
+    <string name="difficult">Choose the Difficult</string>
+    <string name="easy">Easy</string>
+    <string name="impossible">Impossible</string>
+    <string name="rock">Rock</string>
+    <string name="scissors">Scissors</string>
+    <string name="paper">Paper</string>
+    <string name="button">Go</string>
+    <string name="pair">Pair!</string>
+    <string name="win">Win!</string>
+    <string name="lose">Lose!</string>
+</resources>

@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="mdtLib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../mdtLib.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../utilityLib.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../utilityLib.jar!/doc" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>

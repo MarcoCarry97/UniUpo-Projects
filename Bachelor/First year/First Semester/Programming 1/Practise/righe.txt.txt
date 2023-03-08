@@ -1,0 +1,5 @@
+undici
+ventidue
+sessantatre
+trentordici
+mille

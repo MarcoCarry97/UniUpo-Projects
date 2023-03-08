@@ -1,0 +1,126 @@
+/* Check if a player won */
+									if ((p = checkWin(match[j].matr)) == 1) {
+										/* Sending the winning grid to both clients */
+										memset(intBuff, '\0', sizeof(intBuff));
+										strcpy(intBuff, buff);
+										strcat(intBuff,
+												"END:You won! CONGRATULATIONS\n");
+										if (write(
+												client[match[j].info[0].client].fd,
+												intBuff, strlen(intBuff)) < 0)
+											err_sys("write error\n");
+
+										memset(intBuff, '\0', sizeof(intBuff));
+										strcpy(intBuff, buff);
+										strcat(intBuff,
+												"END:You lost! sorry\n");
+										if (write(
+												client[match[j].info[1].client].fd,
+												intBuff, strlen(intBuff)) < 0)
+											err_sys("write error\n");
+										/* Closing both connections */
+										printf(
+												"Match between %d %d finished. Player 1 won. All connections closed\n",
+												match[j].info[0].client,
+												match[j].info[1].client);
+										if (close(
+												client[match[j].info[0].client].fd)
+												== -1)
+											err_sys("close error\n");
+										FD_CLR(
+												client[match[j].info[0].client].fd,
+												&allset);
+										client[match[j].info[0].client].fd = -1;
+										/* And the opponent's client, so the match also */
+										if (close(
+												client[client[match[j].info[0].client].playingWith].fd)
+												== -1)
+											err_sys("close error\n");
+										FD_CLR(
+												client[client[match[j].info[0].client].playingWith].fd,
+												&allset);
+										client[client[match[j].info[0].client].playingWith].fd =
+												-1;
+										client[match[j].info[0].client].playingWith =
+												-1;
+										client[client[match[j].info[0].client].playingWith].playingWith =
+												-1;
+										/* Initializing the match structure */
+										match[j].turn = -1;
+										for (k = 0; k < 2; k++) {
+											match[j].info[k].client = -1;
+											free(*(match[j].info[k].moves));
+											free(match[j].info[k].moves);
+											free(*(match[j].info[k].ships));
+											free(match[j].info[k].ships);
+										}
+									} else if (p == 2) {
+										/* Sending the winning grid to both clients */
+										memset(intBuff, '\0', sizeof(intBuff));
+										strcpy(intBuff, buff);
+										strcat(intBuff,
+												"END:You lost! sorry\n");
+										if (write(
+												client[match[j].info[0].client].fd,
+												intBuff, strlen(intBuff)) < 0)
+											err_sys("write error\n");
+										memset(intBuff, '\0', sizeof(intBuff));
+										strcpy(intBuff, buff);
+										strcat(intBuff,
+												"END:You won! CONGRATULATIONS\n");
+										if (write(
+												client[match[j].info[1].client].fd,
+												intBuff, strlen(intBuff)) < 0)
+											err_sys("write error\n");
+										/* Closing both connections */
+										printf(
+												"Match between %d %d finished. Player 2 won. All connections closed\n",
+												match[j].info[0].client,
+												match[j].info[1].client);
+										if (close(
+												client[match[j].info[0].client].fd)
+												== -1)
+											err_sys("close error\n");
+										FD_CLR(
+												client[match[j].info[0].client].fd,
+												&allset);
+										client[match[j].info[0].client].fd = -1;
+										/* And the matchenent's client, so the match also */
+										if (close(
+												client[client[match[j].info[0].client].playingWith].fd)
+												== -1)
+											err_sys("close error\n");
+										FD_CLR(
+												client[client[match[j].info[0].client].playingWith].fd,
+												&allset);
+										client[client[match[j].info[0].client].playingWith].fd =
+												-1;
+										client[match[j].info[0].client].playingWith =
+												-1;
+										client[client[match[j].info[0].client].playingWith].playingWith =
+												-1;
+										/* Initializing the match structure */
+										match[j].turn = -1;
+										for (k = 0; k < 2; k++) {
+											match[j].info[k].client = -1;
+											free(*(match[j].info[k].moves));
+											free(match[j].info[k].moves);
+											free(*(match[j].info[k].ships));
+											free(match[j].info[k].ships);
+										}
+									} else {
+										/* Sending the grid to both clients */
+										memset(intBuff, '\0', sizeof(intBuff));
+										strcpy(intBuff, buff);
+										strcat(intBuff, "It's your turn\n");
+										if (write(client[temp1].fd, intBuff,
+												strlen(intBuff)) < 0)
+											err_sys("write error\n");
+										memset(intBuff, '\0', sizeof(intBuff));
+										strcpy(intBuff, buff);
+										strcat(intBuff,
+												"Wait, other player's turn\n");
+										if (write(client[temp2].fd, intBuff,
+												strlen(intBuff)) < 0)
+											err_sys("write error\n");
+									}

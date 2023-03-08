@@ -1,0 +1,78 @@
+#include "basic.h"
+#include "my_signal.h"
+
+int main(int argc, char **argv) {
+	int sockfd, connfd, n, i, j, x, servPort;
+	char buff[MAXLINE], conv[10];
+	pid_t pid;
+	socklen_t clilen;
+
+	struct sockaddr_in servaddr, cliaddr;
+
+	/* setting handler for SIGCHLD */
+	signal(SIGCHLD, gestisci_zombie);
+
+	servPort = atoi(argv[1]);
+
+	if (argc != 2)
+		err_quit("Usage: %s <port>\n", argv[0]);
+	while (servPort < 10000 || servPort > 12000) {
+		printf("Insert a port between 10000 and 12000 please\n");
+		servPort = atoi(fgets(conv, sizeof(conv), stdin));
+	}
+
+	if ((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+		err_sys("socket error");
+
+	servaddr.sin_family = AF_INET;
+	servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+	servaddr.sin_port = htons(servPort);
+
+	if (bind(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0)
+		err_sys("bind error");
+
+	if (listen(sockfd, LISTENQ) < 0)
+		err_sys("lister error");
+
+	while (1) {
+		clilen = sizeof(struct sockaddr_in);
+		if ((connfd = accept(sockfd, (struct sockaddr *) &cliaddr, &clilen))
+				< 0)
+			err_sys("accept error\n");
+
+		// child work
+		if (!(pid = fork())) {
+			// close father socket fd
+			close(sockfd);
+			printf("Client information: %s %d\n", inet_ntoa(cliaddr.sin_addr),
+					ntohs(cliaddr.sin_port));
+
+			memset(buff, '\0', sizeof(buff));
+			if ((n = read(connfd, buff, MAXLINE)) > 0) {
+				i = atoi(buff);
+				memset(buff, '\0', sizeof(buff));
+				for (j = 0; j < i; j++) {
+					if ((n = read(connfd, buff, MAXLINE)) > 0) {
+						printf("Received: %s", buff);
+						for (x = 0; x < strlen(buff); x++)
+							;
+						snprintf(buff, sizeof(buff), "%d", x);
+						sleep(10);
+						if ((write(connfd, buff, strlen(buff))) != strlen(buff))
+							err_sys("write error");
+						memset(buff, '\0', sizeof(buff));
+					}
+					if (n < 0)
+						printf("read error");
+				}
+			}
+			if (n < 0)
+				printf("read error");
+			// close child socket fd
+			close(connfd);
+			exit(0);
+		}
+
+	}
+	close(sockfd);
+}

@@ -1,7 +1,5 @@
-<<<<<<< HEAD
-# Information-Retrieval
-A project i made for the exam of Information Retrieval at UniUpo.
-=======
 # UniUpo-Projects
-Every project and exam i did during my bachelor and my master degree at UniUpo
->>>>>>> 5f2d447ea73de340820d477d9d66d0ad21a50b1f
+This repository contains all the documents and materials I did at university, precisely:
+- My Bachelor degree at the University of Eastern Piedmont (UNIUPO);
+- My Master degree at the University of Eastern Piedmont (UNIUPO);
+- My Erasmus at Politechnical University of Catalunya (UPC).
